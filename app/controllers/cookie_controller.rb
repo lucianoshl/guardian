@@ -7,6 +7,6 @@ class CookieController < ApplicationController
       cookies: Cookie.latest,
       redirected_page: "https://#{User.first.world}.tribalwars.com.br/game.php?screen=overview"
     }
-    render json: 
+    render json: result
   end
 end

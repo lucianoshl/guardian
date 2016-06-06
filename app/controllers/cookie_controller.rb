@@ -3,6 +3,10 @@ class CookieController < ApplicationController
     screen = Screen::Overview.new
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Request-Method'] = '*'
-    render json: Cookie.latest
+    result = {
+      cookies: Cookie.latest,
+      redirected_page: "https://#{User.first.world}.tribalwars.com.br/game.php?screen=overview"
+    }
+    render json: 
   end
 end

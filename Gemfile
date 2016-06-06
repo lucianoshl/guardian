@@ -36,6 +36,10 @@ group :development, :test do
   gem 'spring'
 end
 
+group :test do
+  gem "rspec-rails"
+end
+
 group :production do
   gem 'rails_12factor'
   gem 'thin'
@@ -43,4 +47,6 @@ end
 
 gem "health_check"
 gem 'rails_admin'
+gem 'nokogiri'
+gem 'mongoid'
 

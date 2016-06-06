@@ -32,7 +32,7 @@ class Screen::Logged
 
   def request url
     page = client.send(method,url)
-    binding.pry
+    
     if (!is_logged?(page))
       do_login
       page = client.send(method,url)
@@ -81,7 +81,6 @@ class Screen::Logged
     cookie.content = client.cookies
     cookie.created_at = Time.zone.now
     cookie.save
-    binding.pry
   end
 
   def initialize args={}

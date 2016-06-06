@@ -10,7 +10,7 @@ class Screen::Logged
       cookies = Cookie.latest
 
       if (!cookies.nil?)
-        @client.cookie_jar.clear
+        @client.cookie_jar.clear!
         cookies.each do |c|
           @client.cookie_jar.add!(c)
         end

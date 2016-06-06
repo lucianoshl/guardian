@@ -10,6 +10,7 @@ class Screen::Logged
       cookies = Cookie.latest
 
       if (!cookies.nil?)
+        @client.cookie_jar.clear
         cookies.each do |c|
           @client.cookie_jar.add!(c)
         end
@@ -32,7 +33,7 @@ class Screen::Logged
 
   def request url
     page = client.send(method,url)
-    
+
     if (!is_logged?(page))
       do_login
       page = client.send(method,url)

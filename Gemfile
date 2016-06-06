@@ -45,3 +45,5 @@ group :production do
   gem 'thin'
 end
 
+gem "health_check"
+

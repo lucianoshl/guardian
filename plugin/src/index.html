@@ -1,0 +1,55 @@
+<!doctype html>
+<html ng-app='holder'>
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="../js/angular/zepto.min.js"></script>
+    <script src="../js/angular/angular.js"></script>
+    <script src="../js/angular/resource.js"></script>
+    <script src="background/extension.js"></script>
+    <script src="holder.js"></script>
+    <title>Select your server</title>
+    <style>
+        *[ng-click]{
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body ng-controller="ScreenCtrl" class="container" style="width:700px; padding:20px">
+<!--     <div class="page-header">
+      <h4>Selecione o servidor</h4>
+  </div> -->
+  <div>
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="server in servers" ng-click="select_server(server)">
+        {{server.user}} on {{server._type}}
+        <span ng-show="server.server_label">({{server.server_label}})</span>
+        <div class="btn-group btn-group-xs pull-right" ng-click="automatic_login(server); $event.stopPropagation();">
+          <button class="btn btn-small">Mark automatic login</button>
+        </div>
+      <span class="pull-right">{{server.created | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+  </li>
+</ul>
+</div>
+
+<button ng-click="config = !config" class="btn btn-default">Config</button>
+<div ng-show="config">
+    <hr>
+    <div class="input-group">
+      <label>Holder server:</label>
+      <input type="text" class="form-control" ng-model="data.holder_server">
+  </div>
+  <hr>
+  <label><button ng-click="add()" class="btn btn-default">+</button> Tokens</label>
+  <div class="form-group" ng-repeat="key in data.keys track by $index">
+    <div class="input-group">
+        <input ng-model="data.keys[$index]" type="text" class="form-control"></input>
+        <span ng-click="remove(key)" class="input-group-addon">-</span>
+    </div>
+</div>
+</div>
+</body>
+</html>

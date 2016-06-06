@@ -1,15 +1,7 @@
-development:
-  # Configure available database clients. (required)
+development: &defaults
   clients:
-    # Defines the default client. (required)
     default:
-      # Defines the name of the default database that Mongoid can connect to.
-      # (required).
-      database: guardian_development
-      # Provides the hosts the default client can connect to. Must be an array
-      # of host:port pairs. (required)
-      hosts:
-        - localhost:27017
+      uri: <%= ENV['MONGO_URL'] %> 
       options:
         # Change the default write concern. (default = { w: 1 })
         # write:
@@ -131,12 +123,7 @@ development:
     # otherwise.(default: :info)
     # log_level: :info
 test:
-  clients:
-    default:
-      database: guardian_test
-      hosts:
-        - localhost:27017
-      options:
-        read:
-          mode: :primary
-        max_pool_size: 1
+  <<: *defaults
+
+production:
+  <<: *defaults

@@ -29,15 +29,12 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-group :development, :test do
-  gem 'byebug'
-  gem 'quiet_assets'
-  gem 'web-console', '~> 2.0'
-  gem 'spring'
-end
-
 group :test do
   gem "rspec-rails"
+end
+
+group :development do
+  gem 'web-console', '~> 2.0'
 end
 
 group :production do
@@ -45,8 +42,15 @@ group :production do
   gem 'thin'
 end
 
+group :development, :test do
+  gem 'pry-byebug'
+  gem 'byebug'
+  gem 'quiet_assets'
+  gem 'spring'
+end
+
 gem "health_check"
 gem 'rails_admin'
-gem 'nokogiri'
+gem 'mechanize'
 gem 'mongoid'
 

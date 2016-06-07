@@ -1,34 +1,19 @@
-class Screen::Logged
-
-  def self.url map
-    @@url = map
-  end
+class Screen::Logged < Screen::Anonymous
 
   def client
      if @client.nil?
-      @client = Mechanize.new
+
+      @client = Mechanize.new do|a|
+        log = Logger.new STDOUT
+        log.level = Logger::DEBUG
+      end
       cookies = Cookie.latest
 
-      if (!cookies.nil?)
-        @client.cookie_jar.clear!
-        cookies.each do |c|
-          @client.cookie_jar.add!(c)
-        end
-      end
+      add_cookies(cookies)
+
+
      end
     @client
-  end
-
-  def method
-    @parameters.nil? ? :get : :post
-  end
-
-  def base_url
-    "https://#{User.first.world}.tribalwars.com.br"
-  end
-
-  def gen_url
-    "#{base_url}/game.php?#{@url.to_query}"
   end
 
   def request url
@@ -51,42 +36,32 @@ class Screen::Logged
   end
 
   def do_login
-    user = User.first
-    parameters =    {
-      user: user.name,
-      password: user.password,
-      cookie: true,
-      clear: true,
-    }
-    page = client.post("https://www.tribalwars.com.br/index.php?action=login&show_server_selection=1",parameters)
 
-    parameters = {
-      user: user.name,
-      password: page.body.scan(/password.*?value=\\\"(.*?)\\/).first.first,
-      sso:0
-    }
+   login_screen = Screen::LoginScreen.new({
+      user: User.first.name,
+      password: Screen::ServerSelect.new.hash_password,
+    })
 
-    page = client.post("https://www.tribalwars.com.br/index.php?action=login&server_br76",parameters)
-
-    if (!is_logged?(page))
-      raise Exception.new("Error on login")
-    else
-      store_cookies
-    end
+    store_cookies(login_screen.cookies)
 
   end
 
-  def store_cookies
+  def store_cookies cookies
     cookie = Cookie.new
     cookie.user = User.first
-    cookie.content = client.cookies
+    cookie.content = cookies
     cookie.created_at = Time.zone.now
     cookie.save
+    add_cookies(cookies)
   end
 
-  def initialize args={}
-    @url  = @@url.merge(args)
-    parse(request(gen_url()))
+  def add_cookies(cookies)
+    if (!cookies.nil?)
+      @client.cookie_jar.clear!
+      cookies.each do |c|
+        @client.cookie_jar.add!(c)
+      end
+    end
   end
 
 end

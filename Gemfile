@@ -24,7 +24,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server
-# gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -35,11 +34,12 @@ end
 
 group :development do
   gem 'web-console', '~> 2.0'
+  gem 'thin'
 end
 
 group :production do
   gem 'rails_12factor'
-  gem 'thin'
+  gem 'unicorn'
 end
 
 group :development, :test do
@@ -53,4 +53,4 @@ gem "health_check"
 gem 'rails_admin'
 gem 'mechanize'
 gem 'mongoid'
-
+gem 'delayed_job_mongoid'

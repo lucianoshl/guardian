@@ -1,7 +1,7 @@
 development: &defaults
   clients:
     default:
-      uri: <%= ENV['MONGO_URL'] %> 
+      uri: mongodb://guardian-webapp:guardian-webapp-pass-123@dogen.mongohq.com:10098/guardian-db 
       options:
         # Change the default write concern. (default = { w: 1 })
         # write:

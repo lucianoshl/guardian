@@ -10,7 +10,7 @@ before_fork do |server, worker|
     spawn("bundle exec bin/delayed_job stop") 
   end
 
-  spawn("bundle exec bin/delayed_job start") 
+  spawn("delayed_job start") 
 
 end
 

@@ -19,6 +19,12 @@ class Screen::Anonymous
     @@parameters = parameters
   end
 
+  def initialize args={}
+    @url  = @@url.merge(args)
+    parse(request(gen_url()))
+    @parameters = defined?(@@parameters).nil? ? nil : @@parameters
+  end
+
   def client
     if (@client.nil?)
       @client = Mechanize.new do|a|
@@ -30,7 +36,7 @@ class Screen::Anonymous
   end
 
   def method
-    defined?(@@parameters).nil? ? :get : :post
+    @parameters.nil? ? :get : :post
   end
 
   def base_url
@@ -43,12 +49,7 @@ class Screen::Anonymous
 
   def request url
     client.cookie_jar.clear!
-    client.send(method,url,@@parameters)
-  end
-
-  def initialize args={}
-    @url  = @@url.merge(args)
-    parse(request(gen_url()))
+    client.send(method,url,@parameters)
   end
 
 end

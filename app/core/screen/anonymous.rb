@@ -21,7 +21,12 @@ class Screen::Anonymous
 
   def initialize args={}
     @url  = @@url.merge(args)
-    parse(request(gen_url()))
+    begin
+      parser = self.class.name.gsub("Screen::","Parser::").constantize
+      parser.new(request(gen_url())).parse(self)
+    rescue NameError => e
+
+    end
     @parameters = defined?(@@parameters).nil? ? nil : @@parameters
   end
 

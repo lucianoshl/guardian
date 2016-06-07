@@ -40,6 +40,7 @@ end
 group :production do
   gem 'rails_12factor'
   gem 'unicorn'
+  gem 'daemons'
 end
 
 group :development, :test do

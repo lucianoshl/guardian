@@ -259,6 +259,7 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
+  daemons
   delayed_job_mongoid
   health_check
   jbuilder (~> 2.0)

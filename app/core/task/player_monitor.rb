@@ -1,6 +1,6 @@
 class Task::PlayerMonitor < Task::Abstract
 
-  performs_to 1.minute
+  performs_to 1.hour
 
   def run
     my_village = Screen::Overview.new.villages.first

@@ -15,10 +15,8 @@ class Screen::Logged < Screen::Anonymous
 
   def request url
     page = client.send(method,url)
-    
     if (!is_logged?(page))
       do_login
-      binding.pry
       page = client.send(method,url)
     end
 
@@ -30,7 +28,7 @@ class Screen::Logged < Screen::Anonymous
   end
 
   def is_logged? page
-    !page.uri.to_s.include?("sid_wrong")
+    !page.uri.to_s.include?("sid_wrong") && page.search('input[type="password"]').empty?
   end
 
   def do_login
@@ -39,8 +37,6 @@ class Screen::Logged < Screen::Anonymous
       user: User.first.name,
       password: Screen::ServerSelect.new.hash_password,
     })
-
-   binding.pry
 
     store_cookies(login_screen.cookies)
 

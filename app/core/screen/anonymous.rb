@@ -4,8 +4,6 @@ class Screen::Anonymous
     attr_accessor :_parameters,:_url,:_base,:_endpoint
   end
 
-  self._endpoint = '/game.php'
-
   def self.url url
     self._url = url
   end
@@ -53,7 +51,7 @@ class Screen::Anonymous
   end
 
   def gen_url
-    "#{base_url}#{self.class._endpoint}?#{@url.to_query}"
+    "#{base_url}#{self.class._endpoint || '/game.php'}?#{@url.to_query}"
   end
 
   def request url

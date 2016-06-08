@@ -29,7 +29,7 @@ class Parser::Map < Parser::Abstract
             vid: info[0].to_i,
             x: base_x + x.to_i,
             y: base_y + y.to_i, 
-            name: info[2].to_i.zero? ? 'Aldeia de bárbaros' : info[2],
+            name: info[4].to_i.zero? ? 'Aldeia de bárbaros' : info[2],
             points: info[3].to_i,
             player_id: info[4].to_i.zero? ? nil : info[4].to_i
           })

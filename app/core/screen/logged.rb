@@ -7,10 +7,7 @@ class Screen::Logged < Screen::Anonymous
         log = Logger.new STDOUT
         log.level = Logger::DEBUG
       end
-      cookies = Cookie.latest
-
-      add_cookies(cookies)
-
+      add_cookies(Cookie.latest)
 
      end
     @client
@@ -18,9 +15,10 @@ class Screen::Logged < Screen::Anonymous
 
   def request url
     page = client.send(method,url)
-
+    
     if (!is_logged?(page))
       do_login
+      binding.pry
       page = client.send(method,url)
     end
 
@@ -37,10 +35,12 @@ class Screen::Logged < Screen::Anonymous
 
   def do_login
 
-   login_screen = Screen::LoginScreen.new({
+   login_screen = Screen::Login.new({
       user: User.first.name,
       password: Screen::ServerSelect.new.hash_password,
     })
+
+   binding.pry
 
     store_cookies(login_screen.cookies)
 

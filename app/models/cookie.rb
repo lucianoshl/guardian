@@ -14,7 +14,8 @@ class Cookie
   end
 
   def self.latest
-    Cookie.desc(:created_at).to_a.first.content
+    last = Cookie.desc(:created_at).to_a.first
+    last.nil? ? nil : last.content
   end
 
 end

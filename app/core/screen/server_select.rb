@@ -12,7 +12,4 @@ class Screen::ServerSelect < Screen::Anonymous
     clear: true,
   })
 
-  def parse page
-    self.hash_password = page.body.scan(/password.*?value=\\\"(.*?)\\/).first.first
-  end
 end

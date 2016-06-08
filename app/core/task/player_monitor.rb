@@ -3,6 +3,7 @@ class Task::PlayerMonitor < Task::Abstract
   performs_to 1.minute
 
   def run
+    aaaaaaaaaaaaa
     my_village = Screen::Overview.new.villages.first
     targets = Screen::Map.neighborhood(my_village,10).villages.flatten.uniq
 

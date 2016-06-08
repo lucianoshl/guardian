@@ -8,7 +8,11 @@ class Task::Abstract
     self._performs_to = interval
   end
 
-  def self.init_schedule
+  def self.get_job
+    Delayed::Job.all.select{|a| YAML.load(a.handler).object.class == self }.first
+  end
+
+  def self.init_schedules
     if (self == Task::Abstract)
       return 
     end

@@ -22,7 +22,7 @@ class Task::Abstract
   def execute
     self.run
     if (self.class._performs_to)
-      self.new.delay(run_at: Time.zone.now + self.class._performs_to).execute
+      self.class.new.delay(run_at: Time.zone.now + self.class._performs_to).execute
     end
   end
 

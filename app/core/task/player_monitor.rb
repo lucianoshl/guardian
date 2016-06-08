@@ -15,6 +15,7 @@ class Task::PlayerMonitor < Task::Abstract
       village.y = item.y
       village.name = item.name
       village.points = item.points
+      village.is_barbarian = item.player_id.nil?
       village
     end
 

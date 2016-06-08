@@ -28,8 +28,12 @@ class Screen::Anonymous
     else
       @parameters = @parameters.merge(args)
     end
+    parse(request(gen_url()))
+  end
+
+  def parse page
     parser = self.class.name.gsub("Screen::","Parser::").constantize
-    parser.new(request(gen_url())).parse(self)
+    parser.new(page).parse(self)
   end
 
   def client

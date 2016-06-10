@@ -57,3 +57,4 @@ gem 'mongoid'
 gem 'delayed_job_mongoid'
 gem 'adminlte2-rails'
 gem 'active_attr'
+gem "mongoid-enum"

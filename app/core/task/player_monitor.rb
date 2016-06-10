@@ -8,12 +8,20 @@ class Task::PlayerMonitor < Task::Abstract
 
     saved = Village.in(vid: targets.map(&:vid)).to_a.map{|v| [v.vid,v] }.to_h
 
+    targets = targets.select do |a|
+      my_village.distance(a) <= 10
+    end
+
     targets = targets.map do |item|
       village = saved[item.vid] || Village.new
       village.vid = item.vid
       village.x = item.x
       village.y = item.y
       village.name = item.name
+      village.points_history ||= []
+      if (village.points_history.map{|a| a[:points] }.last != item.points)
+        register_point_modification(village,item)
+      end
       village.points = item.points
       village.is_barbarian = item.player_id.nil?
       village
@@ -23,11 +31,12 @@ class Task::PlayerMonitor < Task::Abstract
       a.distance(my_village) <=> b.distance(my_village)
     end
 
-    targets = targets.select do |a|
-      a.distance(my_village) <= 10
-    end
+    targets.map(&:save)
+  end
 
-    targets.map(&:upsert)
+  def register_point_modification village,item
+    difference = village.points.nil? ? 0 : village.points - item.points 
+    village.points_history << { date: Time.zone.now, points: item.points, difference: difference }
   end
 
 end

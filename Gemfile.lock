@@ -126,6 +126,8 @@ GEM
     mongoid-compatibility (0.3.1)
       activesupport
       mongoid (>= 2.0)
+    mongoid-enum (0.4.0)
+      mongoid (~> 5.0)
     multi_json (1.12.1)
     nested_form (0.3.2)
     net-http-digest_auth (1.4)
@@ -278,6 +280,7 @@ DEPENDENCIES
   jquery-rails
   mechanize
   mongoid
+  mongoid-enum
   pry-byebug
   quiet_assets
   rails (= 4.2.0)

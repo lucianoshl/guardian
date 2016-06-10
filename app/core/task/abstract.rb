@@ -20,10 +20,19 @@ class Task::Abstract
   end
 
   def execute
-    self.run
+    result = self.run
+    binding.pry
     if (self.class._performs_to)
       self.class.new.delay(run_at: Time.zone.now + self.class._performs_to).execute
+    elsif (result.class == DateTime) 
+      self.class.new.delay(run_at: result).execute
+    else
+      raise Exception.new("Invalid job state #{self.class}")
     end
+  end
+
+  def info *args
+    puts args.join(' ')
   end
 
 end

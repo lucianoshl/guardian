@@ -25,7 +25,7 @@ class Parser::Place < Parser::Abstract
           command = OpenStruct.new
           command.returning = row.search('img').first.attr('src').scan('return_').length > 0
           coordinate = row.search('.quickedit-label').to_coordinate
-          command.target = Target.new(coordinate)
+          command.target =  Village.where(coordinate).first
           command.id = row.search('a').first.attr('href').scan(/id=(\d+)/).extract_number
           command.occurence = row.search('td')[1].text.parse_datetime
           command

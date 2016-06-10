@@ -1,5 +1,7 @@
 class Task::PillageAround < Task::Abstract
 
+  in_development
+
   def run
     candidates = Village.pillage_candidates.any_of({:next_event.exists => false}, {:next_event.lte => Time.zone.now}).to_a
     info "Running for #{candidates.size} candidates"

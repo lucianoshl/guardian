@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+
+  get 'task/index'
+
+  resources :village,:task
+
   get 'cookie/latest'
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'

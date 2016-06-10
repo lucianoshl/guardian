@@ -1,2 +1,44 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<div class="box">
+  <div class="box-header with-border">
+    <h3 class="box-title">Bordered Table</h3>
+  </div>
+
+  <div class="box-body">
+    <table class="table table-bordered">
+      <tbody><tr>
+        <th>Horário</th>
+        <th>Ultima Execução</th>
+        <th>Atividade</th>
+        <th class="text-center">Status</th>
+        <th>Ações</th>
+      </tr>
+      <% 
+        Delayed::Job.each do |job|
+      %>
+      <tr>
+        <td><%= job.run_at.strftime("%d/%m - %H:%M:%S") %></td> 
+        <td><%= job.created_at.strftime("%d/%m - %H:%M:%S") %></td> 
+        <td><%= job.handler.scan(/Task::(.+) /).first.first %></td>
+        <td class="text-center">
+          <i class="fa <%= job.error.nil? ? 'fa-check-circle text-success' : ' fa-times text-danger' %>"></i>
+        </td>
+        <td>
+          <button class="btn btn-success btn-ty"><i class="fa fa-play"></i></button>
+        </td>
+      </tr>
+      <% 
+        end
+      %>
+      </tr>
+      </tbody></table>
+  </div>
+
+  <div class="box-footer clearfix">
+    <ul class="pagination pagination-sm no-margin pull-right">
+      <li><a href="#">«</a></li>
+      <li><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">»</a></li>
+    </ul>
+  </div>

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.3.1'
+ruby ENV['CUSTOM_RUBY_VERSION'] || '2.3.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
@@ -57,3 +57,4 @@ gem 'mongoid'
 gem 'delayed_job_mongoid'
 gem 'adminlte2-rails'
 gem 'active_attr'
+gem 'react-rails'

@@ -37,7 +37,7 @@ class Task::PillageAround < Task::Abstract
     base_attack = Troop.new(spy: 4)
 
     if (!@place.units.contains(base_attack)) then
-      move_to_waiting_troops(@place,base_attack)
+      return move_to_waiting_troops(@place,base_attack)
     else
       begin
         command = @place.send_attack(@origin,@target,base_attack)

@@ -11,6 +11,8 @@ class Village
   field :state, type: String
   field :next_event, type: DateTime
   field :is_barbarian, type: Boolean
+
+  has_many :reports , inverse_of: 'target'
   
   def self.clean_all_states
     Village.all.map do |v| 

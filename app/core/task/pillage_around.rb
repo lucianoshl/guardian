@@ -61,9 +61,27 @@ class Task::PillageAround < Task::Abstract
     state_send_command
   end 
 
+  def state_waiting_resources
+    state_send_command
+  end 
+
   def state_waiting_report
-    Screen::Report.load_all
+    Screen::ReportView.load_all
+    last_report = @target.reports.desc(:occurrence).first
+
+    if (last_report.resources.nil?)
+      return state_send_recognition
+    end
+
+    if (!last_report.resources.nil? && last_report.resources.total < 100)
+      return move_to_waiting_resources(@target)
+    end
+    #distribute
     binding.pry
+  end
+
+  def move_to_waiting_resources(village)
+    return next_event(Time.zone.now + 1.hour)
   end
 
   def move_to_waiting_report(command)

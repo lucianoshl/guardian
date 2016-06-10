@@ -24,6 +24,16 @@ class Task::Abstract
     end
   end
 
+  def test_local
+    loop {
+      result = run
+      sleep_for = result.to_time - Time.now
+      puts "Dormir até #{result.to_time}"
+      sleep(sleep_for)
+      system("notify-send wake-up")
+    }
+  end
+
   def execute
     result = self.run
     binding.pry

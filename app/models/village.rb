@@ -12,6 +12,14 @@ class Village
   field :next_event, type: DateTime
   field :is_barbarian, type: Boolean
   
+  def self.clean_all_states
+    Village.all.map do |v| 
+      v.state = nil;
+      v.next_event = nil
+      v.save
+    end
+  end
+
   def distance other
     Math.sqrt ((self.x - other.x)**2 + (self.y - other.y)**2)
   end
@@ -25,7 +33,8 @@ class Village
   end
 
   def self.pillage_candidates
-     where(is_barbarian:true)
+     # where(is_barbarian:true)
+     lte(points: 100)
   end
 
 end

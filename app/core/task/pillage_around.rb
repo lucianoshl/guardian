@@ -77,7 +77,7 @@ class Task::PillageAround < Task::Abstract
   end 
 
   def state_has_troops
-    return move_to_has_troops
+    state_send_command
   end 
 
   def state_waiting_report

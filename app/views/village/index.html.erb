@@ -26,7 +26,7 @@
         <td><%= village.x %>|<%= village.y %></td> 
         <td><%= village.points %></td> 
         <td><%= village.state %></td> 
-        <td><%= village.next_event %></td> 
+        <td><%= village.next_event.strftime("%d/%m - %H:%M:%S") %></td> 
       </tr>
       <% 
         end

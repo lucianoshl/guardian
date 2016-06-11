@@ -27,7 +27,7 @@ class Task::PlayerMonitor < Task::Abstract
       end
       village.points = item.points
       village.is_barbarian = item.player_id.nil?
-      village.player = Player.where(pid: item.player.pid).first if (!item.player.nil?)
+      village.player = item.player.nil? ? nil : Player.where(pid: item.player.pid).first
       village
     end
 
@@ -53,7 +53,7 @@ class Task::PlayerMonitor < Task::Abstract
       player.pid = item.pid
       player.name = item.name
       player.points = item.points
-      player.ally = Ally.where(aid: item.ally.aid).first if (!item.ally.nil?)
+      player.ally = item.ally.nil? ? nil : Ally.where(aid: item.ally.aid).first 
       player
     end
     players.pmap(&:save)

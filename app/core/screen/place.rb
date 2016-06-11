@@ -9,6 +9,11 @@ end
 class SharedConectionException < Exception
 end
 
+class BannedUserException < Exception
+end
+
+
+
 class Screen::Place < Screen::Basic
 
   attr_accessor :units,:commands,:incomings,:form,:unit_metadata
@@ -45,6 +50,10 @@ class Screen::Place < Screen::Basic
 
     if (!msg.match(/contra o mesmo alvo/).nil?)
       raise SharedConectionException.new
+    end
+
+    if (!msg.match(/jogador foi banido/).nil?)
+      raise BannedUserException.new
     end
 
     

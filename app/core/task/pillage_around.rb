@@ -3,6 +3,9 @@ class Task::PillageAround < Task::Abstract
   in_development
 
   def run
+    fix_strong
+    fix_ally
+
     candidates = Village.pillage_candidates.any_of({:next_event => nil}, {:next_event.lte => Time.zone.now}).to_a
     info "Running for #{candidates.size} candidates"
     candidates.map do |target|
@@ -46,9 +49,15 @@ class Task::PillageAround < Task::Abstract
         move_to_newbie_protection(exception.expires)
       rescue SharedConectionException => exception
         move_to_shared_connection
+      rescue BannedUserException => exception
+        move_to_banned
       end
     end
     
+  end
+
+  def state_banned
+    state_send_command
   end
 
   def state_waiting_troops
@@ -93,7 +102,11 @@ class Task::PillageAround < Task::Abstract
     end
 
     while (!troops.win?)
-      troops = troops.upgrade(@place.units - troops,tota_resources)
+      begin
+        troops = troops.upgrade(@place.units - troops,tota_resources)
+      rescue ImpossibleUpgrade => e
+        binding.pry
+      end
     end
 
     begin
@@ -118,6 +131,9 @@ class Task::PillageAround < Task::Abstract
   def move_to_waiting_report(command)
     return next_event(command.occurence)
   end
+  def move_to_banned
+    return next_event(Time.zone.now + 1.day)
+  end
 
   def move_to_newbie_protection(date)
     return next_event(date)
@@ -134,6 +150,27 @@ class Task::PillageAround < Task::Abstract
     state = backtrace[2].scan(/`(.*)'/).first.first.gsub('move_to_','')
     info("Target #{@target} going to #{state} at #{date}")
     [state,date]
+  end
+
+  def fix_strong
+    Village.where(state: :strong).update_all(state:nil)
+    (Village.all - Village.pillage_candidates).map do |village|
+      village.next_event = nil
+      village.state = :strong
+      village.save
+    end
+  end
+
+  def fix_ally
+    player_ally = User.first.player.ally
+    if (!player_ally.nil?)
+      Village.where(state: :ally).update_all(state:nil)
+      Player.where(ally: player_ally).includes(:villages).map(&:villages).flatten.pmap do |village|
+        village.next_event = nil
+        village.state = :ally
+        village.save
+      end
+    end
   end
 
 end

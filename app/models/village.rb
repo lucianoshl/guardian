@@ -37,8 +37,7 @@ class Village
   end
 
   def self.pillage_candidates
-     # where(is_barbarian:true)
-     lte(points: 100)
+     lte(points: 150).not_in(state: [:ally,:strong])
   end
 
 end

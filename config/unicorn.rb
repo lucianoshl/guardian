@@ -7,10 +7,10 @@ before_fork do |server, worker|
   Signal.trap 'TERM' do
     puts 'Unicorn master intercepting TERM and sending myself QUIT instead'
     Process.kill 'QUIT', Process.pid
-    spawn("bundle exec bin/delayed_job stop") 
+    spawn("delayed_job stop") 
   end
 
-  spawn("bundle exec bin/delayed_job start") 
+  spawn("delayed_job start") 
 
 end
 

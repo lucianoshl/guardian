@@ -65,3 +65,17 @@ class Nokogiri::XML::Element
     result
   end
 end
+
+class Array
+  def pmap
+    Parallel.map(self){ |i| yield(i) }
+  end
+
+  def pselect
+    partial = pmap do |i| 
+      yield(i) ? i : nil
+    end
+
+    partial.compact
+  end
+end

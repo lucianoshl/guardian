@@ -6,4 +6,6 @@ class User
 
   has_many :cookies, class_name: Cookie.to_s
 
+  has_one :player
+
 end

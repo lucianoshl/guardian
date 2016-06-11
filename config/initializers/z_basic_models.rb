@@ -16,6 +16,8 @@ if (Unit.count.zero?)
 end
 
 
-# if (!User.first.nil?)
-# 	binding.pry
-# end
+if (!User.first.nil? && User.first.player.nil?)
+	user = User.first
+	user.player = Player.find_by(name: user.name)
+	user.save
+end

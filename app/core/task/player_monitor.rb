@@ -8,11 +8,14 @@ class Task::PlayerMonitor < Task::Abstract
 
     saved = Village.in(vid: targets.map(&:vid)).to_a.map{|v| [v.vid,v] }.to_h
 
+    save_allies(targets)
+    save_players(targets)
+
     targets = targets.select do |a|
       my_village.distance(a) <= 10
     end
 
-    targets = targets.map do |item|
+    targets = targets.pmap do |item|
       village = saved[item.vid] || Village.new
       village.vid = item.vid
       village.x = item.x
@@ -24,6 +27,7 @@ class Task::PlayerMonitor < Task::Abstract
       end
       village.points = item.points
       village.is_barbarian = item.player_id.nil?
+      village.player = Player.where(pid: item.player.pid).first if (!item.player.nil?)
       village
     end
 
@@ -37,6 +41,37 @@ class Task::PlayerMonitor < Task::Abstract
   def register_point_modification village,item
     difference = village.points.nil? ? 0 : village.points - item.points 
     village.points_history << { date: Time.zone.now, points: item.points, difference: difference }
+  end
+
+  def save_players targets
+    all = targets.map(&:player).compact.uniq{|a| a.pid }
+
+    saved = Player.in(pid: all.map(&:pid)).to_a.map{|v| [v.pid,v] }.to_h
+
+    players = all.pmap do |item|
+      player = saved[item.pid] || Player.new
+      player.pid = item.pid
+      player.name = item.name
+      player.points = item.points
+      player.ally = Ally.where(aid: item.ally.aid).first if (!item.ally.nil?)
+      player
+    end
+    players.pmap(&:save)
+  end
+
+  def save_allies targets
+    all = targets.map(&:player).compact.map(&:ally).compact.uniq{|a| a.aid }
+
+    saved = Ally.in(aid: all.map(&:aid)).to_a.map{|v| [v.aid,v] }.to_h
+
+    allies = all.pmap do |item|
+      ally = saved[item.aid] || Ally.new
+      ally.aid = item.aid
+      ally.name = item.name
+      ally.points = item.points
+      ally
+    end
+    allies.pmap(&:save)
   end
 
 end

@@ -13,7 +13,7 @@
         <p><%= User.first.name %></p>
         <!-- Status -->
         <a href="#"><i class="fa fa-line-chart text-info"></i>
-          <%= number_with_delimiter(10751, :delimiter => '.') %>
+          <%= number_with_delimiter(User.first.player.points, :delimiter => '.') %>
         </a>
       </div>
     </div>

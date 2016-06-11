@@ -141,6 +141,7 @@ GEM
       mini_portile2 (~> 2.0.0.rc2)
     ntlm-http (0.1.1)
     origin (2.2.0)
+    parallel (1.8.0)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -293,6 +294,7 @@ DEPENDENCIES
   mechanize
   mongoid
   mongoid-enum
+  parallel
   pry-byebug
   quiet_assets
   rails (= 4.2.0)

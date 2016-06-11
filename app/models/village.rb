@@ -13,6 +13,8 @@ class Village
   field :is_barbarian, type: Boolean
 
   has_many :reports , inverse_of: 'target'
+
+  belongs_to :player
   
   def self.clean_all_states
     Village.all.map do |v| 

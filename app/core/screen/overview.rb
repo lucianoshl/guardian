@@ -1,4 +1,4 @@
-class Screen::Overview < Screen::Logged
+class Screen::Overview < Screen::Basic
 
   attr_accessor :villages
 

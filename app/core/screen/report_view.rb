@@ -1,4 +1,4 @@
-class Screen::ReportView < Screen::Logged
+class Screen::ReportView < Screen::Basic
 
   attr_accessor :report
 

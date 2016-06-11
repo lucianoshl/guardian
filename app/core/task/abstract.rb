@@ -29,14 +29,14 @@ class Task::Abstract
       result = run
       sleep_for = result.to_time - Time.now
       puts "Dormir até #{result.to_time}"
-      sleep(sleep_for)
+      sleep(sleep_for < 0 ? 0 : sleep_for)
       system("notify-send wake-up")
     }
   end
 
   def execute
     result = self.run
-    binding.pry
+    
     if (self.class._performs_to)
       self.class.new.delay(run_at: Time.zone.now + self.class._performs_to).execute
     elsif (result.class == DateTime) 

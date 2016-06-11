@@ -1,3 +1,7 @@
+class ImpossibleUpgrade < Exception
+
+end
+
 class Troop
   include ActiveAttr::MassAssignment
   attr_accessor :spear,:sword,:axe,:archer,:spy,:light,:marcher,:heavy,:ram,:catapult,:knight,:snob,:militia
@@ -11,8 +15,87 @@ class Troop
     result.instance_values.values.select{|a| a < 0}.empty?
   end
 
+  def distribute amount
+    troops = self.clone.instance_values
+    result = {}
+    Unit.gt(carry:0).not_in(name: :knight).asc(:attack).map do |unit|
+      unit_qte = troops[unit.name] || 0
+      if (unit_qte > 0)
+        while (amount > 0 && !unit_qte.zero?)
+          unit_qte = troops[unit.name] -= 1
+          result[unit.name] = (result[unit.name] || 0) + 1
+          amount -= unit.carry
+        end
+      end
+    end
+    return Troop.new(result)
+  end
+
+  def win?
+    parameters = {}
+    parameters[:luck] = '-25'
+    self.instance_values.each do |unit, qte|
+      parameters["att_#{unit}"] = qte.to_s
+    end
+
+    !Screen::Simulator.new(parameters).has_losses
+  end
+
+  def upgrade(disponible,pillage)
+    troops = self.clone.instance_values
+    disponible = disponible.clone.instance_values
+
+    alternatives = disponible.sort{|b,a| Unit.get(a[0]).attack <=> Unit.get(b[0]).attack }.select{|a| a[1] > 0 && Unit.get(a[0]).carry > 0}
+
+    strong_order = troops.sort{|b,a| Unit.get(a[0]).attack <=> Unit.get(b[0]).attack }
+
+    weak_unit = strong_order.reverse.first.first
+
+    alternatives.map do |unit,qte|
+      if (weak_unit == unit || Unit.get(unit).attack <= Unit.get(weak_unit).attack)
+        break
+      end
+      troops[unit] = (troops[unit] || 0) + 1
+      actual_carry = Troop.new(troops).carry
+
+      while(actual_carry - Unit.get(weak_unit).carry > pillage)
+          binding.pry if (troops[weak_unit] == 0)
+          troops[weak_unit] -= 1
+          actual_carry = Troop.new(troops).carry
+      end
+      break
+    end
+    
+    raise ImpossibleUpgrade.new if (self.instance_values == troops)
+
+    return Troop.new(troops)
+  end
+
+  def carry
+    total = 0
+    self.instance_values.each do |unit, qte|
+      total += Unit.get(unit).carry*qte
+    end
+    return total
+  end
+
+
   def -(other)
     result = self.clone
+
+    result.spear ||= 0
+    result.sword ||= 0
+    result.axe ||= 0
+    result.archer ||= 0
+    result.spy ||= 0
+    result.light ||= 0
+    result.marcher ||= 0
+    result.heavy ||= 0
+    result.ram ||= 0
+    result.catapult ||= 0
+    result.knight ||= 0
+    result.snob ||= 0
+
     result.spear -= other.spear || 0
     result.sword -= other.sword || 0
     result.axe -= other.axe || 0

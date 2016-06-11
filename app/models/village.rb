@@ -26,8 +26,8 @@ class Village
     Math.sqrt ((self.x - other.x)**2 + (self.y - other.y)**2)
   end
 
-  def last_unsed_report
-    nil
+  def last_report
+    reports.desc(:occurrence).first
   end
 
   def to_s

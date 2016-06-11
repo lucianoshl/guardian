@@ -1,6 +1,7 @@
-class Parser::ReportView < Parser::Abstract
+class Parser::ReportView < Parser::Basic
 
   def parse(screen)
+    super
     screen.report = report = Report.new
 
     report.erase_url = @page.search('a[href*=del_one]').first.attr('href')

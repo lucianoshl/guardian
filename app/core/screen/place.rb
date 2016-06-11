@@ -6,7 +6,10 @@ class NewbieProtectionException < Exception
   end
 end
 
-class Screen::Place < Screen::Logged
+class SharedConectionException < Exception
+end
+
+class Screen::Place < Screen::Basic
 
   attr_accessor :units,:commands,:incomings,:form,:unit_metadata
 
@@ -39,6 +42,12 @@ class Screen::Place < Screen::Logged
     if (!msg.match(/A proteção termina /).nil?)
       raise NewbieProtectionException.new(msg.scan(/termina (.*)\./).first.first.parse_datetime)
     end
+
+    if (!msg.match(/contra o mesmo alvo/).nil?)
+      raise SharedConectionException.new
+    end
+
+    
 
     raise Exception.new(msg)
     

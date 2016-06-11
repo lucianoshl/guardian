@@ -60,3 +60,5 @@ gem 'active_attr'
 gem 'react-rails'
 gem "mongoid-enum"
 gem "parallel"
+gem 'chartjs-ror'
+gem 'jquery-slimscroll-rails'

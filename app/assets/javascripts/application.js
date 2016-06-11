@@ -11,6 +11,8 @@
 // about supported directives.
 //
 //= require jquery
+//= require Chart.bundle.min
+//= require jquery.slimscroll.min
 //= require bootstrap-sprockets
 //= require jquery_ujs
 //= require turbolinks
@@ -19,3 +21,4 @@
 //= require react_ujs
 //= require components
 //= require_tree .
+

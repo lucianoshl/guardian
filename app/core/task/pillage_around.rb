@@ -105,7 +105,7 @@ class Task::PillageAround < Task::Abstract
       begin
         troops = troops.upgrade(@place.units - troops,tota_resources)
       rescue ImpossibleUpgrade => e
-        binding.pry
+        return move_to_waiting_troops(nil)
       end
     end
 

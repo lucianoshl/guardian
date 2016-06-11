@@ -20,7 +20,7 @@
         <td><%= job.created_at.strftime("%d/%m - %H:%M:%S") %></td> 
         <td><%= job.handler.scan(/Task::(.+) /).first.first %></td>
         <td class="text-center">
-          <i class="fa <%= job.error.nil? ? 'fa-check-circle text-success' : ' fa-times text-danger' %>"></i>
+          <i class="fa <%= job.last_error.nil? ? 'fa-check-circle text-success' : ' fa-times text-danger' %>"></i>
         </td>
         <td>
           <button class="btn btn-success btn-ty"><i class="fa fa-play"></i></button>

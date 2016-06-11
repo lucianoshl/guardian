@@ -10,6 +10,12 @@ class Troop
     self.instance_values.values.inject(&:+) || 0
   end
 
+  def validate
+    if (self.instance_values.values.select{|a| a < 0}.size > 0)
+      raise Exception.new("Invalid troop")
+    end
+  end
+
   def contains other
     result = self - other
     result.instance_values.values.select{|a| a < 0}.empty?

@@ -19,6 +19,7 @@ class Task::PillageAround < Task::Abstract
       binding.pry if (_next_event.nil? ||  state.nil?)
 
       @target.state = state
+
       @target.next_event = _next_event
       @target.save
 
@@ -118,7 +119,7 @@ class Task::PillageAround < Task::Abstract
     end
 
     begin
-      binding.pry
+      troops.validate
       command = @place.send_attack(@origin,@target,troops)
       return move_to_waiting_report(command)
     rescue NewbieProtectionException => exception
@@ -148,7 +149,7 @@ class Task::PillageAround < Task::Abstract
   end
 
   def move_to_has_troops
-    return next_event(1.day)
+    return next_event(Time.zone.now + 1.day)
   end
 
   def move_to_waiting_troops(troops_to_wait)

@@ -14,3 +14,8 @@ if (Unit.count.zero?)
 		unit.save
 	end
 end
+
+
+# if (!User.first.nil?)
+# 	binding.pry
+# end

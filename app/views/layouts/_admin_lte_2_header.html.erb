@@ -34,7 +34,7 @@
                   <a href="#">
                     <div class="pull-left">
                       <!-- User Image -->
-                      <img src="/assets/user2-160x160.jpg" class="img-circle" alt="User Image"/>
+                      image_tag("crow_160x160.png", class: "img-circle")
                     </div>
                     <!-- Message title and timestamp -->
                     <h4>
@@ -113,7 +113,7 @@
           <!-- Menu Toggle Button -->
           <a class="dropdown-toggle">
             <!-- The user image in the navbar-->
-            <img src="/assets/user2-160x160.jpg" class="user-image" alt="User Image"/>
+            image_tag("crow_160x160.png", class: "user-image")
             <!-- hidden-xs hides the username on small devices so only the image appears. -->
             <span class="hidden-xs"><%= User.first.name %></span>
           </a>

@@ -27,4 +27,8 @@ class Report
     screen.request(self.erase_url)
   end
 
+  def has_troops?
+    Troop.new(self.target_troops).total > 0
+  end
+
 end

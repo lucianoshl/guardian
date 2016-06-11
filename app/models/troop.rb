@@ -16,7 +16,7 @@ class Troop
     end
   end
 
-  def contains other
+  def contains other 
     result = self - other
     result.instance_values.values.select{|a| a < 0}.empty?
   end

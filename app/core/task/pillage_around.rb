@@ -76,6 +76,10 @@ class Task::PillageAround < Task::Abstract
     state_send_command
   end 
 
+  def state_has_troops
+    return move_to_has_troops
+  end 
+
   def state_waiting_report
     Screen::ReportView.load_all
     last_report = @target.last_report
@@ -92,6 +96,10 @@ class Task::PillageAround < Task::Abstract
 
     if (!last_report.resources.nil? && last_report.resources.total < 100)
       return move_to_waiting_resources(@target)
+    end
+
+    if (last_report.has_troops?)
+      return move_to_has_troops
     end
 
     tota_resources = last_report.resources.total
@@ -137,6 +145,10 @@ class Task::PillageAround < Task::Abstract
 
   def move_to_newbie_protection(date)
     return next_event(date)
+  end
+
+  def move_to_has_troops
+    return next_event(1.day)
   end
 
   def move_to_waiting_troops(troops_to_wait)

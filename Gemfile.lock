@@ -66,6 +66,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    color-generator (0.0.4)
     concurrent-ruby (1.0.2)
     connection_pool (2.2.0)
     daemons (1.2.3)
@@ -290,6 +291,7 @@ DEPENDENCIES
   adminlte2-rails
   byebug
   chartjs-ror
+  color-generator
   daemons
   delayed_job_mongoid
   health_check
@@ -316,6 +318,9 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   unicorn
   web-console (~> 2.0)
+
+RUBY VERSION
+   ruby 2.3.0p0
 
 BUNDLED WITH
    1.12.5

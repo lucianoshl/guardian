@@ -3,21 +3,38 @@ class VillageController < ApplicationController
     nils, not_nils = Village.all.asc(:next_event).partition { |p| p.next_event.nil? }
     @villages = not_nils + nils
 
-    hash = Village.distinct(:state).pmap {|a| [a,Village.where(state: a).count] }.to_h
+    chart = Village.distinct(:state).pmap {|a| [a,Village.where(state: a).count] }.sort{|a,b| a[1] <=> b[1]}.reverse
+
+
+    generator = ColorGenerator.new saturation: 1, value: 1.0
+
+    colors = (1..chart.size).map { "rgba(#{generator.create_rgb.join(',')}, 1)" }
+
     @data = {
-      labels: hash.keys,
+      labels: chart.map(&:first),
       datasets: [
         {
             label: "My First dataset",
-            backgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            data: hash.values
+            backgroundColor: colors,
+            data: chart.map(&:last)
+        }
+      ]
+    }
+
+    chart = [
+      Village.in(state: [:strong,:has_troops]).count,
+      Village.in(state: [:ally]).count,
+      Village.not_in(state: [:strong,:has_troops,:ally]).count,
+      11
+    ]
+
+    @data2 = {
+      labels: ["Ameaça","Neutro","Farm"],
+      datasets: [
+        {
+            label: "Aldeias",
+            backgroundColor: ["red","grey","blue"],
+            data: chart
         }
       ]
     }

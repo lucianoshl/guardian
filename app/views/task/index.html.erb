@@ -15,14 +15,27 @@
         <th>Ações</th>
       </tr>
       <% 
-      Delayed::Job.asc(:run_at).each do |job|
+      Delayed::Job.asc(:run_at).each_with_index do |job,i|
         %>
         <tr>
           <td><%= job.handler.scan(/Task::(.+) /).first.first %></td>
-          <td><%= job.run_at.strftime("%d/%m - %H:%M:%S") %></td> 
+          <td>
+            <%= job.run_at.strftime("%d/%m - %H:%M:%S") %> 
+            <%= job.run_at < Time.zone.now ? "(Atrasado)" : "" %>
+          </td> 
           <td><%= job.created_at.strftime("%d/%m - %H:%M:%S") %></td> 
           <td class="text-center">
-            <i class="fa <%= job.last_error.nil? ? 'fa-check-circle text-success' : ' fa-times text-danger' %>"></i>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne<%= i %>" aria-expanded="false" class="collapsed">
+              <i class="fa <%= job.last_error.nil? ? 'fa-check-circle text-success' : ' fa-times text-danger' %>"></i>
+            </a>
+            <% if !job.locked_by.nil? %>
+            <i class="fa fa-lock"></i>
+            <% end %>
+            <% if !job.last_error.nil? %>
+            <div id="collapseOne<%= i %>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+              <%= job.last_error.split("\n").slice(0,5).join("\n") %>
+            </div>
+            <% end %>
           </td>
           <td>
             <button class="btn btn-success btn-ty"><i class="fa fa-play"></i></button>

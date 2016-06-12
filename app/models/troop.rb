@@ -64,8 +64,13 @@ class Troop
       troops[unit] = (troops[unit] || 0) + 1
       actual_carry = Troop.new(troops).carry
 
-      while(actual_carry - Unit.get(weak_unit).carry > pillage)
-          binding.pry if (troops[weak_unit] == 0)
+      while(actual_carry - Unit.get(weak_unit).carry >= pillage)
+          if (troops[weak_unit] == 0)
+            weak_order = troops.sort{|a,b| Unit.get(a[0]).attack <=> Unit.get(b[0]).attack }.select{|a,b| b> 0}
+            raise ImpossibleUpgrade.new if weak_order.empty?
+            weak_unit = weak_order.first.first
+            next
+          end
           troops[weak_unit] -= 1
           actual_carry = Troop.new(troops).carry
       end

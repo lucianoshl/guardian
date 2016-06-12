@@ -1,3 +1,5 @@
+$pid = 0
+
 if (Unit.count.zero?)
 	screen = Screen::Overview.new
 	raw_screen = screen.request(screen.gen_url())

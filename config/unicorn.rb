@@ -6,11 +6,11 @@ preload_app true
 before_fork do |server, worker|
   Signal.trap 'TERM' do
     puts 'Unicorn master intercepting TERM and sending myself QUIT instead'
-    Process.kill 'QUIT', Process.pid
     spawn("bin/delayed_job stop") 
+    Process.kill 'QUIT', Process.pid
   end 
 
-  spawn("bin/delayed_job -n 1 --log-dir=#{Rails.root}/log start ") 
+  $pid = spawn("bin/delayed_job -n 1 --log-dir=#{Rails.root}/log start ") 
 
 end
 

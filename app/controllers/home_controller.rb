@@ -1,8 +1,11 @@
 class HomeController < ApplicationController
 	def index
 		begin
-			Process.kill(0,`cat /app/tmp/pids/delayed_job.pid`.to_i)
-			@running = true
+			if (File.exists?("/app/tmp/pids/delayed_job.pid")) 
+				Process.kill(0,`cat /app/tmp/pids/delayed_job.pid`.to_i)
+			else
+				@running = false
+			end
 		rescue
 			@running = false
 		end

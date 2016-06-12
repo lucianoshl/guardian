@@ -1,6 +1,6 @@
 class Task::PillageAround < Task::Abstract
-
-  # in_development
+#
+  in_development
 
   def run
     fix_strong

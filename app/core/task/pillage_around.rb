@@ -102,7 +102,7 @@ class Task::PillageAround < Task::Abstract
       return move_to_waiting_resources(@target)
     end
 
-    if (last_report.has_troops?)
+    if (last_report.has_troops? || last_report.status == :red)
       return move_to_has_troops
     end
 

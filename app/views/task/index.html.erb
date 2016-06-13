@@ -33,12 +33,12 @@
             <% end %>
             <% if !job.last_error.nil? %>
             <div id="collapseOne<%= i %>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-              <%= job.last_error.split("\n").slice(0,5).join("<br/>").html_safe %>
+              <%= job.last_error.split("\n").slice(0,10).join("<br/>").html_safe %>
             </div>
             <% end %>
           </td>
           <td>
-            <button class="btn btn-success btn-ty"><i class="fa fa-play"></i></button>
+            <a class="btn btn-success btn-ty" href="/task/run_now/<%= job.id %>"><i class="fa fa-play"></i></a>
           </td>
         </tr>
         <% 

@@ -13,13 +13,19 @@ class Resource
 
   def self.parse(obj)
     if obj.search('#wood').length > 0
-      wood = obj.search('#wood').extract_number
-      stone = obj.search('#stone').extract_number
-      iron = obj.search('#iron').extract_number
+      element = obj.search('#wood').first
+      wood = element.nil? ? 0 : element.extract_number
+      element = obj.search('#stone').first
+      stone = element.nil? ? 0 : element.extract_number
+      element = obj.search('#iron').first
+      iron = element.nil? ? 0 : element.extract_number 
     else
-      wood = obj.search('.wood').first.parent.extract_number
-      stone = obj.search('.stone').first.parent.extract_number
-      iron = obj.search('.iron').first.parent.extract_number
+      element = obj.search('.wood')
+      wood = element.first.nil? ? 0 : element.first.parent.extract_number
+      element = obj.search('.stone')
+      stone = element.first.nil? ? 0 : element.first.parent.extract_number
+      element = obj.search('.iron')
+      iron = element.first.nil? ? 0 : element.first.parent.extract_number
     end
 
     new wood: wood, stone: stone, iron: iron

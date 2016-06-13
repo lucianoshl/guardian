@@ -1,6 +1,8 @@
 class Task::PlayerMonitor < Task::Abstract
 
   performs_to 1.hour
+  
+  sleep? false
 
   def run
     my_village = Screen::Overview.new.villages.first

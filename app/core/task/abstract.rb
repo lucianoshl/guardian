@@ -1,7 +1,11 @@
 class Task::Abstract
 
   class << self
-    attr_accessor :_performs_to,:_in_development
+    attr_accessor :_performs_to,:_in_development,:_sleep
+  end
+
+  def self.sleep? active
+    self._sleep = active
   end
 
   def self.performs_to interval
@@ -35,7 +39,15 @@ class Task::Abstract
   end
 
   def execute
-    result = self.run
+    init = Time.zone.now.beginning_of_day
+    endd = init + 8.hours
+
+    if ((init..endd).cover?(Time.zone.now) && self._sleep != false)
+      self.class.new.delay(run_at: endd).execute
+      return
+    else
+      result = self.run
+    end
     
     if (self.class._performs_to)
       self.class.new.delay(run_at: Time.zone.now + self.class._performs_to).execute

@@ -37,7 +37,20 @@ class Village
   end
 
   def self.pillage_candidates
-     lte(points: 150).not_in(state: [:ally,:strong])
+    threshold = User.first.player.points * 0.6
+
+    self.in(state: [:ally,:strong]).update_all(next_event: nil,state: nil)
+
+    gt(points: threshold).update_all(next_event: nil,state: :strong)
+
+    ally = User.first.player.ally
+    
+    if (!ally.nil?)
+      ids = ally.players.map(&:villages).flatten.map(&:vid)
+      self.in(vid: ids).update_all(next_event: nil,state: :ally)
+    end
+
+    lte(points:threshold).not_in(state: [:ally,:strong])
   end
 
 end

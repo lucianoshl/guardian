@@ -3,8 +3,6 @@ class Task::PillageAround < Task::Abstract
   # in_development
 
   def run
-    fix_strong
-    fix_ally
 
     candidates = Village.pillage_candidates.any_of({:next_event => nil}, {:next_event.lte => Time.zone.now}).to_a
     info "Running for #{candidates.size} candidates"
@@ -168,27 +166,6 @@ class Task::PillageAround < Task::Abstract
     state = backtrace[2].scan(/`(.*)'/).first.first.gsub('move_to_','')
     info("Target #{@target} going to #{state} at #{date}")
     [state,date]
-  end
-
-  def fix_strong
-    Village.where(state: :strong).update_all(state:nil)
-    (Village.all - Village.pillage_candidates).map do |village|
-      village.next_event = nil
-      village.state = :strong
-      village.save
-    end
-  end
-
-  def fix_ally
-    player_ally = User.first.player.ally
-    if (!player_ally.nil?)
-      Village.where(state: :ally).update_all(state:nil)
-      Player.where(ally: player_ally).includes(:villages).map(&:villages).flatten.pmap do |village|
-        village.next_event = nil
-        village.state = :ally
-        village.save
-      end
-    end
   end
 
 end

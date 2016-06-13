@@ -16,7 +16,6 @@ class Parser::ReportView < Parser::Basic
     }
 
     report.status = enum[color.to_sym] || "error"
-    binding.pry
     report.target = Village.find_by(vid: @page.search('#attack_info_def .village_anchor').attr('data-id').value)
     report.origin = Village.find_by(vid: @page.search('#attack_info_att .village_anchor').attr('data-id').value)
 

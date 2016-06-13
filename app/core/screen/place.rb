@@ -11,6 +11,8 @@ end
 
 class BannedUserException < Exception
 end
+class DeletedPlayerException < Exception
+end
 
 
 
@@ -55,6 +57,12 @@ class Screen::Place < Screen::Basic
     if (!msg.match(/jogador foi banido/).nil?)
       raise BannedUserException.new
     end
+
+    if (!msg.match(/Alvo não existe/).nil?)
+      raise DeletedPlayerException.new
+    end
+
+    
 
     
 

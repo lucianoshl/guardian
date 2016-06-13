@@ -15,7 +15,12 @@ class Task::PillageAround < Task::Abstract
       @origin = Screen::Overview.new.villages.first
       @place = Screen::Place.new(village: @origin.id)
 
-      state,_next_event = self.send("state_#{current_state}")
+      begin
+        state,_next_event = self.send("state_#{current_state}")
+      rescue DeletedPlayerException => e
+        target.delete
+        next
+      end
       binding.pry if (_next_event.nil? ||  state.nil?)
 
       @target.state = state

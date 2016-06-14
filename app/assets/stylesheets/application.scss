@@ -17,10 +17,5 @@
 @import "bootstrap";
 @import "AdminLTE/AdminLTE";
 @import "AdminLTE/skins/skin-blue";
-
-
-.btn-ty {
-    @extend .btn-sm;
-    padding: 0px 6px;
-    font-size: 10px;
-}
+@import "theme";
+@import "village";

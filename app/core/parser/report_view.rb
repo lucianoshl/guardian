@@ -44,6 +44,13 @@ class Parser::ReportView < Parser::Basic
 
         report.full_pillage = pillage == total
 
+        binding.pry
+
+
+
+        if (!@page.search('#attack_results').empty?)
+            report.pillage = Resource.parse(@page.search('#attack_results td:first'))
+        end
 
         if (!@page.search('#attack_spy_resources').empty?)
             report.resources = Resource.parse(@page.search('#attack_spy_resources td span[class!=grey]'))

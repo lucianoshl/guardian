@@ -12,7 +12,7 @@ class Village
   field :next_event, type: DateTime
   field :is_barbarian, type: Boolean
 
-  has_many :reports , inverse_of: 'target'
+  has_many :reports , inverse_of: 'target' 
 
   belongs_to :player
   

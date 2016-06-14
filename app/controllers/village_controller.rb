@@ -39,4 +39,8 @@ class VillageController < ApplicationController
       ]
     }
   end
+
+  def show
+    @village = Village.find(params["id"])
+  end
 end

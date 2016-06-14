@@ -53,4 +53,8 @@ class Village
     lte(points:threshold).not_in(state: [:ally,:strong])
   end
 
+  def self.my
+    where(player: User.first.player)
+  end
+
 end

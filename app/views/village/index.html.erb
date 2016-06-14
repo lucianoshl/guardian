@@ -40,7 +40,12 @@
             "waiting_report" => "https://dsbr.innogamescdn.com/8.47.1/29553/graphic/command/attack_small.png"
           }
 
-          @villages.each do |village|
+          my_village = Village.my.first
+
+          @villages.sort{ |a,b|
+            my_village.distance(a) <=> my_village.distance(b)
+
+           }.each do |village|
             %>
             <tr>
               <td><%= village.x %>|<%= village.y %></td> 
@@ -52,16 +57,6 @@
           end
           %>
         </tbody></table>
-      </div>
-
-      <div class="box-footer clearfix">
-        <ul class="pagination pagination-sm no-margin pull-right">
-          <li><a href="#">«</a></li>
-          <li><a href="#">1</a></li>
-          <li><a href="#">2</a></li>
-          <li><a href="#">3</a></li>
-          <li><a href="#">»</a></li>
-        </ul>
       </div>
     </div>
   </div>

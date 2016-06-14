@@ -137,6 +137,7 @@ class Task::PillageAround < Task::Abstract
   end
 
   def move_to_waiting_resources(village)
+    binding.pry
     return next_event(Time.zone.now + 1.hour)
   end
 

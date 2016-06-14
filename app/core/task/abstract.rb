@@ -42,7 +42,7 @@ class Task::Abstract
     init = Time.zone.now.beginning_of_day
     endd = init + 8.hours
 
-    if ((init..endd).cover?(Time.zone.now) && self._sleep != false)
+    if ((init..endd).cover?(Time.zone.now) && self.class._sleep != false)
       self.class.new.delay(run_at: endd).execute
       return
     else

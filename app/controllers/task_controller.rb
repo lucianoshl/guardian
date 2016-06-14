@@ -15,6 +15,7 @@ class TaskController < ApplicationController
   def run_now
   	job = Delayed::Job.find(params["id"])
   	job.run_at = Time.zone.now
+  	job.attempts = 0
   	job.save
   	redirect_to action: "index"
   end

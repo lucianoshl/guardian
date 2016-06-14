@@ -6,7 +6,6 @@ class Task::PillageAround < Task::Abstract
 
     candidates = Village.pillage_candidates.any_of({:next_event => nil}, {:next_event.lte => Time.zone.now}).asc(:next_event)
 
-    binding.pry
     info "Running for #{candidates.size} candidates"
     candidates.each do |target|
       current_state =target.state || 'send_command'

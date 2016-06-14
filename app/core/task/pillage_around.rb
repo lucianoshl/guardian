@@ -2,6 +2,8 @@ class Task::PillageAround < Task::Abstract
 #
   # in_development
 
+  sleep? false
+
   def run
 
     candidates = Village.pillage_candidates.any_of({:next_event => nil}, {:next_event.lte => Time.zone.now}).asc(:next_event)

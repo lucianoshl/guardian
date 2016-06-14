@@ -4,9 +4,11 @@ class Task::PillageAround < Task::Abstract
 
   def run
 
-    candidates = Village.pillage_candidates.any_of({:next_event => nil}, {:next_event.lte => Time.zone.now}).to_a
+    candidates = Village.pillage_candidates.any_of({:next_event => nil}, {:next_event.lte => Time.zone.now}).asc(:next_event)
+
+    binding.pry
     info "Running for #{candidates.size} candidates"
-    candidates.map do |target|
+    candidates.each do |target|
       current_state =target.state || 'send_command'
 
       @target = target
@@ -102,7 +104,7 @@ class Task::PillageAround < Task::Abstract
       return move_to_waiting_resources(@target)
     end
 
-    if (last_report.has_troops? || last_report.status == :red)
+    if (last_report.status == :red || last_report.has_troops?)
       return move_to_has_troops
     end
 

@@ -21,32 +21,35 @@ class Parser::ReportView < Parser::Basic
 
     report.occurrence = @page.search('img[src*="dots"]').first.parents(3).search('tr')[1].search('td:last').text.parse_datetime
 
-    report.target_buildings = {}
+    if (report.status != :lost) 
+        report.target_buildings = {}
 
-    @page.search('table[id*=attack_spy_buildings]').search('img').each do |img|
-        house = img.attr('src').scan(/\/([a-z]*).png/).flatten.first
-        report.target_buildings[house] = img.parents(2).search('td').last.extract_number
+        @page.search('table[id*=attack_spy_buildings]').search('img').each do |img|
+            house = img.attr('src').scan(/\/([a-z]*).png/).flatten.first
+            report.target_buildings[house] = img.parents(2).search('td').last.extract_number
+        end
+
+        report.target_troops = {}
+        lines = @page.search('#attack_info_def_units td[width="35"]').first.parents(2).search('tr')
+
+        units = (lines.first.search('img').map { |i| i.attr('src').scan(/unit_(.*)\./) }).flatten
+
+        @page.search('#attack_spy_resources td span').to_a
+
+        units.each_with_index do |unit, index|
+            loses = lines[1].search('td')[index + 1].extract_number
+            report.target_troops[unit.to_sym] = loses
+        end
+        pillage,total = @page.search("#attack_results").text.scan(/(\d+)\/(\d+)/).flatten.map(&:to_i)
+
+        report.full_pillage = pillage == total
+
+
+        if (!@page.search('#attack_spy_resources').empty?)
+            report.resources = Resource.parse(@page.search('#attack_spy_resources td span[class!=grey]'))
+        end
     end
 
-    report.target_troops = {}
-    lines = @page.search('#attack_info_def_units td[width="35"]').first.parents(2).search('tr')
-
-    units = (lines.first.search('img').map { |i| i.attr('src').scan(/unit_(.*)\./) }).flatten
-
-    @page.search('#attack_spy_resources td span').to_a
-
-    units.each_with_index do |unit, index|
-        loses = lines[1].search('td')[index + 1].extract_number
-        report.target_troops[unit.to_sym] = loses
-    end
-    pillage,total = @page.search("#attack_results").text.scan(/(\d+)\/(\d+)/).flatten.map(&:to_i)
-
-    report.full_pillage = pillage == total
-
-
-    if (!@page.search('#attack_spy_resources').empty?)
-        report.resources = Resource.parse(@page.search('#attack_spy_resources td span[class!=grey]'))
-    end
   end
 
 end

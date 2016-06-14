@@ -1,0 +1,12 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+.btn-ty {
+    @extend .btn-sm;
+    padding: 0px 6px;
+    font-size: 10px;
+}
+
+.clickable {
+	cursor: pointer;
+}

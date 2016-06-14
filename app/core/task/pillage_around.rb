@@ -2,11 +2,14 @@ class Task::PillageAround < Task::Abstract
 #
   # in_development
 
+  sleep? false
+
   def run
 
-    candidates = Village.pillage_candidates.any_of({:next_event => nil}, {:next_event.lte => Time.zone.now}).to_a
+    candidates = Village.pillage_candidates.any_of({:next_event => nil}, {:next_event.lte => Time.zone.now}).asc(:next_event)
+
     info "Running for #{candidates.size} candidates"
-    candidates.map do |target|
+    candidates.each do |target|
       current_state =target.state || 'send_command'
 
       @target = target
@@ -94,20 +97,23 @@ class Task::PillageAround < Task::Abstract
 
     expire_report_in = 3.hours
 
+    resource_min = 200
+
     if (last_report.resources.nil? || (Time.zone.now - last_report.occurrence)/expire_report_in > 1)
       return state_send_recognition
     end
 
-    if (!last_report.resources.nil? && last_report.resources.total < 100)
-      return move_to_waiting_resources(@target)
-    end
-
-    if (last_report.has_troops? || last_report.status == :red)
+    if (last_report.status == :lost || last_report.has_troops?)
       return move_to_has_troops
     end
 
-    tota_resources = last_report.resources.total
-    troops = @place.units.distribute(tota_resources)
+    total_resources = last_report.resources.total
+    troops = @place.units.distribute(total_resources)
+
+    if ((!last_report.resources.nil? && last_report.resources.total < resource_min) ||
+      troops.carry < resource_min)
+      return move_to_waiting_resources(@target)
+    end
 
     if (troops.total.zero?)
       return move_to_waiting_troops(nil)
@@ -115,7 +121,7 @@ class Task::PillageAround < Task::Abstract
 
     while (!troops.win?)
       begin
-        troops = troops.upgrade(@place.units - troops,tota_resources)
+        troops = troops.upgrade(@place.units - troops,total_resources)
       rescue ImpossibleUpgrade => e
         return move_to_waiting_troops(nil)
       end

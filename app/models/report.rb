@@ -20,8 +20,8 @@ class Report
 
   field :full_pillage, type: Boolean
 
-  embeds_one :pillage, as: :resourcesable
-  embeds_one :resources, as: :resourcesable
+  embeds_one :pillage, as: :resourcesable, class_name: Resource.to_s
+  embeds_one :resources, as: :resourcesable, class_name: Resource.to_s
 
   def erase screen
     screen.request(self.erase_url)

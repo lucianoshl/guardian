@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get 'task/index'
   get 'task/run_now/:id' => 'task#run_now'
 
-  resources :village,:task
+  resources :village,:task,:report
 
   get 'cookie/latest'
 

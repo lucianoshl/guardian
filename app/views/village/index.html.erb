@@ -28,7 +28,7 @@
       </div>
 
       <div class="box-body">
-        <table class="table table-bordered">
+        <table class="table table-hover">
           <tbody><tr>
             <th>Coordenadas</th>
             <th>Pontos</th>
@@ -47,7 +47,7 @@
 
            }.each do |village|
             %>
-            <tr>
+            <tr class="village-line" village-id="<%= village.id %>">
               <td><%= village.x %>|<%= village.y %></td> 
               <td><%= village.points %></td> 
               <td><%= village.state %></td> 

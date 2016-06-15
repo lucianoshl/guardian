@@ -5,7 +5,7 @@ class CookieController < ApplicationController
     headers['Access-Control-Request-Method'] = '*'
     result = {
       cookies: Cookie.latest,
-      redirected_page: "https://#{User.first.world}.tribalwars.com.br/game.php?screen=place"
+      redirected_page: "https://#{User.current.world}.tribalwars.com.br/game.php?screen=place"
     }
     render json: result
   end

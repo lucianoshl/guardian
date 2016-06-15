@@ -37,13 +37,13 @@ class Village
   end
 
   def self.pillage_candidates
-    threshold = User.first.player.points * 0.6
+    threshold = User.current.player.points * 0.6
 
     self.in(state: [:ally,:strong]).update_all(next_event: nil,state: nil)
 
     gt(points: threshold).update_all(next_event: nil,state: :strong)
 
-    ally = User.first.player.ally
+    ally = User.current.player.ally
     
     if (!ally.nil?)
       ids = ally.players.map(&:villages).flatten.map(&:vid)
@@ -54,7 +54,7 @@ class Village
   end
 
   def self.my
-    where(player: User.first.player)
+    where(player: User.current.player)
   end
 
 end

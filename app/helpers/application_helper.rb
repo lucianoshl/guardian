@@ -9,4 +9,9 @@ module ApplicationHelper
     </div>
   }.html_safe
   end
+
+
+  def active_route?(route)
+    request.path.include?(route) ? "active" : ""
+  end
 end

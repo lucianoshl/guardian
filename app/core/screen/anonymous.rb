@@ -51,7 +51,7 @@ class Screen::Anonymous
   end
 
   def base_url
-    self.class._base || "https://#{User.first.world}.tribalwars.com.br"
+    self.class._base || "https://#{User.current.world}.tribalwars.com.br"
   end
 
   def gen_url

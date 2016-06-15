@@ -4,7 +4,7 @@ class Screen::Login < Screen::Anonymous
 
   base 'https://www.tribalwars.com.br'
   endpoint '/index.php'
-  url action: 'login', "server_#{User.first.world}": nil
+  url action: 'login', "server_#{User.current.world}": nil
   parameters({
     sso:0
   })

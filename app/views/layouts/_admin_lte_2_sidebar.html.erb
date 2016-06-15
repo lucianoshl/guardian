@@ -10,10 +10,10 @@
         <%= image_tag("crow_45x45.png", class: "img-circle") %>
       </div>
       <div class="pull-left info">
-        <p><%= User.first.name %></p>
+        <p><%= User.current.name %></p>
         <!-- Status -->
         <a href="#"><i class="fa fa-line-chart text-info"></i>
-          <%= number_with_delimiter(User.first.player.points, :delimiter => '.') %>
+          <%= number_with_delimiter(User.current.player.points, :delimiter => '.') %>
         </a>
       </div>
     </div>
@@ -32,16 +32,17 @@
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
       <li class="header">HEADER</li> 
-      <li><a href="<%= task_index_path %>"><i class='fa fa-clock-o'></i> <span>Tarefas</span></a></li>
-      <li><a href="<%= village_index_path %>"><i class='fa fa-dot-circle-o'></i> <span>Alvos</span></a></li>
-<!--       <li><a href="#"><i class='fa fa-link'></i> <span>Another Link</span></a></li>
-      <li class="treeview">
-        <a href="#"><i class='fa fa-link'></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
+      <li class="<%= active_route?('task') %>">
+        <a href="<%= task_index_path %>"><i class='fa fa-clock-o'></i> <span>Tarefas</span></a>
+      </li>
+      <li class="treeview <%= active_route?('village') %>">
+        <a href="#"><i class='fa fa-dot-circle-o'></i></i> <span>Alvos</span> <i class="fa fa-angle-left pull-right"></i></a>
         <ul class="treeview-menu">
-          <li><a href="#">Link in level 2</a></li>
-          <li><a href="#">Link in level 2</a></li>
+          <li><a href="<%= village_index_path %>"><i class="fa fa-circle-o"></i> Todos</a></li>
+          <li><a href="<%= village_index_path %>?threat=all"><i class="fa fa-circle-o"></i> Ameaças</a></li>
+          <li><a href="<%= village_index_path %>?farms=all"><i class="fa fa-circle-o"></i> Farms</a></li> 
         </ul>
-      </li> -->
+      </li>
     </ul><!-- /.sidebar-menu -->
   </section>
   <!-- /.sidebar -->

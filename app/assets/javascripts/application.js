@@ -11,14 +11,14 @@
 // about supported directives.
 //
 //= require jquery
-//= require Chart.bundle.min
-//= require jquery.slimscroll.min
+// require Chart.bundle.min
+// require jquery-ui/draggable
 //= require bootstrap-sprockets
 //= require jquery_ujs
 //= require turbolinks
+//= require jquery.slimscroll
 //= require app
-//= require react
-//= require react_ujs
-//= require components
+// require react
+// require react_ujs
+// require components
 //= require_tree .
-

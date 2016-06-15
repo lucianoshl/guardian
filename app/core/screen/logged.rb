@@ -34,7 +34,7 @@ class Screen::Logged < Screen::Anonymous
   def do_login
 
    login_screen = Screen::Login.new({
-      user: User.first.name,
+      user: User.current.name,
       password: Screen::ServerSelect.new.hash_password,
     })
 
@@ -45,7 +45,7 @@ class Screen::Logged < Screen::Anonymous
 
   def store_cookies cookies
     cookie = Cookie.new
-    cookie.user = User.first
+    cookie.user = User.current
     cookie.content = cookies
     cookie.created_at = Time.zone.now
     cookie.save

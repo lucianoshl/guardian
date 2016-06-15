@@ -1,6 +1,16 @@
 class VillageController < ApplicationController
   def index
-    nils, not_nils = Village.all.asc(:next_event).partition { |p| p.next_event.nil? }
+
+    query = Village.asc(:next_event)
+    if (!params[:threat].nil?)
+        query = query.in(state: [:has_troops,:strong])
+    end
+
+    if (!params[:farms].nil?)
+        query = query.not_in(state: [:has_troops,:strong])
+    end
+
+    nils, not_nils = query.partition { |p| p.next_event.nil? }
     @villages = not_nils + nils
 
     # chart = Village.distinct(:state).pmap {|a| [a,Village.where(state: a).count] }.sort{|a,b| a[1] <=> b[1]}.reverse

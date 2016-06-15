@@ -63,3 +63,4 @@ gem "parallel"
 gem 'chartjs-ror'
 gem 'jquery-slimscroll-rails'
 gem 'color-generator'
+gem 'watir-webdriver'

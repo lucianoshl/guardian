@@ -82,6 +82,10 @@ class Task::PillageAround < Task::Abstract
   def state_shared_connection
     state_send_command
   end 
+  
+  def state_trops_without_spy
+    state_send_command
+  end 
 
   def state_has_troops
     state_send_command
@@ -108,7 +112,7 @@ class Task::PillageAround < Task::Abstract
     end
 
     if (last_report.has_troops?)
-      return move_to_send_recognition
+      return move_to_trops_without_spy
     end
 
     total_resources = last_report.resources.total
@@ -147,7 +151,7 @@ class Task::PillageAround < Task::Abstract
     return next_event(Time.zone.now + 2.hour)
   end
 
-  def move_to_send_recognition
+  def move_to_trops_without_spy
     return next_event(Time.zone.now + 3.hour)
   end
 

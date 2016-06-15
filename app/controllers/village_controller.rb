@@ -3,7 +3,7 @@ class VillageController < ApplicationController
 
     query = Village.asc(:next_event)
     if (!params[:threat].nil?)
-        query = query.in(state: [:has_troops,:strong])
+        query = query.in(state: [:has_troops,:strong,:trops_without_spy])
     end
 
     if (!params[:farms].nil?)

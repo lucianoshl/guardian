@@ -3,7 +3,7 @@ class Parser::Basic < Parser::Abstract
   def parse screen
 
     if (!@page.search('#bot_check').empty?)
-      binding.pry
+      raise Exception.new('bot protection')
     end
 
 

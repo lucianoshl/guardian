@@ -4,8 +4,8 @@ class Task::PlayerMonitor < Task::Abstract
   
   sleep? false
 
-  def run
-    my_village = Village.my.first
+  def run(itens=nil)
+    my_village = itens || Village.my.first
     targets = Screen::Map.neighborhood(my_village,10).villages.flatten.uniq
 
     saved = Village.in(vid: targets.map(&:vid)).to_a.map{|v| [v.vid,v] }.to_h

@@ -19,9 +19,10 @@
 					<tbody><tr>
 						<th></th>
 						<th>Ocorrência</th>
-						<th>Recursos</th>
 						<th>Unidades</th>
 						<th>Edifícios</th>
+						<th>Recursos</th>
+						<th>Saque</th>
 					</tr>
 					<% 
 					map = {
@@ -36,9 +37,10 @@
 						<tr class="report-line" report-id="<%= report.id %>">
 							<td><img src="<%= map[report.status.to_sym] %>" alt="<%= report.status %>" /></td> 
 							<td><%= report.occurrence.strftime("%d/%m - %H:%M:%S") %></td> 
-							<td><%= render_resource(report.resources) %></td> 
 							<td><%= render_troops(report.target_troops,false) %></td> 
 							<td><%= render_buildings(report.target_buildings) %></td> 
+							<td><%= render_resource(report.resources) %></td> 
+							<td><%= render_resource(report.pillage) %></td> 
 						</tr>
 						<% 
 					end

@@ -6,7 +6,7 @@ class Parser::ReportView < Parser::Basic
 
     screen.report = report = Report.new
 
-    report.moral = page.search('#attack_luck').first.next.next.text.extract_number
+    report.moral = @page.search('#attack_luck').first.next.next.text.extract_number
 
     report.erase_url = @page.search('a[href*=del_one]').first.attr('href')
 

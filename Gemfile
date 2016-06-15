@@ -41,6 +41,7 @@ group :production do
   gem 'rails_12factor'
   gem 'unicorn'
   gem 'daemons'
+  gem 'rails_real_favicon'
 end
 
 group :development, :test do

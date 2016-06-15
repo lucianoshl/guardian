@@ -18,6 +18,7 @@ class TaskController < ApplicationController
   	job.attempts = 0
     job.locked_at = nil
     job.locked_by = nil
+    job.last_error = nil
   	job.save
   	redirect_to action: "index"
   end

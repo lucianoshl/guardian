@@ -120,7 +120,7 @@ class Task::PillageAround < Task::Abstract
       return move_to_waiting_troops(nil)
     end
 
-    while (!troops.win?(report.moral,report.target_buildings["wall"]))
+    while (!troops.win?(last_report.moral,last_report.target_buildings["wall"]))
       begin
         troops = troops.upgrade(@place.units - troops,total_resources)
       rescue ImpossibleUpgrade => e

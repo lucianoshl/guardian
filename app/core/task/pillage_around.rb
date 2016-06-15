@@ -13,7 +13,7 @@ class Task::PillageAround < Task::Abstract
       current_state =target.state || 'send_command'
 
       @target = target
-      @origin = Screen::Overview.new.villages.first
+      @origin = Village.my.first
       @place = Screen::Place.new(village: @origin.id)
 
       begin

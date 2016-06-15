@@ -1,6 +1,6 @@
 class Task::DestroyVillage < Task::Abstract
 
-  in_development true
+  in_development
 
   def run
     @origin = Village.my.first

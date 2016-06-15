@@ -44,10 +44,6 @@ GEM
     arel (6.0.3)
     autoprefixer-rails (6.3.6.2)
       execjs
-    babel-source (5.8.35)
-    babel-transpiler (0.7.0)
-      babel-source (>= 4.0, < 6)
-      execjs (~> 2.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.4.1)
@@ -70,7 +66,6 @@ GEM
     coffee-script-source (1.10.0)
     color-generator (0.0.4)
     concurrent-ruby (1.0.2)
-    connection_pool (2.2.0)
     daemons (1.2.3)
     debug_inspector (0.0.2)
     delayed_job (4.1.2)
@@ -149,6 +144,7 @@ GEM
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
+    nprogress-rails (0.1.6.7)
     ntlm-http (0.1.1)
     origin (2.2.0)
     parallel (1.9.0)
@@ -220,13 +216,6 @@ GEM
     rake (11.2.2)
     rdoc (4.2.2)
       json (~> 1.4)
-    react-rails (1.7.1)
-      babel-transpiler (>= 0.7.0)
-      coffee-script-source (~> 1.8)
-      connection_pool
-      execjs
-      rails (>= 3.2)
-      tilt
     ref (2.0.0)
     remotipart (1.2.1)
     rest-client (1.8.0)
@@ -324,6 +313,7 @@ DEPENDENCIES
   mechanize
   mongoid
   mongoid-enum
+  nprogress-rails
   parallel
   pry-byebug
   quiet_assets
@@ -331,7 +321,6 @@ DEPENDENCIES
   rails_12factor
   rails_admin
   rails_real_favicon
-  react-rails
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)

@@ -11,6 +11,10 @@
 // about supported directives.
 //
 //= require jquery
+
+//= require nprogress
+//= require nprogress-turbolinks
+
 // require Chart.bundle.min
 // require jquery-ui/draggable
 //= require bootstrap-sprockets
@@ -18,7 +22,4 @@
 //= require turbolinks
 //= require jquery.slimscroll
 //= require app
-// require react
-// require react_ujs
-// require components
 //= require_tree .

@@ -13,6 +13,11 @@
  *= require_tree .
  *= require_self
  */
+
+$nprogress-color: #ecf0f5;
+@import "nprogress";
+@import "nprogress-bootstrap";
+
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "AdminLTE/AdminLTE";

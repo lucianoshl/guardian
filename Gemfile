@@ -58,10 +58,10 @@ gem 'mongoid'
 gem 'delayed_job_mongoid'
 gem 'adminlte2-rails'
 gem 'active_attr'
-gem 'react-rails'
 gem "mongoid-enum"
 gem "parallel"
 gem 'chartjs-ror'
 # gem 'jquery-slimscroll-rails'
 gem 'color-generator'
 gem 'watir-webdriver'
+gem 'nprogress-rails'

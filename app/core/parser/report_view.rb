@@ -3,7 +3,12 @@ class Parser::ReportView < Parser::Basic
   def parse(screen)
     super
     @units = @page.search("#attack_info_att tr:eq(3) img").map{|i| i.attr('src').scan(/unit_(.+)\./) }.flatten
+
     screen.report = report = Report.new
+
+    binding.pry 
+
+    report.moral = page.search('#attack_luck').first.next.next.text.extract_number
 
     report.erase_url = @page.search('a[href*=del_one]').first.attr('href')
 

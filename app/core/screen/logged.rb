@@ -16,12 +16,12 @@ class Screen::Logged < Screen::Anonymous
   def request url
     page = client.send(method,url)
     if (!is_logged?(page))
-      cookies = self.class.do_login
+      cookies = do_login
       add_cookies(cookies)
       page = client.send(method,url)
     end
 
-    if (!is_logged?(page))
+    if (is_logged?(page))
       raise Exception.new("Error on login")
     end
 
@@ -32,7 +32,7 @@ class Screen::Logged < Screen::Anonymous
     !page.uri.to_s.include?("sid_wrong") && page.search('input[type="password"]').empty?
   end
 
-  def self.do_login
+  def do_login
 
    login_screen = Screen::Login.new({
       user: User.first.name,
@@ -44,7 +44,7 @@ class Screen::Logged < Screen::Anonymous
 
   end
 
-  def self.store_cookies cookies
+  def store_cookies cookies
     cookie = Cookie.new
     cookie.user = User.first
     cookie.content = cookies

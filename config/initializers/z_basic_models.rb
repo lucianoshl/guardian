@@ -1,7 +1,7 @@
 $pid = 0
 
 if (Unit.count.zero?)
-	screen = Screen::Overview.new
+	screen = Screen::Place.new
 	raw_screen = screen.request(screen.gen_url())
 	json = JSON.parse(raw_screen.body.scan(/UnitPopup.unit_data = ({.*})/).first.first)
 

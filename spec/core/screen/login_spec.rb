@@ -8,6 +8,6 @@ RSpec.describe Screen::Login, type: :model do
     #   password: Screen::ServerSelect.new.hash_password,
     # })
 
-    Screen::Overview.new
+    Screen::Place.new
   end
 end

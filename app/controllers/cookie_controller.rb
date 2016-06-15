@@ -1,6 +1,6 @@
 class CookieController < ApplicationController
   def latest
-    screen = Screen::Overview.new
+    screen = Screen::Place.new
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Request-Method'] = '*'
     result = {

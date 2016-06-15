@@ -103,8 +103,12 @@ class Task::PillageAround < Task::Abstract
       return state_send_recognition
     end
 
-    if (last_report.status == :lost || last_report.has_troops?)
+    if (last_report.status == :lost)
       return move_to_has_troops
+    end
+
+    if (last_report.has_troops?)
+      return move_to_send_recognition
     end
 
     total_resources = last_report.resources.total
@@ -141,6 +145,10 @@ class Task::PillageAround < Task::Abstract
 
   def move_to_shared_connection
     return next_event(Time.zone.now + 2.hour)
+  end
+
+  def move_to_send_recognition
+    return next_event(Time.zone.now + 3.hour)
   end
 
   def move_to_waiting_resources(village)

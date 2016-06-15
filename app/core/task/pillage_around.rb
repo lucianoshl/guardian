@@ -97,7 +97,7 @@ class Task::PillageAround < Task::Abstract
 
     expire_report_in = 3.hours
 
-    resource_min = 200
+    resource_min = 100
 
     if (last_report.resources.nil? || (Time.zone.now - last_report.occurrence)/expire_report_in > 1)
       return state_send_recognition

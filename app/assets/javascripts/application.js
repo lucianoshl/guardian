@@ -15,8 +15,8 @@
 //= require nprogress
 //= require nprogress-turbolinks
 
-// require Chart.bundle.min
-// require jquery-ui/draggable
+//= require Chart.bundle.min
+//= require jquery-ui/draggable
 //= require bootstrap-sprockets
 //= require jquery_ujs
 //= require turbolinks

@@ -6,8 +6,6 @@ class Parser::ReportView < Parser::Basic
 
     screen.report = report = Report.new
 
-    binding.pry 
-
     report.moral = page.search('#attack_luck').first.next.next.text.extract_number
 
     report.erase_url = @page.search('a[href*=del_one]').first.attr('href')
@@ -31,11 +29,13 @@ class Parser::ReportView < Parser::Basic
     report.origin_troops_losses = parse_report_troops(@page.search("#attack_info_att_units tr")[2])
 
     if (report.status != :lost) 
-      report.target_buildings = {}
 
-      @page.search('table[id*=attack_spy_buildings]').search('img').each do |img|
-        house = img.attr('src').scan(/\/([a-z]*).png/).flatten.first
-        report.target_buildings[house] = img.parents(2).search('td').last.extract_number
+      if (@page.search('table[id*=attack_spy_buildings]').size > 0) 
+        report.target_buildings = {}
+        @page.search('table[id*=attack_spy_buildings]').search('img').each do |img|
+          house = img.attr('src').scan(/\/([a-z]*).png/).flatten.first
+          report.target_buildings[house] = img.parents(2).search('td').last.extract_number
+        end
       end
 
       report.target_troops = parse_report_troops(@page.search("#attack_info_def tr:eq(3) tr")[1]) 

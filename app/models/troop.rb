@@ -37,9 +37,11 @@ class Troop
     return Troop.new(result)
   end
 
-  def win?
+  def win?(moral,wall)
     parameters = {}
     parameters[:luck] = '-25'
+    parameters[:def_wall] = wall
+    parameters[:moral] = moral || 0
     self.instance_values.each do |unit, qte|
       parameters["att_#{unit}"] = qte.to_s
     end

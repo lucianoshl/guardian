@@ -17,11 +17,10 @@ class Screen::Logged < Screen::Anonymous
     page = client.send(method,url)
     if (!is_logged?(page))
       cookies = do_login
-      add_cookies(cookies)
       page = client.send(method,url)
     end
 
-    if (is_logged?(page))
+    if (!is_logged?(page))
       raise Exception.new("Error on login")
     end
 
@@ -50,6 +49,7 @@ class Screen::Logged < Screen::Anonymous
     cookie.content = cookies
     cookie.created_at = Time.zone.now
     cookie.save
+    add_cookies(cookies)
   end
 
   def add_cookies(cookies)

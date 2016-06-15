@@ -2,31 +2,41 @@
 	<div class=" col-md-12">
 		<div class="box">
 			<div class="box-header with-border">
-				<h3 class="box-title">Bordered Table</h3>
+				<h3 class="box-title"><%= @village.name %></h3>
 			</div>
 
 			<div class="box-body">
+				<dl class="dl-horizontal">
+					<dt>Local</dt>
+					<dd><%= "#{@village.x}|#{@village.y}" %></dd>
+					<dt>Pontos</dt>
+					<dd><%= @village.points %></dd>
+					<dt>Dono</dt>
+					<dd><%= @village.player.name %></dd>
+				</dl>
+				<%= @village.points_history.size %>
 				<table class="table table-hover">
 					<tbody><tr>
 						<th></th>
 						<th>Ocorrência</th>
-						<th>Saque</th>
+						<th>Recursos</th>
+						<th>Unidades</th>
 					</tr>
 					<% 
-          map = {
-            win: 'https://brs1.tribalwars.com.br/graphic/dots/green.png',
-            win_lost: 'https://brs1.tribalwars.com.br/graphic/dots/yellow.png',
-            spy: 'https://brs1.tribalwars.com.br/graphic/dots/blue.png',
-            lost: 'https://brs1.tribalwars.com.br/graphic/dots/red.png',
-          }
-
+					map = {
+						win: 'https://brs1.tribalwars.com.br/graphic/dots/green.png',
+						win_lost: 'https://brs1.tribalwars.com.br/graphic/dots/yellow.png',
+						spy: 'https://brs1.tribalwars.com.br/graphic/dots/blue.png',
+						lost: 'https://brs1.tribalwars.com.br/graphic/dots/red.png',
+					}
 
 					@village.reports.desc(:occurrence).each do |report|
 						%>
 						<tr class="report-line" report-id="<%= report.id %>">
 							<td><img src="<%= map[report.status.to_sym] %>" alt="<%= report.status %>" /></td> 
 							<td><%= report.occurrence.strftime("%d/%m - %H:%M:%S") %></td> 
-							<td><%= render_resource(report.pillage) %></td> 
+							<td><%= render_resource(report.resources) %></td> 
+							<td><%= render_troops(report.target_troops,false) %></td> 
 						</tr>
 						<% 
 					end

@@ -41,7 +41,7 @@ class Task::PlayerMonitor < Task::Abstract
   end
 
   def register_point_modification village,item
-    difference = village.points.nil? ? 0 : village.points - item.points 
+    difference = village.points.nil? ? 0 : item.points - village.points
     village.points_history << { date: Time.zone.now, points: item.points, difference: difference }
   end
 

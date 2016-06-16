@@ -34,6 +34,7 @@ class Cookie
     password: Screen::ServerSelect.new.hash_password,
     })
 
+   Cookie.all.delete
    Cookie.store_cookies(login_screen.cookies)
    return login_screen.cookies
  end

@@ -39,6 +39,7 @@ class Task::Abstract
   end
 
   def execute
+    info "Running #{self.class}"
     init = Time.zone.now.beginning_of_day
     endd = init + 8.hours
 

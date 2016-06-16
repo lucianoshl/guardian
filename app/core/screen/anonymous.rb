@@ -47,7 +47,7 @@ class Screen::Anonymous
   end
 
   def request_and_parse
-    parse(_request(method,gen_url))
+    parse(request(gen_url))
     self.instance_values
   end
 

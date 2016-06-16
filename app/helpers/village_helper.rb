@@ -6,6 +6,8 @@ module VillageHelper
   end
 
   def render_buildings(buildings)
+    return "Sem informação" if (buildings.nil?)
+
     (buildings.map do |buildings,qte|
       %{
         <img src="https://dsbr.innogamescdn.com/8.48/29600/graphic/buildings/#{buildings}.png" /> #{qte}

@@ -2,7 +2,7 @@ class Task::PillageAround < Task::Abstract
 #
   # in_development
 
-  sleep? false
+  # sleep? false
 
   def run
 

@@ -4,5 +4,6 @@ class Screen::Simulator < Screen::Basic
 
 	url	screen: 'place', mode: 'sim', simulate: nil
 
+  cache 1.year
 
 end

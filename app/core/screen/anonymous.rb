@@ -1,11 +1,15 @@
 class Screen::Anonymous
 
   class << self
-    attr_accessor :_parameters,:_url,:_base,:_endpoint
+    attr_accessor :_parameters,:_url,:_base,:_endpoint,:_cache
   end
 
   def self.url url
     self._url = url
+  end
+
+  def self.cache _cache
+    self._cache = _cache
   end
 
   def self.base base
@@ -28,7 +32,21 @@ class Screen::Anonymous
     else
       @parameters = @parameters.merge(args)
     end
-    parse(request(gen_url()))
+
+    # Rails.cache.fetch(url,cache_config) do
+      parse(client.send(method,url))
+    # end
+    
+  end
+
+  def cache_config
+    cache_config = {}
+    cache_config[:force] = true
+
+    if (!self.class._cache.nil?)
+      cache_config[:force] = self.class._cache.nil?
+      cache_config[:expires_in] = self.class._cache
+    end
   end
 
   def parse page

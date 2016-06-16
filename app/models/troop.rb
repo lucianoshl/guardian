@@ -50,7 +50,13 @@ class Troop
   end
 
   def upgrade(disponible,pillage)
+    binding.pry if (self.sword == 20)
     troops = self.clone.instance_values
+    troops.each do |unit,qte|
+      if (qte.zero?)
+        troops.delete(unit)
+      end
+    end
     disponible = disponible.clone.instance_values
 
     alternatives = disponible.sort{|b,a| Unit.get(a[0]).attack <=> Unit.get(b[0]).attack }.select{|a| a[1] > 0 && Unit.get(a[0]).carry > 0}

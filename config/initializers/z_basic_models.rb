@@ -1,8 +1,11 @@
 $pid = 0
 
+if (User.where(name: ENV["TW_USER"]).count.zero?)
+	User.save_user
+end
 
-if (!User.current.nil? && User.current.player.nil?)
-	user = User.current
+user = User.where(name: ENV["TW_USER"]).first
+if (user.player.nil?)
 
 	player_id = Mechanize.new.get("https://#{user.world}.tribalwars.com.br/guest.php?screen=ranking&mode=player&name=#{user.name}").body.scan(/screen=info_player.*?id=(\d+)/).first.first.to_i
 

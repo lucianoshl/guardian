@@ -78,7 +78,7 @@ end
 
 class Array
   def pmap
-    Parallel.map(self){ |i| yield(i) }
+    Parallel.map(self, in_processes: ENV["PMAP_THREADS"] || 1){ |i| yield(i) }
   end
 
   def pselect

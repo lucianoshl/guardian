@@ -8,6 +8,8 @@ class Parser::Basic < Parser::Abstract
 
     json = JSON.parse(@page.body.scan(/TribalWars.updateGameData\(({.*})/).first.first)
     screen.player_id = json["player"]["id"].to_i
+
+    screen.logout_url = @page.search('a[href*=logout]').first.attr('href')
   end
 
 end

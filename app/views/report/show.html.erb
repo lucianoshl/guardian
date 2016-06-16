@@ -13,7 +13,8 @@
     </div> -->
     <div class="col-md-5">
       <p><%= render_village_small(@report.origin) %></p>
-      <p><%= render_troops(@report.origin_troops) %></p>
+      <p><%= render_troops(@report.origin_troops,false) %></p>
+      <p><%= render_troops(Troop.new(@report.origin_troops_losses)*-1,false) %></p>
 
     </div>
     <div class="col-md-2 text-center">
@@ -21,7 +22,8 @@
     </div>
     <div class="col-md-5 text-right">
       <p><%= render_village_small(@report.target) %></p>
-      <p><%= render_troops(@report.origin_troops) %></p>
+      <p><%= render_troops(@report.target_troops,false) %></p>
+      <p><%= render_troops(Troop.new(@report.target_troops_losses)*-1,false) %></p>
     </div>
   </div>
   <div class="box-footer">

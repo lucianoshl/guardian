@@ -124,4 +124,12 @@ class Troop
     result
   end
 
+  def *(value)
+    result = self.instance_values.clone
+    result.map do |unit,qte|
+      result[unit] *= value
+    end
+    return Troop.new(result)
+  end
+
 end

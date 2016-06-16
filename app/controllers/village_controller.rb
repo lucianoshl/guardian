@@ -53,4 +53,8 @@ class VillageController < ApplicationController
   def show
     @village = Village.find(params["id"])
   end
+
+  def waiting_report
+    render :text => Village.in(state: :waiting_report).to_a.to_yaml, :content_type => 'text/yaml'
+  end
 end

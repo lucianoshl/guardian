@@ -13,6 +13,10 @@
 					<dd><%= @village.points %></dd>
 					<dt>Dono</dt>
 					<dd><%= @village.player.nil? ? "Barbaro": @village.player.name %></dd>
+					<dt>Statue</dt>
+					<dd><%= @village.state %></dd>
+					<dt>Próximo evento</dt>
+					<dd><%= @village.next_event.strftime("%d/%m - %H:%M:%S") %></dd>
 				</dl>
 				<%= @village.points_history.size %>
 				<table class="table table-hover">

@@ -6,6 +6,9 @@ class Partner
 
   def self.is_attacking?(target)
     villages = for_all("/village/waiting_report").map{|a| Village.new(a)}
+
+    villages = villages.select{|a| a.next_event > Time.zone.now }
+
     same = villages.select{|other| target.distance(other).zero? }.first
     if (same.nil?)
       return nil

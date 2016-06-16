@@ -33,10 +33,22 @@ class Screen::Anonymous
       @parameters = @parameters.merge(args)
     end
 
-    # Rails.cache.fetch(url,cache_config) do
-      parse(client.send(method,url))
-    # end
-    
+    if (cache_config[:force])
+      screen_attrs = request_and_parse
+    else
+      merge(Rails.cache.fetch(gen_url,cache_config) do
+        puts "cache miss"
+        values = request_and_parse
+        values.delete("client")
+        values
+      end)
+    end
+
+  end
+
+  def request_and_parse
+    parse(client.send(method,gen_url))
+    self.instance_values
   end
 
   def cache_config
@@ -47,6 +59,7 @@ class Screen::Anonymous
       cache_config[:force] = self.class._cache.nil?
       cache_config[:expires_in] = self.class._cache
     end
+    return cache_config
   end
 
   def parse page
@@ -80,6 +93,15 @@ class Screen::Anonymous
     client.cookie_jar.clear!
     puts "#{method} : #{url} #{@parameters}"
     client.send(method,url,@parameters)
+  end
+
+  def merge other
+    other = other.attribute_values if (other.class != Hash)
+
+    other.each do |key,value|
+      self.send("#{key}=",value) if (self.respond_to?("#{key}="))
+    end
+
   end
 
 end

@@ -10,7 +10,7 @@ class Task::PillageAround < Task::Abstract
 
 
     @origin = Village.my.first
-    @place = Screen::Place.new(village: @origin.id)
+    @place = Screen::Place.new(village: @origin.vid)
 
     info "Running for #{candidates.size} candidates"
     candidates.each do |target|

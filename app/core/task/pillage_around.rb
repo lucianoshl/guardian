@@ -49,18 +49,8 @@ class Task::PillageAround < Task::Abstract
     if (!@place.units.contains(base_attack)) then
       return move_to_waiting_troops(base_attack)
     else
-      begin
-        command = @place.send_attack(@origin,@target,base_attack)
-        move_to_waiting_report(command)
-      rescue NewbieProtectionException => exception
-        move_to_newbie_protection(exception.expires)
-      rescue SharedConectionException => exception
-        move_to_shared_connection
-      rescue BannedUserException => exception
-        move_to_banned
-      end
+      return send_attack(base_attack)   
     end
-    
   end
 
   def state_banned
@@ -84,6 +74,10 @@ class Task::PillageAround < Task::Abstract
   end 
   
   def state_trops_without_spy
+    state_send_command
+  end   
+
+  def state_waiting_partner
     state_send_command
   end 
 
@@ -136,19 +130,30 @@ class Task::PillageAround < Task::Abstract
       end
     end
 
+    return send_attack(troops)
+  end
+
+  def send_attack troops
     begin
-      troops.validate
       command = @place.send_attack(@origin,@target,troops)
       return move_to_waiting_report(command)
     rescue NewbieProtectionException => exception
-      return move_to_newbie_protection(exception.expires)
+      move_to_newbie_protection(exception.expires)
     rescue SharedConectionException => exception
-      return move_to_shared_connection
+      move_to_shared_connection
+    rescue PartnerAttackingException => exception
+      move_to_waiting_partner(exception.release)
+    rescue BannedUserException => exception
+      move_to_banned
     end
   end
 
   def move_to_shared_connection
     return next_event(Time.zone.now + 2.hour)
+  end
+
+  def move_to_waiting_partner(release_time)
+    return next_event(release_time + 10.minutes)
   end
 
   def move_to_trops_without_spy

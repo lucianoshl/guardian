@@ -11,7 +11,16 @@ end
 
 class BannedUserException < Exception
 end
+
 class DeletedPlayerException < Exception
+end
+
+class PartnerAttackingException < Exception
+  attr_accessor :release
+
+  def initialize date
+    self.release = date
+  end
 end
 
 
@@ -23,6 +32,12 @@ class Screen::Place < Screen::Basic
   url screen: 'place'  
 
   def send_attack origin,target,troops
+
+    partner_time = Partner.is_attacking?(target)
+
+    if (!partner_time.nil?)
+      raise PartnerAttackingException.new(partner_time)
+    end
 
     troops.spy ||= 4 if (self.units.spy >= 4)
 

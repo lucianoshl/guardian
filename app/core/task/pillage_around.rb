@@ -19,6 +19,7 @@ class Task::PillageAround < Task::Abstract
       @target = target
 
       begin
+        info("Running state #{current_state} for #{@target}")
         state,_next_event = self.send("state_#{current_state}")
       rescue DeletedPlayerException => e
         target.delete

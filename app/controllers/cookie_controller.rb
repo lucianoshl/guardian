@@ -1,6 +1,12 @@
 class CookieController < ApplicationController
   def latest
-    screen = Screen::Place.new
+    url = "https://#{User.current.world}.tribalwars.com.br/game.php?screen=place"
+    page = Mechanize.new.add_cookies(Cookie.latest).get(url)
+
+    if (!Cookie.is_logged?(page))
+      Cookie.do_login
+    end
+
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Request-Method'] = '*'
     result = {

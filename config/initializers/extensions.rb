@@ -39,6 +39,16 @@ class Mechanize
     def inspect
         self.class.name
     end
+
+    def add_cookies cookies
+      if (!cookies.nil?)
+        self.cookie_jar.clear!
+        cookies.each do |c|
+          self.cookie_jar.add!(c)
+        end
+      end
+      return self
+    end
 end
 
 class Mechanize::Form

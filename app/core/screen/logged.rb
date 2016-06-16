@@ -10,7 +10,7 @@ class Screen::Logged < Screen::Anonymous
 
   def request url
     page = client.send(method,url)
-    if (!is_logged?(page))
+    if (!Cookies.is_logged?(page))
       client.add_cookies(Cookies.do_login)
       page = client.send(method,url)
     end

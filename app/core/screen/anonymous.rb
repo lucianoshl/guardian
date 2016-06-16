@@ -47,8 +47,16 @@ class Screen::Anonymous
   end
 
   def request_and_parse
-    parse(client.send(method,gen_url))
+    parse(_request(method,gen_url))
     self.instance_values
+  end
+
+  def _request(method,gen_url)
+    if (method == :get)
+      client.send(method,gen_url)
+    else
+      client.send(method,gen_url,@parameters)
+    end
   end
 
   def cache_config

@@ -50,7 +50,6 @@ class Troop
   end
 
   def upgrade(disponible,pillage)
-    binding.pry if (self.sword == 20)
     troops = self.clone.instance_values
     troops.each do |unit,qte|
       if (qte.zero?)

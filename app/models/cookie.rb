@@ -28,7 +28,7 @@ class Cookie
   end
 
   def self.do_login
-
+    
    login_screen = Screen::Login.new({
     user: User.current.name,
     password: Screen::ServerSelect.new.hash_password,

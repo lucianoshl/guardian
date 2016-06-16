@@ -6,7 +6,6 @@ class Parser::Basic < Parser::Abstract
       raise Exception.new('bot protection')
     end
 
-
     json = JSON.parse(@page.body.scan(/TribalWars.updateGameData\(({.*})/).first.first)
     screen.player_id = json["player"]["id"].to_i
   end

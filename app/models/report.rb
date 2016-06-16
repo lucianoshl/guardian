@@ -28,7 +28,7 @@ class Report
   end
 
   def has_troops?
-    Troop.new(self.target_troops).total > 0
+    (Troop.new(target_troops) - Troop.new(target_troops_losses)).total  > 0
   end
 
 end

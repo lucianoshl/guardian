@@ -31,7 +31,7 @@ class Parser::Map < Parser::Abstract
             x: base_x + x.to_i,
             y: base_y + y.to_i, 
             name: info[4].to_i.zero? ? 'Aldeia de bárbaros' : info[2],
-            points: info[3].extract_number
+            points: info[3].extract_number,
             player: players[info[4].to_i]#.zero? ? nil : info[4].to_i
           })
         end

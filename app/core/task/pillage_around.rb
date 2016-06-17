@@ -96,16 +96,16 @@ class Task::PillageAround < Task::Abstract
       return state_send_recognition
     end
 
+    if (last_report.status == :lost)
+      return move_to_has_troops
+    end
+
     expire_report_in = 3.hours
 
     resource_min = 100
 
     if (last_report.resources.nil? || (Time.zone.now - last_report.occurrence)/expire_report_in > 1)
       return state_send_recognition
-    end
-
-    if (last_report.status == :lost)
-      return move_to_has_troops
     end
 
     if (last_report.has_troops?)

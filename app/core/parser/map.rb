@@ -31,7 +31,7 @@ class Parser::Map < Parser::Abstract
             x: base_x + x.to_i,
             y: base_y + y.to_i, 
             name: info[4].to_i.zero? ? 'Aldeia de bárbaros' : info[2],
-            points: info[3].to_i,
+            points: info[3].extract_number
             player: players[info[4].to_i]#.zero? ? nil : info[4].to_i
           })
         end
@@ -47,7 +47,7 @@ class Parser::Map < Parser::Abstract
       player = OpenStruct.new
       player.pid = id.to_i
       player.name = content[0]
-      player.points = content[1].to_i
+      player.points = content[1].extract_number
       player.ally = parse_ally(content[2],item["data"]["allies"][content[2]])
       result[id.to_i] = player
     end

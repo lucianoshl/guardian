@@ -11,14 +11,15 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
+//= require jquery_ujs
+//= require bootstrap-sprockets
 
 //= require nprogress
 //= require nprogress-turbolinks
 
 //= require Chart.bundle.min
 //= require jquery-ui/draggable
-//= require bootstrap-sprockets
-//= require jquery_ujs
 //= require turbolinks
 //= require jquery.slimscroll
 //= require app

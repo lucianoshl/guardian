@@ -20,8 +20,14 @@ class Report
 
   field :full_pillage, type: Boolean
 
+  field :read, type: Boolean, default: false
+
   embeds_one :pillage, as: :resourcesable, class_name: Resource.to_s
   embeds_one :resources, as: :resourcesable, class_name: Resource.to_s
+
+
+
+  scope :important,->(){not_in(_status: [:win,:spy]).where(read: false).desc(:occurrence)}
 
   def erase screen
     screen.request(self.erase_url)

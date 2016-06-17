@@ -29,17 +29,10 @@
 						<th>Saque</th>
 					</tr>
 					<% 
-					map = {
-						win: 'https://brs1.tribalwars.com.br/graphic/dots/green.png',
-						win_lost: 'https://brs1.tribalwars.com.br/graphic/dots/yellow.png',
-						spy: 'https://brs1.tribalwars.com.br/graphic/dots/blue.png',
-						lost: 'https://brs1.tribalwars.com.br/graphic/dots/red.png',
-					}
-
 					@village.reports.desc(:occurrence).each do |report|
 						%>
 						<tr class="report-line" report-id="<%= report.id %>">
-							<td><img src="<%= map[report.status.to_sym] %>" alt="<%= report.status %>" /></td> 
+							<td><img src="<%= @report_enum[report.status.to_sym] %>" alt="<%= report.status %>" /></td> 
 							<td><%= report.occurrence.strftime("%d/%m - %H:%M:%S") %></td> 
 							<td><%= render_troops(report.target_troops,false) %></td> 
 							<td><%= render_buildings(report.target_buildings) %></td> 

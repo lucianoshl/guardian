@@ -78,19 +78,28 @@
           <!-- Menu Toggle Button -->
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-flag-o"></i>
-            <span class="label label-danger">9</span>
+            <% if (!Report.important.count.zero?) %>
+            <span class="label label-danger"><%= Report.important.count %></span>
+            <% end %>
           </a>
-          <ul class="dropdown-menu">
-            <li class="header">You have 9 tasks</li>
+          <ul class="dropdown-menu col-md-12">
+            <li class="header">Você tem <%= Report.important.count %> relatórios que precisam da sua atenção</li>
             <li>
               <!-- Inner menu: contains the tasks -->
               <ul class="menu">
                 <li><!-- Task item -->
-                  <a href="#">
+                <% Report.important.each do |report| %>
+                  <a href="/report/<%= report.id %>">
                     <!-- Task title and progress text -->
                     <h3>
-                      Design some buttons
-                      <small class="pull-right">20%</small>
+                      <img src="<%= @report_enum[report.status] %>" class="col-md-2"/>
+                      <div class="col-md-5">
+                        <%= render_troops(report.origin_troops,false) %>
+                      </div>
+                      <div class="col-md-5 text-right">
+                        <%= render_troops(Troop.new(report.origin_troops_losses)*-1,false) %>
+                      </div>
+                      <small class="pull-left"><%= report.occurrence.strftime("%d/%m %H:%M") %></small>
                     </h3>
                     <!-- The progress bar -->
                     <div class="progress xs">
@@ -100,11 +109,12 @@
                       </div>
                     </div>
                   </a>
+                  <% end %>
                 </li><!-- end task item -->
               </ul>
             </li>
             <li class="footer">
-              <a href="#">View all tasks</a>
+              <a href="/report/read_all">Marcar todos como visto</a>
             </li>
           </ul>
         </li>

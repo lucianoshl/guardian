@@ -1,7 +1,9 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+var villageClick = function(){
+  $('tr.village-line').click(function(){
+    window.location.href = '/village/' + $(this).attr('village-id');
+  });
+};
 
+$(document).ready(villageClick)
+$(document).on('page:load', villageClick);
 
-$('tr.village-line').click(function(){
-	window.location.href = '/village/' + $(this).attr('village-id');
-});

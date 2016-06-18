@@ -125,7 +125,9 @@ class Task::PillageAround < Task::Abstract
       return move_to_waiting_troops(nil)
     end
 
-    while (!troops.win?(last_report.moral,last_report.target_buildings["wall"]))
+    # night_bonus = (Time.zone.now.beginning_of_day..Time.zone.now.beginning_of_day+8.hours).cover?(Time.zone.now)
+
+    while (!troops.win?(last_report.moral,last_report.target_buildings["wall"],false))
       begin
         troops = troops.upgrade(@place.units - troops,total_resources)
       rescue ImpossibleUpgrade => e

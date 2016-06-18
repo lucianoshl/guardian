@@ -94,3 +94,15 @@ class Array
     partial.compact
   end
 end
+
+class Time
+  def in_sleep?
+    interval = 8.hours
+    offset_from_zero = 2.hours
+
+    init = Time.zone.now.beginning_of_day + offset_from_zero
+    endd = init + interval
+    binding.pry
+    # (init..end).cover?(self)
+  end
+end

@@ -21,6 +21,15 @@ class Troop
     result.instance_values.values.select{|a| a < 0}.empty?
   end
 
+  def slow_unit
+    self.instance_values.select{|unit,qte| qte > 0}.keys.map{|a| Unit.get(a) }.sort{|a,b| a.speed <=> b.speed }.first
+  end
+
+  def travel_time origin,target
+    slow_unit.square_per_minutes * origin.distance(target)
+    binding.pry
+  end
+
   def distribute amount
     troops = self.clone.instance_values
     result = {}
@@ -37,11 +46,12 @@ class Troop
     return Troop.new(result)
   end
 
-  def win?(moral,wall)
+  def win?(moral,wall,night_bonus)
     parameters = {}
     parameters[:luck] = '-25'
     parameters[:def_wall] = wall
     parameters[:moral] = moral || 0
+    parameters[:night] = 'on' if (night_bonus)
     self.instance_values.each do |unit, qte|
       parameters["att_#{unit}"] = qte.to_s
     end

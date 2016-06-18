@@ -13,4 +13,8 @@ class Unit
 			Unit.where(name:name).first
 		end
 	end
+
+	def square_per_minutes
+		(1 / (speed * 60)).round(2)
+	end
 end

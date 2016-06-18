@@ -102,7 +102,6 @@ class Time
 
     init = Time.zone.now.beginning_of_day + offset_from_zero
     endd = init + interval
-    binding.pry
-    # (init..end).cover?(self)
+    (init..end).cover?(self)
   end
 end

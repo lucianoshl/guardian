@@ -12,7 +12,11 @@ RSpec.describe Screen::ReportView, type: :model do
   end
 
   it "Place" do
-    Screen::Place.new( @params )
+    place = Screen::Place.new( @params )
+    # target = Village.all.to_a[2]
+    # origin = Village.my.first
+    # place.send_attack(origin,target,Troop.new(spy: 5))
+    # binding.pry
   end
 
   it "ReportList" do

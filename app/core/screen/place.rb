@@ -61,6 +61,9 @@ class Screen::Place < Screen::Basic
     error = confirm_page.search('.error_box')
     return if error.empty?
     msg = error.text.strip
+
+    return if msg.empty?
+
     if (!msg.match(/A proteção termina /).nil?)
       raise NewbieProtectionException.new(msg.scan(/termina (.*)\./).first.first.parse_datetime)
     end
@@ -76,11 +79,7 @@ class Screen::Place < Screen::Basic
     if (!msg.match(/Alvo não existe/).nil?)
       raise DeletedPlayerException.new
     end
-
     
-
-    
-
     raise Exception.new(msg)
     
   end

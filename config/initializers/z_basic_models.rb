@@ -6,9 +6,9 @@ end
 user = User.where(name: ENV["TW_USER"]).first
 if (user.player.nil?)
 
-	player_id = Mechanize.new.get("https://#{user.world}.tribalwars.com.br/guest.php?screen=ranking&mode=player&name=#{user.name}").body.scan(/screen=info_player.*?id=(\d+)/).first.first.to_i
+	player_id = Mechanize.my.get("https://#{user.world}.tribalwars.com.br/guest.php?screen=ranking&mode=player&name=#{user.name}").body.scan(/screen=info_player.*?id=(\d+)/).first.first.to_i
 
-	player_info_page = Mechanize.new.get("https://#{user.world}.tribalwars.com.br/guest.php?screen=info_player&id=#{player_id}")
+	player_info_page = Mechanize.my.get("https://#{user.world}.tribalwars.com.br/guest.php?screen=info_player&id=#{player_id}")
 
 	x,y = player_info_page.body.scan(/\d{3}\|\d{3}/).first.split("|").map(&:to_i)
 

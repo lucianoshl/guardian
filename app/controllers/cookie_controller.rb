@@ -1,7 +1,7 @@
 class CookieController < ApplicationController
   def latest
     url = "https://#{User.current.world}.tribalwars.com.br/game.php?screen=place"
-    page = Mechanize.new.add_cookies(Cookie.latest).get(url)
+    page = Mechanize.my.add_cookies(Cookie.latest).get(url)
 
     if (!Cookie.is_logged?(page))
       Cookie.do_login

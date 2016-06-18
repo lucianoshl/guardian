@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Screen::ReportView, type: :model do
 
   before(:all) do
+    Cookie.all.delete
     @params = {vilage: Village.my.first.vid}
   end
 

@@ -20,7 +20,7 @@ class Partner
     Rails.cache.fetch("#{url}-for-#{count}", expires_in: 1.minute) do
       (all.to_a.map(&:host).map do |base| 
         begin
-          YAML.load(Mechanize.new.get("#{base}#{url}").body)
+          YAML.load(Mechanize.my.get("#{base}#{url}").body)
         rescue
           nil
         end

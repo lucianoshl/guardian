@@ -77,7 +77,7 @@ class Screen::Anonymous
 
   def client
     if (@client.nil?)
-      @client = Mechanize.new do|a|
+      @client = Mechanize.my do|a|
         log = Logger.new "/tmp/info.tmp"
         log.level = Logger::INFO
       end

@@ -52,7 +52,7 @@ class Mechanize
 
     def self.my
       m = Mechanize.new
-      m.user_agent_alias = 'iPhone'
+      # m.user_agent_alias = 'iPhone'
       m
     end
 end

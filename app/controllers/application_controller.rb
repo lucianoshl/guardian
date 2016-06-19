@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
       win: 'https://brs1.tribalwars.com.br/graphic/dots/green.png',
       win_lost: 'https://brs1.tribalwars.com.br/graphic/dots/yellow.png',
       spy: 'https://brs1.tribalwars.com.br/graphic/dots/blue.png',
+      spy_lost: 'https://brs1.tribalwars.com.br/graphic/dots/red_blue.png',
       lost: 'https://brs1.tribalwars.com.br/graphic/dots/red.png',
     } 
   end

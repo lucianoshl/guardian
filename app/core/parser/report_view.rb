@@ -16,6 +16,7 @@ class Parser::ReportView < Parser::Basic
       green: "win",
       yellow: "win_lost",
       red: "lost",
+      red_blue: "spy_lost",
       error: "unknown"
     }
 

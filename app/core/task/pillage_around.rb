@@ -96,7 +96,7 @@ class Task::PillageAround < Task::Abstract
       return state_send_recognition
     end
 
-    if (last_report.status == :lost)
+    if (last_report.status.to_s.include?("lost"))
       return move_to_has_troops
     end
 

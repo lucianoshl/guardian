@@ -28,7 +28,10 @@ RSpec.describe Screen::ReportView, type: :model do
   end
 
   it "Simulator" do
+    Rails.cache.clear
     Screen::Simulator.new( @params )
+
+    expect(Troop.new(axe: 1).win?(100,0,false)).to equal(false)
   end
 
   it "StatsOwn" do

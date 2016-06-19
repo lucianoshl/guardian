@@ -17,7 +17,7 @@ class CookieController < ApplicationController
   end
 
   def remove_mobile list
-    # list.select{|a| a.name != "mobile" }
+    list.select{|a| a.name != "mobile" }
     list
   end
 end

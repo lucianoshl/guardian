@@ -24,7 +24,7 @@ RSpec.describe Screen::ReportView, type: :model do
   end
 
   it "ReportView" do
-    report = Screen::ReportView.new(view: 16750852)3
+    report = Screen::ReportView.new(view: 16750852)
   end
 
   it "Simulator" do

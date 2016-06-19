@@ -14,7 +14,7 @@ class User
     world = ENV["TW_WORLD"]
 
     if ([password,world,username].compact.size != 3)
-      raise Exception.new("Invalid user config")
+      raise Exception.new("Invalid user config TW_USER=#{ENV["TW_USER"]} TW_PASSWORD=#{ENV["TW_PASSWORD"]} TW_WORLD=#{ENV["TW_WORLD"]}")
     end
 
     user = User.new(name: username, world: world, password: password )

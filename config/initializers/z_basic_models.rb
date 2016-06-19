@@ -21,7 +21,6 @@ end
 if (Unit.count.zero?)
 	screen = Screen::Place.new
 	raw_screen = screen.request("https://#{User.current.world}.tribalwars.com.br/game.php?screen=unit_info") 
-	binding.pry
 	json = JSON.parse(raw_screen.body.scan(/UnitPopup.unit_data = ({.*})/).first.first)
 
 	json.map do |key,value|

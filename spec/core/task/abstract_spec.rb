@@ -7,7 +7,7 @@ RSpec.describe Task::PillageAround, type: :model do
 
 
   it "logout" do
-    Task::Logout.new.test_local
+    # Task::Logout.new.test_local
   end
 
 

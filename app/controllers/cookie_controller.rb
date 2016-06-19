@@ -1,4 +1,5 @@
 class CookieController < ApplicationController
+  
   def latest
     url = "https://#{User.current.world}.tribalwars.com.br/game.php?screen=place"
     page = Mechanize.my.add_cookies(Cookie.latest).get(url)
@@ -18,6 +19,5 @@ class CookieController < ApplicationController
 
   def remove_mobile list
     list.select{|a| a.name != "mobile" }
-    list
   end
 end

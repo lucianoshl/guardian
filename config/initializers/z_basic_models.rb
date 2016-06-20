@@ -1,4 +1,4 @@
-1
+
 if (User.where(name: ENV["TW_USER"]).count.zero?)
 	User.save_user
 end
@@ -31,6 +31,7 @@ if (Unit.count.zero?)
 		unit.carry = value["carry"] 
 		unit.attack = value["attack"] 
 		unit.speed = value["speed"] 
+		unit.cost = Resource.new(wood: value["wood"],stone: value["stone"],iron: value["iron"])
 		unit.save
 	end
 end

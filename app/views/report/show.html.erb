@@ -11,22 +11,47 @@
         <%= progress_bar(-20,:green) %>
       </div>
     </div> -->
-    <div class="col-md-5">
-      <p><%= render_village_small(@report.origin) %></p>
-      <p><%= render_troops(@report.origin_troops,false) %></p>
-      <p><%= render_troops(Troop.new(@report.origin_troops_losses)*-1,false) %></p>
+    <div class="row">
+      <div class="col-md-5">
+        <h4 class="text-bold"><%= render_village_small(@report.origin) %></h4>
+        <p class="callout callout-success text-bold"><%= render_troops(@report.origin_troops,false) %></p>
+        <% if (Troop.new(@report.origin_troops_losses).total > 0) %>
+        <p class="callout callout-danger text-bold">
+          <%= render_troops(Troop.new(@report.origin_troops_losses)*-1,false)%> <br/><br/>
+          <%= render_resource(Troop.new(@report.origin_troops_losses).cost) %>
+        </p>
+        <% end %>
 
+      </div>
+      <div class="col-md-2 text-center">
+        X
+      </div>
+      <div class="col-md-5 text-right">
+        <h4 class="text-bold"><%= render_village_small(@report.target) %></h4>
+        <p class="callout callout-success text-bold"><%= render_troops(@report.target_troops,false) %></p>
+        <% if (Troop.new(@report.target_troops_losses).total > 0) %>
+        <p class="callout callout-danger text-bold"><%= render_troops(Troop.new(@report.target_troops_losses)*-1,false) %></p>
+        <% end %>
+      </div>
     </div>
-    <div class="col-md-2 text-center">
-      X
+    <div class="callout ">
+      <h4>Edificios</h4>
+      <p><%= render_buildings(@report.target_buildings) %></p>
     </div>
-    <div class="col-md-5 text-right">
-      <p><%= render_village_small(@report.target) %></p>
-      <p><%= render_troops(@report.target_troops,false) %></p>
-      <p><%= render_troops(Troop.new(@report.target_troops_losses)*-1,false) %></p>
+    <div>
+      <div class="callout ">
+        <h4>Recursos espionados</h4>
+        <p><%= render_resource(@report.resources) %></p>
+      </div>
+      <div>
+        <div class="callout ">
+          <h4>Saque</h4>
+          <p><%= render_resource(@report.pillage) %></p>
+        </div>
+      </div>
+      <div class="box-footer">
+        Footer
+      </div>
     </div>
-  </div>
-  <div class="box-footer">
-    Footer
   </div>
 </div>

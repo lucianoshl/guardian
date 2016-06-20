@@ -15,13 +15,11 @@ class Village
   has_many :reports , inverse_of: 'target' 
 
   belongs_to :player
-  
-  def self.clean_all_states
-    Village.all.map do |v| 
-      v.state = nil;
-      v.next_event = nil
-      v.save
-    end
+
+  def clean_state
+      self.state = nil;
+      self.next_event = nil
+      self.save
   end
 
   def distance other
@@ -60,6 +58,10 @@ class Village
 
   def self.my
     where(player: User.current.player)
+  end
+  
+  def self.clean_all_states
+    Village.all.map(&:clean_state)
   end
 
 end

@@ -8,6 +8,8 @@ class Unit
 	field :attack, type: Integer 
 	field :speed, type: Float
 
+	embeds_one :cost, as: :resourcesable, class_name: Resource.to_s
+
 	def self.get name
 		Rails.cache.fetch("unit_#{name}") do
 			Unit.where(name:name).first

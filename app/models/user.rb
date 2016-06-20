@@ -25,7 +25,7 @@ class User
 
   def self.current
     username = ENV["TW_USER"] || "default"
-    Rails.cache.fetch("user_#{username}2") do
+    Rails.cache.fetch("user_#{username}") do
       User.where(name: username).first 
     end
   end

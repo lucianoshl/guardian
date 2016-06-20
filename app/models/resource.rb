@@ -30,4 +30,21 @@ class Resource
 
     new wood: wood, stone: stone, iron: iron
   end
+
+  def *(other)
+    result = self.clone
+    result.wood *= other
+    result.stone *= other
+    result.iron *= other
+    return result
+  end
+
+  def +(other)
+    result = self.clone
+    result.wood += other.wood
+    result.stone += other.stone
+    result.iron += other.iron
+    return result
+  end
+
 end

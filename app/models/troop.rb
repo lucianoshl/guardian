@@ -107,6 +107,14 @@ class Troop
     return total
   end
 
+  def cost
+    result = Resource.new(wood:0,stone:0,iron:0)
+    self.instance_values.each do |unit, qte|
+      result += Unit.get(unit).cost*qte
+    end
+    return result
+  end
+
 
   def -(other)
     result = self.clone

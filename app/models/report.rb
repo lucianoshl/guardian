@@ -37,4 +37,17 @@ class Report
     (Troop.new(target_troops) - Troop.new(target_troops_losses)).total  > 0
   end
 
+  def hour_production
+      production = lambda do |level| 
+        return 5 if (level.zero?)
+        (30*1.163118 ** (level - 1)).ceil * 2
+      end
+      
+      total_production_per_hour = 0
+      total_production_per_hour += production.call(self.target_buildings["wood"] || 0)
+      total_production_per_hour += production.call(self.target_buildings["stone"] || 0)
+      total_production_per_hour += production.call(self.target_buildings["iron"] || 0)  
+      total_production_per_hour.to_f
+  end
+
 end

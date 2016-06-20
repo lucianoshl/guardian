@@ -36,6 +36,10 @@ class Village
     return [x,y].join('|')
   end
 
+  def predict_production(resources)
+    resources/self.reports.not_in(target_buildings: [nil]).desc(:occurrence).first.hour_production
+  end
+
   def self.pillage_candidates
     threshold = User.current.player.points * 0.6
 

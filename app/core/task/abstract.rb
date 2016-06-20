@@ -56,7 +56,7 @@ class Task::Abstract
     end
     
     if (self.class._run_daily)
-      self.class.new.delay(run_at: Time.zone.now.beginning_of_day + self.class._run_daily.hours).execute
+      self.class.new.delay(run_at: Time.zone.now.beginning_of_day + 1.day + self.class._run_daily.hours).execute
     elsif (self.class._performs_to)
       self.class.new.delay(run_at: Time.zone.now + self.class._performs_to).execute
     elsif (result.class == DateTime) 

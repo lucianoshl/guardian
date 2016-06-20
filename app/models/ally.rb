@@ -6,5 +6,7 @@ class Ally
   field :points, type: Integer
 
   has_many :players
+  has_many :partners, class_name: Ally.to_s
+  belongs_to :partners_r, class_name: Ally.to_s
 
 end

@@ -46,7 +46,8 @@ class Village
     ally = User.current.player.ally
     
     if (!ally.nil?)
-      ids = ally.players.map(&:villages).flatten.map(&:vid)
+      partners_villages = ally.partners.map(&:players).flatten
+      ids = partners_villages.concat(ally.players).map(&:villages).flatten.map(&:vid)
       self.in(vid: ids).update_all(next_event: nil,state: :ally)
     end
 

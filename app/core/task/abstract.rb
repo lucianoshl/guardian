@@ -1,7 +1,11 @@
 class Task::Abstract
 
   class << self
-    attr_accessor :_performs_to,:_in_development,:_sleep
+    attr_accessor :_performs_to,:_in_development,:_sleep,:_run_daily
+  end
+
+  def self.run_daily hour
+    self._run_daily = hour
   end
 
   def self.sleep? active
@@ -51,7 +55,9 @@ class Task::Abstract
       result = self.run
     end
     
-    if (self.class._performs_to)
+    if (self.class._run_daily)
+      self.class.new.delay(run_at: Time.zone.now.beginning_of_day + self.class._run_daily.hours).execute
+    elsif (self.class._performs_to)
       self.class.new.delay(run_at: Time.zone.now + self.class._performs_to).execute
     elsif (result.class == DateTime) 
       self.class.new.delay(run_at: result).execute

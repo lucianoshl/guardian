@@ -38,4 +38,9 @@ RSpec.describe Screen::ReportView, type: :model do
     Screen::StatsOwn.new( @params )
   end
 
+  it "AllyContracts" do
+    screen = Screen::AllyContracts.new( @params )
+    expect(screen.allies.size >= 0).to be_truthy
+  end
+
 end

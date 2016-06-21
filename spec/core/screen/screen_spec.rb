@@ -24,7 +24,9 @@ RSpec.describe Screen::ReportView, type: :model do
   end
 
   it "ReportView" do
-    report = Screen::ReportView.new(view: 16750852)
+    report_s = Screen::ReportView.new(view: 16750852)
+    report_s.report.has_troops?
+    # binding.pry
   end
 
   it "Simulator" do

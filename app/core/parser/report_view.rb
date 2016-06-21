@@ -41,6 +41,9 @@ class Parser::ReportView < Parser::Basic
 
       report.target_troops = parse_report_troops(@page.search("#attack_info_def tr:eq(3) tr")[1]) 
       report.target_troops_losses = parse_report_troops(@page.search("#attack_info_def tr:eq(3) tr")[2])
+      if (@page.search('#attack_spy_away').size > 0)
+        report.target_troops_away = parse_report_troops(@page.search('#attack_spy_away'))
+      end
 
       pillage,total = @page.search("#attack_results").text.scan(/(\d+)\/(\d+)/).flatten.map(&:to_i)
 

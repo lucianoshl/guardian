@@ -15,6 +15,7 @@ class Report
 
   field :target_troops, type: Hash
   field :target_troops_losses, type: Hash
+  field :target_troops_away, type: Hash
   
   field :target_buildings, type: Hash
 
@@ -32,7 +33,7 @@ class Report
   end
 
   def has_troops?
-    (Troop.new(target_troops) - Troop.new(target_troops_losses)).total  > 0
+     (Troop.new(target_troops) - Troop.new(target_troops_losses) + Troop.new(target_troops_away)).total > 0
   end
 
   def hour_production

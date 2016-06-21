@@ -6,7 +6,8 @@ class Task::PlayerMonitor < Task::Abstract
 
   def run(itens=nil)
     my_village = itens || Village.my.first
-    targets = Screen::Map.neighborhood(my_village,10).villages.flatten.uniq
+    distance = 12
+    targets = Screen::Map.neighborhood(my_village,distance).villages.flatten.uniq
 
     saved = Village.in(vid: targets.map(&:vid)).to_a.map{|v| [v.vid,v] }.to_h
 
@@ -14,7 +15,7 @@ class Task::PlayerMonitor < Task::Abstract
     save_players(targets)
 
     targets = targets.select do |a|
-      my_village.distance(a) <= 10
+      my_village.distance(a) <= distance
     end
 
     targets = targets.pmap do |item|

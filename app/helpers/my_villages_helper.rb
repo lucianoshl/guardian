@@ -1,0 +1,2 @@
+module MyVillagesHelper
+end

@@ -10,6 +10,8 @@ class Parser::Basic < Parser::Abstract
     screen.player_id = json["player"]["id"].to_i
 
     screen.logout_url = @page.search('a[href*=logout]').first.attr('href')
+    screen.resources = Resource.new(wood: json["village"]["wood"], stone: json["village"]["stone"], iron: json["village"]["iron"])
+    screen.storage_size = json["village"]["storage_max"]
   end
 
 end

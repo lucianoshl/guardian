@@ -35,6 +35,9 @@
       <li class="<%= request.path == '/' ? 'active' : nil %>">
         <a href="/"><i class='fa fa-dashboard'></i> <span>Visão geral</span></a>
       </li>
+      <li class="<%= active_route?('my_villages') %>">
+        <a href="/my_villages"><i class='fa fa-home'></i> <span>Aldeias</span></a>
+      </li>
       <li class="<%= active_route?('task') %>">
         <a href="<%= task_index_path %>"><i class='fa fa-clock-o'></i> <span>Tarefas</span></a>
       </li>

@@ -4,6 +4,7 @@ class Config
   field :name, type: String
   field :section, type: String
   field :_object, type: String
+  field :clazz, type: String
 
   def self.method_missing(m, *args, &block) 
     return Config.new(section: m)
@@ -18,6 +19,7 @@ class Config
   end  
 
   def value=(val)
+    self._object = val.class
     self._object = YAML.dump(val) if (!val.nil?)
   end
 

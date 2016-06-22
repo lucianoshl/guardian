@@ -38,20 +38,21 @@
       <h4>Edificios</h4>
       <p><%= render_buildings(@report.target_buildings) %></p>
     </div>
-    <div>
-      <div class="callout ">
-        <h4>Recursos espionados</h4>
-        <p><%= render_resource(@report.resources) %></p>
-      </div>
-      <div>
-        <div class="callout ">
-          <h4>Saque</h4>
-          <p><%= render_resource(@report.pillage) %></p>
-        </div>
-      </div>
-      <div class="box-footer">
-        Footer
-      </div>
+    <div class="col-md-6 callout">
+      <h4>Recursos espionados</h4>
+      <p><%= render_resource(@report.resources) %></p>
+    </div>
+    <div class="col-md-6 callout">
+      <h4>Saque</h4>
+      <p><%= render_resource(@report.pillage) %></p>
+    </div>
+    <div class="col-md-6 callout">
+      <h4>Sorte</h4>
+      <p><%= @report.luck %>%</p>
+    </div>
+    <div class="col-md-6 callout">
+      <h4>Moral</h4>
+      <p><%= @report.moral %>%</p>
     </div>
   </div>
 </div>

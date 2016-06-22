@@ -44,9 +44,9 @@ class Task::Abstract
 
   def execute
     info "Running #{self.class}"
-    init = Time.zone.now.beginning_of_day + 4.hours
-    endd = init + 6.hours
-    disable = false
+    init = Time.zone.now.beginning_of_day + Config.sleep_mode.start(4).hours
+    endd = init + Config.sleep_mode.duration(6).hours
+    disable = Config.sleep_mode.enabled(true)
  
     if ((init..endd).cover?(Time.zone.now) && self.class._sleep != false && !disable)
       self.class.new.delay(run_at: endd).execute

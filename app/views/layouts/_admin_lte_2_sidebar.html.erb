@@ -35,19 +35,22 @@
       <li class="<%= request.path == '/' ? 'active' : nil %>">
         <a href="/"><i class='fa fa-dashboard'></i> <span>Visão geral</span></a>
       </li>
-      <li class="<%= active_route?('my_villages') %>">
+      <li class="<%= active_route?('/my_villages') %>">
         <a href="/my_villages"><i class='fa fa-home'></i> <span>Aldeias</span></a>
       </li>
-      <li class="<%= active_route?('task') %>">
+      <li class="<%= active_route?('/task') %>">
         <a href="<%= task_index_path %>"><i class='fa fa-clock-o'></i> <span>Tarefas</span></a>
       </li>
-      <li class="treeview <%= active_route?('village') %>">
+      <li class="treeview <%= active_route?('/village') %>">
         <a href="#"><i class='fa fa-dot-circle-o'></i></i> <span>Alvos</span> <i class="fa fa-angle-left pull-right"></i></a>
         <ul class="treeview-menu">
           <li><a href="<%= village_index_path %>"><i class="fa fa-circle-o"></i> Todos</a></li>
           <li><a href="<%= village_index_path %>?threat=all"><i class="fa fa-circle-o"></i> Ameaças</a></li>
           <li><a href="<%= village_index_path %>?farms=all"><i class="fa fa-circle-o"></i> Farms</a></li> 
         </ul>
+      </li>
+      <li class="<%= active_route?('/config') %>">
+        <a href="/config"><i class='fa fa-gear'></i> <span>Configurações</span></a>
       </li>
     </ul><!-- /.sidebar-menu -->
   </section>

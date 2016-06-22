@@ -6,7 +6,7 @@ class Task::PlayerMonitor < Task::Abstract
 
   def run(itens=nil)
     my_village = itens || Village.my.first
-    distance = 12
+    distance = Config.pillager.distance(10) 
     targets = Screen::Map.neighborhood(my_village,distance).villages.flatten.uniq
 
     saved = Village.in(vid: targets.map(&:vid)).to_a.map{|v| [v.vid,v] }.to_h

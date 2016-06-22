@@ -1,8 +1,4 @@
 class Task::PillageAround < Task::Abstract
-#
-  # in_development
-
-  # sleep? false
 
   def run
 
@@ -100,9 +96,9 @@ class Task::PillageAround < Task::Abstract
       return move_to_has_troops
     end
 
-    expire_report_in = 3.hours
+    expire_report_in = Config.pillager.report_expiration_time(3).hours
 
-    resource_min = 100
+    resource_min = Config.pillager.min_resource_to_pillage(100)  
 
     if (last_report.resources.nil? || (Time.zone.now - last_report.occurrence)/expire_report_in > 1)
       return state_send_recognition

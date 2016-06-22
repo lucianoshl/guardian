@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'config/index'
+
   get 'report/read_all'
 
   get 'task/run_now/:id' => 'task#run_now'

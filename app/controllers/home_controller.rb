@@ -14,7 +14,7 @@ class HomeController < ApplicationController
       ]
     }
     @opts = {
-      height: 200,
+      height: 100,
       legend: {
         display: false
       },

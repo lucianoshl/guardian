@@ -37,7 +37,7 @@ class Screen::Anonymous
       screen_attrs = request_and_parse
     else
       merge(Rails.cache.fetch(gen_url,cache_config) do
-        puts "cache miss #{gen_url}"
+        # puts "cache miss #{gen_url}"
         values = request_and_parse
         values.delete("client")
         values

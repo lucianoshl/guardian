@@ -10,15 +10,10 @@ class Unit
 
 	embeds_one :cost, as: :resourcesable, class_name: Resource.to_s
 
-	@@memory_cache = {}
-
 	def self.get name
-		if (@@memory_cache[name].nil?)
-			@@memory_cache = Rails.cache.fetch("unit_#{name}") do
-				Unit.where(name:name).first
-			end
+		Rails.cache.fetch("unit_#{name}") do
+			Unit.where(name:name).first
 		end
-		return @@memory_cache[name]
 	end
 
 	def square_per_minutes

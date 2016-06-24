@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Screen::ReportView, type: :model do
+RSpec.describe Screen, type: :model do
 
   before(:all) do
     # Cookie.all.delete
@@ -24,8 +24,8 @@ RSpec.describe Screen::ReportView, type: :model do
   end
 
   it "ReportView" do
-    report_s = Screen::ReportView.new(view: 16750852)
-    report_s.report.has_troops?
+    # report_s = Screen::ReportView.new(view: 16750852)
+    # report_s.report.has_troops?
     # binding.pry
   end
 

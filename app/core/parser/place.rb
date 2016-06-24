@@ -17,8 +17,6 @@ class Parser::Place < Parser::Basic
     screen.commands = parse_commands(screen,@page.search('a[href*=own]'))
     screen.incomings = parse_commands(screen,@page.search('a[href*=other]').select{|a| !a.to_xml.include?('support.png')}) 
     screen.supports = parse_commands(screen,@page.search('a[href*=other]').select{|a| a.to_xml.include?('support.png')})
-
-    binding.pry
     
   end
 

@@ -1,6 +1,6 @@
 class Screen::Basic < Screen::Logged
 
-  attr_accessor :player_id,:logout_url,:resources,:storage_size
+  attr_accessor :village,:player_id,:logout_url,:resources,:storage_size
 
   def logout
     _request(:get,"https://#{User.current.world}.tribalwars.com.br#{logout_url}")

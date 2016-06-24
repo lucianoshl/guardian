@@ -27,7 +27,7 @@ end
 
 class Screen::Place < Screen::Basic
 
-  attr_accessor :units,:commands,:incomings,:form,:unit_metadata
+  attr_accessor :units,:commands,:incomings,:supports,:form,:unit_metadata
 
   url screen: 'place'  
 

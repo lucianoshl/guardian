@@ -9,6 +9,8 @@ class Parser::Basic < Parser::Abstract
     json = JSON.parse(@page.body.scan(/TribalWars.updateGameData\(({.*})/).first.first)
     screen.player_id = json["player"]["id"].to_i
 
+    screen.village = Village.my.where(vid: json["village"]["id"]).first
+
     screen.logout_url = @page.search('a[href*=logout]').first.attr('href')
     screen.resources = Resource.new(wood: json["village"]["wood"], stone: json["village"]["stone"], iron: json["village"]["iron"])
     screen.storage_size = json["village"]["storage_max"]

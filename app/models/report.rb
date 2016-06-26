@@ -78,4 +78,18 @@ class Report
     return results[wall]
   end
 
+  def self.pillage_statistics
+    days = Report.distinct(:occurrence).map{|a| a.in_time_zone(Time.zone.name) }.map(&:beginning_of_day).uniq.sort - [Time.zone.now.beginning_of_day.to_time]
+    percents = days.map do |day|
+      Rails.cache.fetch("pillage_statistics_#{day}") do
+        itens = Report.gte(occurrence: day).lte(occurrence: day + 1.day).where(_status: :win).to_a
+        occurrences = Report.gte(occurrence: day).lte(occurrence: day + 1.day).map(&:occurrence)
+        percent = itens.select(&:full_pillage).size / itens.size.to_f
+        speed = occurrences.each_with_index.map{|a,i| (occurrences[i].to_i - occurrences[i-1].to_i) }.max/1.hour
+        [day,speed,percent]
+      end
+    end
+    # binding.pry
+  end
+
 end

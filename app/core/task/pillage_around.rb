@@ -78,7 +78,11 @@ class Task::PillageAround < Task::Abstract
 
   def state_waiting_partner
     last_report_partner =  Partner.last_report(@target)
-    binding.pry
+
+    if (@target.last_report.occurrence < last_report_partner.occurrence)
+      last_report_partner.save
+    end
+    
     state_send_command
   end 
 

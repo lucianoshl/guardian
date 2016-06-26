@@ -77,6 +77,8 @@ class Task::PillageAround < Task::Abstract
   end   
 
   def state_waiting_partner
+    last_report_partner =  Partner.last_report(@target)
+    binding.pry
     state_send_command
   end 
 
@@ -122,6 +124,8 @@ class Task::PillageAround < Task::Abstract
     end
 
     # night_bonus = (Time.zone.now.beginning_of_day..Time.zone.now.beginning_of_day+8.hours).cover?(Time.zone.now)
+
+    binding.pry
 
     while (!troops.win?(last_report.moral,last_report.target_buildings["wall"],false))
       begin

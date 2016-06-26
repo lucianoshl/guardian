@@ -80,4 +80,14 @@ class VillageController < ApplicationController
   def waiting_report
     render :text => Village.in(state: :waiting_report).to_a.to_yaml, :content_type => 'text/yaml'
   end
+
+  def last_report
+    village = Village.where(vid: params[:vid]).first
+    if (village.nil?)
+      render :text => nil.to_yaml, :content_type => 'text/yaml'
+      return
+    end
+    render :text => village.reports.desc(:occurrence).last.to_yaml, :content_type => 'text/yaml'
+  end
+
 end

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'config/index'
 
   get 'report/read_all'
+  get 'village/:vid/last_report' => 'village#last_report'
 
   get 'task/run_now/:id' => 'task#run_now'
 

@@ -87,7 +87,14 @@ class VillageController < ApplicationController
       render :text => nil.to_yaml, :content_type => 'text/yaml'
       return
     end
-    render :text => village.last_report.to_yaml, :content_type => 'text/yaml'
+
+    map = village.last_report.attributes
+    map["origin_vid"] = Village.find(map.delete("origin_id")).vid
+    map["target_vid"] = Village.find(map.delete("target_id")).vid
+    
+
+
+    render :text => map.to_yaml, :content_type => 'text/yaml'
   end
 
 end

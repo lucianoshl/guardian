@@ -19,7 +19,6 @@ class Parser::Main < Parser::Basic
       building.name = id
     end
 
-    # binding.pry
     # game_data = JSON.parse page.body.scan(/game_data = ({.*})/).first.first
 
     # all_buildings = game_data["village"]["buildings"]

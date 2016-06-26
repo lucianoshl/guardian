@@ -27,7 +27,6 @@ class Troop
 
   def travel_time origin,target
     slow_unit.square_per_minutes * origin.distance(target)
-    binding.pry
   end
 
   def distribute amount

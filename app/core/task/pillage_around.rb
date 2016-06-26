@@ -21,7 +21,7 @@ class Task::PillageAround < Task::Abstract
         target.delete
         next
       end
-      binding.pry if (_next_event.nil? ||  state.nil?)
+      raise Exception.new("state not returned _next_event or state") if (_next_event.nil? || state.nil?)
 
       @target.state = state
 
@@ -82,7 +82,7 @@ class Task::PillageAround < Task::Abstract
     if (@target.last_report.occurrence < last_report_partner.occurrence)
       last_report_partner.save
     end
-    
+
     state_send_command
   end 
 
@@ -94,7 +94,6 @@ class Task::PillageAround < Task::Abstract
     Screen::ReportView.load_all
     last_report = @target.last_report
     if (last_report.nil?)
-      binding.pry
       return state_send_recognition
     end
 
@@ -128,8 +127,6 @@ class Task::PillageAround < Task::Abstract
     end
 
     # night_bonus = (Time.zone.now.beginning_of_day..Time.zone.now.beginning_of_day+8.hours).cover?(Time.zone.now)
-
-    binding.pry
 
     while (!troops.win?(last_report.moral,last_report.target_buildings["wall"],false))
       begin

@@ -19,7 +19,7 @@ class Object
           date = scan(/em (\d+)\.(\d+)\./).flatten.concat([Time.now.year]).join('/').to_date
           hour = scan(/\d+\:\d+/).flatten.first
           result = Time.zone.parse("#{date} #{hour}")
-          binding.pry if result < Time.now
+          raise Exception.new("result < Time.now") if result < Time.now
           result =    result
       elsif scan(/... \d{1,2}, \d{4}/).size > 0 then
           result = Time.zone.parse self
@@ -29,7 +29,7 @@ class Object
           date = date.split('.').concat([Time.now.year]).join('/').to_date
           result = Time.zone.parse("#{date} #{hour}")
       else
-          binding.pry
+          raise Exception.new("unsupported parse_datetime date") 
       end
       result
   end

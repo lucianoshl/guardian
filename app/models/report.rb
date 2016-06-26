@@ -89,7 +89,6 @@ class Report
         [day,speed,percent]
       end
     end
-    # binding.pry
   end
 
 end

@@ -16,7 +16,6 @@ RSpec.describe Screen, type: :model do
     # target = Village.all.to_a[2]
     # origin = Village.my.first
     # place.send_attack(origin,target,Troop.new(spy: 5))
-    # binding.pry
   end
 
   it "ReportList" do
@@ -26,7 +25,6 @@ RSpec.describe Screen, type: :model do
   it "ReportView" do
     # report_s = Screen::ReportView.new(view: 16750852)
     # report_s.report.has_troops?
-    # binding.pry
   end
 
   it "Simulator" do

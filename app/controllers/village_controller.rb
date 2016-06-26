@@ -87,7 +87,7 @@ class VillageController < ApplicationController
       render :text => nil.to_yaml, :content_type => 'text/yaml'
       return
     end
-    render :text => village.reports.desc(:occurrence).last.to_yaml, :content_type => 'text/yaml'
+    render :text => village.last_report.to_yaml, :content_type => 'text/yaml'
   end
 
 end

@@ -78,7 +78,9 @@ class VillageController < ApplicationController
   end
 
   def waiting_report
-    render :text => Village.in(state: :waiting_report).to_a.to_yaml, :content_type => 'text/yaml'
+    result = Village.in(state: :waiting_report).gte(next_event: Time.zone.now - 10.minutes).to_a
+    result.each{ |a| a.points_history = nil }
+    render :text => result.to_yaml, :content_type => 'text/yaml'
   end
 
   def last_report

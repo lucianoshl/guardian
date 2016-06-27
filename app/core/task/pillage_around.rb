@@ -52,6 +52,19 @@ class Task::PillageAround < Task::Abstract
     end
   end
 
+  def equivalent_state state
+    state = state.to_s
+    equivalents = {}
+    equivalents['banned'] = 'send_command'
+    equivalents['waiting_troops'] = 'send_command'
+    equivalents['newbie_protection'] = 'send_command'
+    equivalents['waiting_resources'] = 'send_command'
+    equivalents['shared_connection'] = 'send_command'
+    equivalents['trops_without_spy'] = 'send_command'
+    equivalents['has_troops'] = 'send_command'
+    return equivalents[state];
+  end
+
   def state_banned
     state_send_command
   end
@@ -76,6 +89,10 @@ class Task::PillageAround < Task::Abstract
     state_send_command
   end   
 
+  def state_has_troops
+    state_send_command
+  end 
+
   def state_waiting_partner
     last_report_partner =  Partner.last_report(@target)
 
@@ -83,10 +100,6 @@ class Task::PillageAround < Task::Abstract
       last_report_partner.save
     end
 
-    state_send_command
-  end 
-
-  def state_has_troops
     state_send_command
   end 
 

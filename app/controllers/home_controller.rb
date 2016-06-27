@@ -13,8 +13,22 @@ class HomeController < ApplicationController
         }
       ]
     }
+
+    info = Report.pillage_statistics
+
+    @graph_loot_eficiency = {
+      labels: info.map{|a| a.first.strftime("%d/%m") + " sleep="+a[1].to_s }, 
+      datasets: [
+        {
+          label: "Eficiência",
+          backgroundColor: "green",
+          borderColor: "rgba(220,220,220,1)",
+          data: info.map{|a| a.last}
+        }
+      ]
+    }
+
     @opts = {
-      height: 100,
       legend: {
         display: false
       },

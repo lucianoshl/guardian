@@ -89,8 +89,8 @@ class Report
         itens = Report.gte(occurrence: day).lte(occurrence: day + 1.day).where(_status: :win).to_a
         occurrences = Report.gte(occurrence: day).lte(occurrence: day + 1.day).map(&:occurrence)
         percent = itens.select(&:full_pillage).size / itens.size.to_f
-        speed = occurrences.each_with_index.map{|a,i| (occurrences[i].to_i - occurrences[i-1].to_i) }.max/1.hour
-        [day,speed,percent]
+        sleep = occurrences.each_with_index.map{|a,i| (occurrences[i].to_i - occurrences[i-1].to_i) }.max/1.hour
+        [day,sleep,percent]
       end
     end
   end

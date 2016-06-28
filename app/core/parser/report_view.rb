@@ -57,6 +57,13 @@ class Parser::ReportView < Parser::Basic
       if (!@page.search('#attack_spy_resources').empty?)
         report.resources = Resource.parse(@page.search('#attack_spy_resources td span[class!=grey]'))
       end
+
+      attack_result_itens = @page.search('#attack_results > tr')
+
+      if (attack_result_itens.size > 1 && attack_result_itens[1].text.scan(/ar.etes/).size == 1)
+        report.wall_destroyed = attack_result_itens[1].text.scan(/\d/).map(&:to_i)
+      end
+
     end
 
   end

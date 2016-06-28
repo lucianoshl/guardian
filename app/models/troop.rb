@@ -71,7 +71,7 @@ class Troop
 
     strong_order = troops.sort{|b,a| Unit.get(a[0]).attack <=> Unit.get(b[0]).attack }
 
-    weak_unit = strong_order.reverse.first.first
+    weak_unit = strong_order.reverse.select{|unit,qte| Unit.get(unit).carry > 0}.first.first
 
     alternatives.map do |unit,qte|
       if (weak_unit == unit || Unit.get(unit).attack <= Unit.get(weak_unit).attack)

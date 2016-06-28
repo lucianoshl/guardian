@@ -54,9 +54,10 @@ class Report
   end
 
   def rams_to_destroy_wall
-    wall = self.target_buildings["wall"]
+    wall = (self.target_buildings["wall"] || "0").to_i
 
     results = {}
+    results[0] = 0
     results[1] = 2 
     results[2] = 7
     results[3] = 13

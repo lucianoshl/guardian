@@ -33,6 +33,9 @@ class Task::Abstract
   end
 
   def test_local
+
+    return if (!["kerrigan"].include?(Socket.gethostname))
+
     loop {
       result = run
       sleep_for = result.to_time - Time.now

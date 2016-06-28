@@ -17,6 +17,10 @@
 					<dd><%= @village.state %></dd>
 					<dt>Próximo evento</dt>
 					<dd><%= @village.next_event.nil? ? nil : @village.next_event.strftime("%d/%m - %H:%M:%S") %></dd>
+					<dt>Ações</dt>
+					<dd>
+						<a class="btn btn-primary btn-ty" href="/village/<%= @village.id %>/reset">Reiniciar alvo</a>
+					</dd>
 				</dl>
 				<div class="col-md-6">
 					<%= line_chart @points_history_chart,@opts %>

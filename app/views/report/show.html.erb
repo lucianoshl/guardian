@@ -34,7 +34,7 @@
         <% end %>
       </div>
     </div>
-    <div class="callout ">
+    <div class="callout">
       <h4>Edificios</h4>
       <p><%= render_buildings(@report.target_buildings) %></p>
     </div>
@@ -54,5 +54,11 @@
       <h4>Moral</h4>
       <p><%= @report.moral %>%</p>
     </div>
+    <% if (Troop.new(@report.target_troops_away).total > 0) %>
+    <div class="callout">
+      <h4>Tropas fora</h4>
+      <p><%= render_troops(@report.target_troops_away,false) %></p>
+    </div>
+    <% end %>
   </div>
 </div>

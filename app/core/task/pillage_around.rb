@@ -141,6 +141,12 @@ class Task::PillageAround < Task::Abstract
 
     # night_bonus = (Time.zone.now.beginning_of_day..Time.zone.now.beginning_of_day+8.hours).cover?(Time.zone.now)
 
+    if (!@place.units.ram.nil? && @place.units.ram > 0)
+      rams = last_report.rams_to_destroy_wall
+      troops.ram = @place.units.ram < rams ? @place.units.ram : rams
+    end
+
+
     while (!troops.win?(last_report.moral,last_report.target_buildings["wall"],false))
       begin
         troops = troops.upgrade(@place.units - troops,total_resources)

@@ -78,7 +78,7 @@ class VillageController < ApplicationController
   end
 
   def waiting_report
-    result = Village.in(state: :waiting_report).gte(next_event: Time.zone.now - 10.minutes).to_a
+    result = Village.in(state: :waiting_report).gte(next_event: Time.zone.now).to_a
     result.each{ |a| a.points_history = nil }
     render :text => result.to_yaml, :content_type => 'text/yaml'
   end
@@ -94,9 +94,12 @@ class VillageController < ApplicationController
     map["origin_vid"] = Village.find(map.delete("origin_id")).vid
     map["target_vid"] = Village.find(map.delete("target_id")).vid
     
-
-
     render :text => map.to_yaml, :content_type => 'text/yaml'
+  end
+
+  def reset
+    Village.find(params["id"]).clean_state
+    redirect_to request.referer
   end
 
 end

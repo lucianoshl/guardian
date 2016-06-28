@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'report/read_all'
   get 'village/:vid/last_report' => 'village#last_report'
   get 'village/:id/reset' => 'village#reset'
+  get 'village/:id/send_recognition' => 'village#send_recognition'
 
   get 'task/run_now/:id' => 'task#run_now'
 

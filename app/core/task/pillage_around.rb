@@ -159,6 +159,12 @@ class Task::PillageAround < Task::Abstract
   end
 
   def send_attack troops
+
+    command = @place.has_command(@target)
+    if (!command.nil?)
+      return move_to_waiting_report(command)
+    end
+    
     begin
       command = @place.send_attack(@origin,@target,troops)
       return move_to_waiting_report(command)

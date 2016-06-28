@@ -35,6 +35,19 @@ class Object
   end
 end
 
+class Delayed::Job
+  def run_now(unlock=false)
+    self.run_at = Time.zone.now
+    self.attempts = 0
+    if (unlock)
+      self.locked_at = nil
+      self.locked_by = nil
+      self.last_error = nil
+    end
+    self.save
+  end
+end
+
 class Mechanize
     def inspect
         self.class.name

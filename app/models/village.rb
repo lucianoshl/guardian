@@ -38,6 +38,13 @@ class Village
     resources/self.reports.not_in(target_buildings: [nil]).desc(:occurrence).first.hour_production
   end
 
+  def move_to_state state
+    self.state = state
+    self.next_event = Time.zone.now
+    self.save
+    Delayed::Job.where(handler: /PillageAround/).first.run_now
+  end
+
   def self.pillage_candidates
     threshold = User.current.player.points * 0.6
 

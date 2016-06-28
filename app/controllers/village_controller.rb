@@ -102,4 +102,9 @@ class VillageController < ApplicationController
     redirect_to request.referer
   end
 
+  def send_recognition
+    Village.find(params["id"]).move_to_state("send_recognition")
+    redirect_to request.referer
+  end
+
 end

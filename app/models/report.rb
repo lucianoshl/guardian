@@ -2,6 +2,8 @@ class Report
   include Mongoid::Document
   include Mongoid::Enum
 
+
+
   field :erase_url, type: String
   enum :status, [:win, :lost, :win_lost, :spy, :error, :spy_lost ]
   belongs_to :origin, class_name: Village.to_s
@@ -24,6 +26,9 @@ class Report
   field :full_pillage, type: Boolean
 
   field :read, type: Boolean, default: false
+
+  field :origin_flag, type: String
+  field :target_flag, type: String
 
   embeds_one :pillage, as: :resourcesable, class_name: Resource.to_s
   embeds_one :resources, as: :resourcesable, class_name: Resource.to_s

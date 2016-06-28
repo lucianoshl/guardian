@@ -64,6 +64,14 @@ class Parser::ReportView < Parser::Basic
         report.wall_destroyed = attack_result_itens[1].text.scan(/\d/).map(&:to_i)
       end
 
+      if (!@page.search("#attack_info_att > tr")[3].nil?)
+        report.origin_flag =  @page.search("#attack_info_att > tr")[3].search('td:last').text.strip
+      end
+
+      if (!@page.search("#attack_info_def > tr")[3].nil?)
+        report.target_flag =  @page.search("#attack_info_def > tr")[3].search('td:last').text.strip
+      end
+
     end
 
   end

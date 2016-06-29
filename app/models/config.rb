@@ -13,7 +13,7 @@ class Config
   def method_missing(m, *args, &block) 
     conf = self.class.where(section: section,name: m).first || Config.new(section: section,name: m)
     
-    conf.value = conf.value || args.first
+    conf.value = conf.value.nil? ? args.first : conf.value
     conf.save
     conf.value
   end  

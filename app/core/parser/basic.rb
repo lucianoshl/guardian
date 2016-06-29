@@ -14,6 +14,11 @@ class Parser::Basic < Parser::Abstract
     screen.logout_url = @page.search('a[href*=logout]').first.attr('href')
     screen.resources = Resource.new(wood: json["village"]["wood"], stone: json["village"]["stone"], iron: json["village"]["iron"])
     screen.storage_size = json["village"]["storage_max"]
+
+    screen.websocket_config = @page.body.scan(/Connection.connect\((.*?)\)/).flatten.first.gsub("'",'').split(', ')
+
+    screen.gamejs_path = @page.body.scan(/http.+mobile.js/).first.gsub('mobile','game')
+
   end
 
 end

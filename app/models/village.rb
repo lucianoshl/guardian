@@ -45,6 +45,15 @@ class Village
     Delayed::Job.where(handler: /PillageAround/).first.run_now
   end
 
+  def db_merge
+    merged = self.class.where(vid: self.vid).first || Village.new
+    attrs = self.attributes.clone
+    attrs.delete('_id')
+    merged.attributes = attrs
+    merged.save
+    return merged
+  end
+
   def self.pillage_candidates
     threshold = User.current.player.points * 0.6
 

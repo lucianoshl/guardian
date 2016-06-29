@@ -22,7 +22,15 @@ class Parser::ReportView < Parser::Basic
     }
 
     report.status = enum[color.to_sym] || "error"
-    report.target = Village.find_by(vid: @page.search('#attack_info_def .village_anchor').attr('data-id').value)
+
+    target_id = @page.search('#attack_info_def .village_anchor').attr('data-id').value
+
+    begin
+      report.target = Village.find_by(vid: target_id)
+    rescue Mongoid::Errors::DocumentNotFound => e
+      page = Screen::InfoVillage.new(id: target_id)
+      report.target = page.village.db_merge
+    end
     report.origin = Village.find_by(vid: @page.search('#attack_info_att .village_anchor').attr('data-id').value)
 
     report.occurrence = @page.search('img[src*="dots"]').first.parents(3).search('tr')[1].search('td:last').text.parse_datetime

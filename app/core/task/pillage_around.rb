@@ -1,18 +1,33 @@
 class Task::PillageAround < Task::Abstract
 
-  def run
+  def closer_villages
+    @my_villages.select{|a| a.distance(@target) <= Config.pillager.distance(10) }.sort do |a,b|
+      a.distance(@target) <=> b.distance(@target)
+    end
+  end
 
+  def get_place village
+    id = village.vid
+    if (@places[id].nil?)
+      @places[id] = Screen::Place.new(id: village.vid)
+    end
+    return @places[id]
+  end
+
+  def run
     candidates = Village.pillage_candidates.any_of({:next_event => nil}, {:next_event.lte => Time.zone.now}).asc(:next_event)
 
+    @my_villages = Village.my.to_a
 
-    @origin = Village.my.first
-    @place = Screen::Place.new(village: @origin.vid)
+    @places = {}
 
     info "Running for #{candidates.size} candidates"
     candidates.each do |target|
-      current_state =target.state || 'send_command'
+      current_state = target.state || 'send_command'
 
       @target = target
+      @origin_candidates = closer_villages
+      @origin = @origin_candidates.shift
 
       begin
         info("Running state #{current_state} for #{@target}")
@@ -34,7 +49,7 @@ class Task::PillageAround < Task::Abstract
 
   def state_send_command
 
-    command = @place.has_command(@target)
+    command = get_place(@origin).has_command(@target)
     if (!command.nil?) 
       return move_to_waiting_report(command)
     end
@@ -45,7 +60,7 @@ class Task::PillageAround < Task::Abstract
   def state_send_recognition
     base_attack = Troop.new(spy: 4)
 
-    if (!@place.units.contains(base_attack)) then
+    if (!get_place(@origin).units.contains(base_attack)) then
       return move_to_waiting_troops(base_attack)
     else
       return send_attack(base_attack)   
@@ -127,7 +142,7 @@ class Task::PillageAround < Task::Abstract
     end
 
     total_resources = last_report.resources.total
-    troops = @place.units.distribute(total_resources)
+    troops = get_place(@origin).units.distribute(total_resources)
 
      # || troops.carry < resource_min
 
@@ -141,15 +156,15 @@ class Task::PillageAround < Task::Abstract
 
     # night_bonus = (Time.zone.now.beginning_of_day..Time.zone.now.beginning_of_day+8.hours).cover?(Time.zone.now)
 
-    if (!@place.units.ram.nil? && @place.units.ram > 0)
+    if (!get_place(@origin).units.ram.nil? && get_place(@origin).units.ram > 0)
       rams = last_report.rams_to_destroy_wall
-      troops.ram = @place.units.ram < rams ? @place.units.ram : rams
+      troops.ram = get_place(@origin).units.ram < rams ? get_place(@origin).units.ram : rams
     end
 
 
     while (!troops.win?(last_report.moral,last_report.target_buildings["wall"],false))
       begin
-        troops = troops.upgrade(@place.units - troops,total_resources)
+        troops = troops.upgrade(get_place(@origin).units - troops,total_resources)
       rescue ImpossibleUpgrade => e
         return move_to_waiting_troops(nil)
       end
@@ -160,13 +175,13 @@ class Task::PillageAround < Task::Abstract
 
   def send_attack troops
 
-    command = @place.has_command(@target)
+    command = get_place(@origin).has_command(@target)
     if (!command.nil?)
       return move_to_waiting_report(command)
     end
     
     begin
-      command = @place.send_attack(@target,troops)
+      command = get_place(@origin).send_attack(@target,troops)
       return move_to_waiting_report(command)
     rescue NewbieProtectionException => exception
       move_to_newbie_protection(exception.expires)
@@ -211,7 +226,16 @@ class Task::PillageAround < Task::Abstract
   end
 
   def move_to_waiting_troops(troops_to_wait)
-    commands_with_order = @place.commands.sort{|a,b| a.occurence <=> b.occurence}
+    other = @origin_candidates.shift
+
+    if (!other.nil?)
+      puts "Change candidate #{@origin.x}|#{@origin.y} to #{other.x}|#{other.y}"
+      @origin = other
+      return state_send_recognition
+    end
+
+    commands_with_order = @places.values.select{|a| a.village.distance(@target) <= Config.pillager.distance(10) }.map(&:commands).flatten.sort{|a,b| a.occurence <=> b.occurence}
+
     next_returning = commands_with_order.select(&:returning).first || commands_with_order.first
     return next_event(next_returning.occurence)
   end

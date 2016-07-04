@@ -27,6 +27,11 @@ class Task::PillageAround < Task::Abstract
 
       @target = target
       @origin_candidates = closer_villages
+
+      if (@origin_candidates.empty?)
+        @target.state = "far_away"
+      end
+
       @origin = @origin_candidates.shift
 
       begin
@@ -81,6 +86,13 @@ class Task::PillageAround < Task::Abstract
   end
 
   def state_banned
+    state_send_command
+  end
+
+  def state_far_away
+    if (closer_villages.empty?)
+      return ["far_away",Time.zone.now + 1.day]
+    end
     state_send_command
   end
 

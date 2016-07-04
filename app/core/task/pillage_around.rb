@@ -27,7 +27,6 @@ class Task::PillageAround < Task::Abstract
       @origin_candidates = closer_villages
 
       if (@origin_candidates.empty?)
-        binding.pry
         @target.state = "far_away"
       end
 

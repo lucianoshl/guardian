@@ -19,6 +19,9 @@ module Guardian
     config.time_zone = Time.zone = 'Brasilia'
 
     Mongoid.logger.level = Logger::INFO
+
+    # config.log_level = :debug
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

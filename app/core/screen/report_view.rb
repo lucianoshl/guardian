@@ -5,6 +5,7 @@ class Screen::ReportView < Screen::Basic
   url screen: 'report', mode: 'all'
 
   def self.load_all
+    Rails.logger.debug("Loading all reports: start")
     
     while !(page = Screen::ReportList.new(mode: 'attack')).report_ids.empty? do
       page.report_ids.map do |report_id|
@@ -18,6 +19,8 @@ class Screen::ReportView < Screen::Basic
       end
       
     end
+
+    Rails.logger.debug("Loading all reports: end")
   end
 
 end

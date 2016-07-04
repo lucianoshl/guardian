@@ -9,7 +9,7 @@ class Task::PillageAround < Task::Abstract
   def get_place village
     id = village.vid
     if (@places[id].nil?)
-      @places[id] = Screen::Place.new(id: village.vid)
+      @places[id] = Screen::Place.new(village: village.vid)
     end
     return @places[id]
   end
@@ -35,7 +35,7 @@ class Task::PillageAround < Task::Abstract
       current_state = target.state || 'send_command'
 
       begin
-        info("Running state #{current_state} for #{@target}")
+        info("Running state #{current_state} for #{@target} using #{@origin.name}")
         state,_next_event = self.send("state_#{current_state}")
       rescue DeletedPlayerException => e
         target.delete
@@ -241,7 +241,7 @@ class Task::PillageAround < Task::Abstract
     other = @origin_candidates.shift
 
     if (!other.nil?)
-      puts "Change candidate #{@origin.x}|#{@origin.y} to #{other.x}|#{other.y}"
+      puts "Change candidate #{@origin.name} to #{other.name}"
       @origin = other
       return state_send_recognition
     end

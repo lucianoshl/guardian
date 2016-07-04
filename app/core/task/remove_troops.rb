@@ -9,7 +9,7 @@ class Task::RemoveTroops < Task::Abstract
   end
 
   def remove_troops(village)
-    screen = Screen::Place.new(id: village.vid)
+    screen = Screen::Place.new(village: village.vid)
     closer = (Village.all - Village.my).to_a.map.sort{|a,b| a.distance(village) <=> b.distance(village)}.first
 
     command = screen.send_support(closer,screen.units)

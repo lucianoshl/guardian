@@ -13,9 +13,6 @@ RSpec.describe Screen, type: :model do
 
   it "Place" do
     place = Screen::Place.new( @params )
-    # target = Village.all.to_a[2]
-    # origin = Village.my.first
-    # place.send_attack(origin,target,Troop.new(spy: 5))
   end
 
   it "ReportList" do
@@ -23,7 +20,7 @@ RSpec.describe Screen, type: :model do
   end
 
   it "ReportView" do
-    # report_s = Screen::ReportView.new(view: 27209133)   
+    # report_s = Screen::ReportView.new(view: 32148267)   
     # puts report_s.report.wall_destroyed
     # report_s.report.has_troops?
   end

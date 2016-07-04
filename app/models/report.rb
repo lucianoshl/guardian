@@ -22,6 +22,7 @@ class Report
   field :target_buildings, type: Hash
 
   field :wall_destroyed, type: Array
+  field :loyalty_destroyed, type: Array
 
   field :full_pillage, type: Boolean
 

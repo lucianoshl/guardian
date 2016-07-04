@@ -37,6 +37,9 @@ class Parser::Place < Parser::Basic
       end
       command.id = row.search('a').first.attr('href').scan(/id=(\d+)/).extract_number
       command.occurence = row.search('td')[1].text.parse_datetime
+      if (!row.search('.command-cancel').first.nil?)
+        command.cancel_url = row.search('.command-cancel').first.attr('href')
+      end
       command
     end).sort!{|a,b| a.occurence <=> b.occurence}
   end

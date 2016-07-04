@@ -68,8 +68,17 @@ class Parser::ReportView < Parser::Basic
 
       attack_result_itens = @page.search('#attack_results > tr')
 
-      if (attack_result_itens.size > 1 && attack_result_itens[1].text.scan(/ar.etes/).size == 1)
-        report.wall_destroyed = attack_result_itens[1].text.scan(/\d/).map(&:to_i)
+      if (attack_result_itens.size > 1)
+        try_ram = attack_result_itens.text.scan(/caiu de (\d+) para (\d+)/).flatten
+        if (try_ram.size > 0)
+          report.wall_destroyed = try_ram.map(&:to_i)
+        end
+
+        try_loyalty = attack_result_itens.text.scan(/Descida (\d+) para (\-{0,1}\d+)/).flatten
+        if (try_loyalty.size > 0)
+          report.loyalty_destroyed = try_loyalty.map(&:to_i)
+        end
+
       end
 
       if (!@page.search("#attack_info_att > tr")[3].nil?)

@@ -166,7 +166,7 @@ class Task::PillageAround < Task::Abstract
     end
     
     begin
-      command = @place.send_attack(@origin,@target,troops)
+      command = @place.send_attack(@target,troops)
       return move_to_waiting_report(command)
     rescue NewbieProtectionException => exception
       move_to_newbie_protection(exception.expires)

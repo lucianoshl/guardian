@@ -28,7 +28,7 @@ class Cookie
   end
 
   def self.do_login
-    
+
    login_screen = Screen::Login.new({
     user: User.current.name,
     password: Screen::ServerSelect.new.hash_password,
@@ -37,10 +37,9 @@ class Cookie
    Cookie.all.delete
    Cookie.store_cookies(login_screen.cookies)
    return login_screen.cookies
- end
-
-  def self.is_logged? page
-    !page.uri.to_s.include?("sid_wrong") && page.search('input[type="password"]').empty?
   end
 
+  def self.is_logged? page
+  !page.uri.to_s.include?("sid_wrong") && page.search('input[type="password"]').empty?
+  end
 end

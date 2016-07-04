@@ -31,7 +31,15 @@ class Screen::Place < Screen::Basic
 
   url screen: 'place'  
 
-  def send_attack origin,target,troops
+  def send_attack target,troops
+    return send_command(target,troops,'attack')
+  end
+
+  def send_support target,troops
+    return send_command(target,troops,'support')
+  end
+
+  def send_command(target,troops,type)
 
     partner_time = Partner.is_attacking?(target)
 
@@ -39,18 +47,25 @@ class Screen::Place < Screen::Basic
       raise PartnerAttackingException.new(partner_time)
     end
 
-    troops.spy ||= 4 if (self.units.spy >= 4)
+    troops.spy ||= 4 if ((self.units.spy - troops.spy) >= 4)
 
     form.fill(troops.instance_values)
     form.fill(x: target.x , y: target.y)
 
-    confirm_page = form.submit(form.buttons.first)
+    if ('attack' == type)
+      button = form.buttons.first
+    else
+      button = form.buttons.last
+    end
+
+    confirm_page = form.submit(button)
     check_attack_error(confirm_page)
+
     confirm_form = confirm_page.form
     
     parse(confirm_form.submit(confirm_form.buttons.first))
-    
-    possible_commands = commands.select do |command|
+
+    possible_commands = self.commands.select do |command|
       command.target.x == target.x && command.target.y == target.y && !command.returning
     end
 

@@ -23,16 +23,17 @@ class Task::PillageAround < Task::Abstract
 
     info "Running for #{candidates.size} candidates"
     candidates.each do |target|
-      current_state = target.state || 'send_command'
-
       @target = target
       @origin_candidates = closer_villages
 
       if (@origin_candidates.empty?)
+        binding.pry
         @target.state = "far_away"
       end
 
       @origin = @origin_candidates.shift
+
+      current_state = target.state || 'send_command'
 
       begin
         info("Running state #{current_state} for #{@target}")

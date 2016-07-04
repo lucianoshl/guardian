@@ -34,7 +34,7 @@ class Task::Abstract
 
   def test_local
 
-    return if (!["kerrigan"].include?(Socket.gethostname))
+    return if (!["kerrigan","overmind"].include?(Socket.gethostname))
 
     loop {
       result = run

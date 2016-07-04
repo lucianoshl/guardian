@@ -97,6 +97,7 @@ GEM
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
+    interception (0.5)
     jbuilder (2.5.0)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -165,6 +166,12 @@ GEM
     pry-byebug (3.4.0)
       byebug (~> 9.0)
       pry (~> 0.10)
+    pry-rescue (1.4.4)
+      interception (>= 0.5)
+      pry
+    pry-stack_explorer (0.4.9.2)
+      binding_of_caller (>= 0.7)
+      pry (>= 0.9.11)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.4)
@@ -335,6 +342,8 @@ DEPENDENCIES
   nprogress-rails
   parallel
   pry-byebug
+  pry-rescue
+  pry-stack_explorer
   quiet_assets
   rails (= 4.2.0)
   rails_12factor

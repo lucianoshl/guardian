@@ -46,6 +46,8 @@ group :production do
 end
 
 group :development, :test do
+  gem 'pry-rescue'
+  gem 'pry-stack_explorer'
   gem 'pry-byebug'
   gem 'byebug'
   gem 'quiet_assets'

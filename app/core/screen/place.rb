@@ -47,7 +47,9 @@ class Screen::Place < Screen::Basic
       raise PartnerAttackingException.new(partner_time)
     end
 
-    troops.spy ||= 4 if ((self.units.spy - troops.spy) >= 4)
+    troops.spy ||= 0
+
+    troops.spy ||= 4 if ((self.units.spy - ) >= 4)
 
     form.fill(troops.instance_values)
     form.fill(x: target.x , y: target.y)

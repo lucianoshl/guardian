@@ -22,7 +22,6 @@ RSpec.describe  do
 
     # raw_json = Mechanize.new.post("https://#{host}:#{port}/socket.io/?sessid=#{session}&village_id=#{screen.village.vid}&screen=#{screen_name}&EIO=3&transport=polling&r=#{socketio_time}&sid=#{json["sid"]}").body
 
-    # binding.pry
     
     # opts = {
     #     sessid: session,

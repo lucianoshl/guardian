@@ -66,12 +66,11 @@
       <%
         current,latest = GuardianDeploy.desc(:date).limit(2).to_a.reverse
 
-        deploy = GuardianDeploy.current
         tooltip = []
-        tooltip << "Deploy #{latest.version} (##{latest}.commit) feito em #{latest.date.strftime("%d/%m - %H:%M:%S")}" if (!latest.nil?)
-        tooltip << "Deploy #{deploy.version} feito em #{deploy.date.strftime("%d/%m - %H:%M:%S")}"
+        tooltip << "#{latest.version} #{latest.date.strftime("%d/%m - %H:%M:%S")}" if (!latest.nil?)
+        tooltip << "#{current.version} #{current.date.strftime("%d/%m - %H:%M:%S")}"
       %>
-        <span data-toggle="tooltip" data-placement="top" title="<%= tooltip.join('\n') %>" >
+        <span data-toggle="tooltip" data-placement="top" title="<%= tooltip.join('      ') %>" >
            <%= current.version %> (<%= current.commit %>) 
         <span>
       </div>

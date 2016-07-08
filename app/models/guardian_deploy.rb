@@ -24,7 +24,7 @@ class GuardianDeploy
   end
 
   def self.refresh_version
-    last_version = GuardianDeploy.last
+    last_version = GuardianDeploy.asc(:date).last
     current = GuardianDeploy.get_current_version
     if (last_version.nil? || last_version.version != current.version)
       current.save

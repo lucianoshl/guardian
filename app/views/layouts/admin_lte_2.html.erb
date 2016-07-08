@@ -64,13 +64,13 @@
       <!-- To the right -->
       <div class="pull-right hidden-xs">
       <%
-        current,latest = GuardianDeploy.desc(:date).limit(2).to_a.reverse
+        latest,current = GuardianDeploy.desc(:date).limit(2).to_a.reverse
 
         tooltip = []
         tooltip << "#{latest.version} #{latest.date.strftime("%d/%m - %H:%M:%S")}" if (!latest.nil?)
         tooltip << "#{current.version} #{current.date.strftime("%d/%m - %H:%M:%S")}"
       %>
-        <span data-toggle="tooltip" data-placement="top" title="<%= tooltip.join('      ') %>" >
+        <span data-toggle="tooltip" data-placement="top" title="<%= tooltip.join(' - ') %>" >
            <%= current.version %> (<%= current.commit %>) 
         <span>
       </div>

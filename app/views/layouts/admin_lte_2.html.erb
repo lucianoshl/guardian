@@ -63,7 +63,17 @@
     <footer class="main-footer">
       <!-- To the right -->
       <div class="pull-right hidden-xs">
-        <%= Time.zone.now %>
+      <%
+        current,latest = GuardianDeploy.desc(:date).limit(2).to_a.reverse
+
+        deploy = GuardianDeploy.current
+        tooltip = []
+        tooltip << "Deploy #{latest.version} (##{latest}.commit) feito em #{latest.date.strftime("%d/%m - %H:%M:%S")}" if (!latest.nil?)
+        tooltip << "Deploy #{deploy.version} feito em #{deploy.date.strftime("%d/%m - %H:%M:%S")}"
+      %>
+        <span data-toggle="tooltip" data-placement="top" title="<%= tooltip.join('\n') %>" >
+           <%= current.version %> (<%= current.commit %>) 
+        <span>
       </div>
       <!-- Default to the left -->
       <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.

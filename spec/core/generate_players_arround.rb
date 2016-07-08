@@ -54,11 +54,12 @@ class PlayerGenerator
     stop = false
     while (!stop)
       # begin
-        proxy_conf = get_proxy
+        # proxy_conf = get_proxy 
 
+        Selenium::WebDriver::Firefox.path = "/home/void/workspace/firefox/firefox"
         profile = Selenium::WebDriver::Firefox::Profile.new
-        proxy = Selenium::WebDriver::Proxy.new(:http => "#{proxy_conf.host}:#{proxy_conf.port}")
-        profile.proxy = proxy
+        # proxy = Selenium::WebDriver::Proxy.new(:http => "#{proxy_conf.host}:#{proxy_conf.port}")
+        # profile.proxy = proxy 
         driver = Selenium::WebDriver.for :firefox, :profile => profile
         browser = Watir::Browser.new(driver)
         browser.goto(invite_url)
@@ -69,7 +70,7 @@ class PlayerGenerator
         browser.text_field(:name => 'email').set user.email
         browser.text_field(:name => 'email').set user.email
         browser.checkbox(:name => 'agb').set 'on'
-        browser.button(:name => 'submit').click
+        browser.button(:id => 'register_button').click
 
         binding.pry
         # exclusive_client = Mechanize.my
@@ -140,7 +141,7 @@ end
 RSpec.describe do
 
   it "generate_players" do
-    PlayerGenerator.new.run
+    # PlayerGenerator.new.run
   end
 
 end

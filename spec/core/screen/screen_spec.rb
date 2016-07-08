@@ -19,6 +19,10 @@ RSpec.describe Screen, type: :model do
     Screen::ReportList.new(mode: 'attack')
   end
 
+  it "StatsOwn" do
+    Screen::StatsOwn.new
+  end
+
   it "ReportView" do
     # report_s = Screen::ReportView.new(view: 32148267)   
     # puts report_s.report.wall_destroyed

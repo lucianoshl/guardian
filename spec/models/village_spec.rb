@@ -5,6 +5,9 @@ RSpec.describe Village, type: :model do
     Village.pillage_candidates
   end
   it "Village.predict_production" do
-    Report.not_in(target_buildings: [nil]).first.target.predict_production(100)
+    report = Report.not_in(target_buildings: [nil]).first
+    if (report != nil)
+      report.target.predict_production(100)
+    end
   end
 end

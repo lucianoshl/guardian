@@ -4,7 +4,10 @@ end
 
 class Troop
   include ActiveAttr::MassAssignment
-  attr_accessor :spear,:sword,:axe,:archer,:spy,:light,:marcher,:heavy,:ram,:catapult,:knight,:snob,:militia
+
+  Unit.all.map(&:name).map(&:to_sym).map do |unit_name|
+    attr_accessor unit_name
+  end
 
   def total
     self.instance_values.values.inject(&:+) || 0

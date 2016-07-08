@@ -18,20 +18,4 @@ if (user.player.nil?)
 	user.save
 end
 
-if (Unit.count.zero?)
-	screen = Screen::Place.new
-	raw_screen = screen.request("https://#{User.current.world}.tribalwars.com.br/game.php?screen=unit_info") 
-	json = JSON.parse(raw_screen.body.scan(/UnitPopup.unit_data = ({.*})/).first.first)
-
-	json.map do |key,value|
-		unit = Unit.new
-		unit.label = value["name"]
-		unit.name = key
-		unit.type = value["type"]
-		unit.carry = value["carry"] 
-		unit.attack = value["attack"] 
-		unit.speed = value["speed"] 
-		unit.cost = Resource.new(wood: value["wood"],stone: value["stone"],iron: value["iron"])
-		unit.save
-	end
-end
+Screen::WorldConfig.new.units.map(&:save) if (Unit.count.zero?)

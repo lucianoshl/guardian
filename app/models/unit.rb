@@ -3,7 +3,7 @@ class Unit
 
 	field :name, type: String
 	field :label, type: String
-	field :type, type: String
+	# field :type, type: String
 	field :carry, type: Integer
 	field :attack, type: Integer 
 	field :speed, type: Float

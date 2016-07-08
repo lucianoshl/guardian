@@ -4,7 +4,7 @@ class GuardianDeploy
   # field :content, type: String
   # field :read, type: Boolean, default: false
 
-  def get_current_version
+  def self.get_current_version
     # binding.pry
   end
 

@@ -5,7 +5,7 @@ end
 class Troop
   include ActiveAttr::MassAssignment
 
-  Unit.all.map(&:name).map(&:to_sym).map do |unit_name|
+  Unit.names.map do |unit_name|
     attr_accessor unit_name
   end
 
@@ -121,31 +121,17 @@ class Troop
   def -(other)
     result = self.clone
 
-    result.spear ||= 0
-    result.sword ||= 0
-    result.axe ||= 0
-    result.archer ||= 0
-    result.spy ||= 0
-    result.light ||= 0
-    result.marcher ||= 0
-    result.heavy ||= 0
-    result.ram ||= 0
-    result.catapult ||= 0
-    result.knight ||= 0
-    result.snob ||= 0
+    Unit.names.map do |unit|
+      qte = self.send("#{unit}") || 0
+      self.send("#{unit}=",qte)
 
-    result.spear -= other.spear || 0
-    result.sword -= other.sword || 0
-    result.axe -= other.axe || 0
-    result.archer -= other.archer || 0
-    result.spy -= other.spy || 0
-    result.light -= other.light || 0
-    result.marcher -= other.marcher || 0
-    result.heavy -= other.heavy || 0
-    result.ram -= other.ram || 0
-    result.catapult -= other.catapult || 0
-    result.knight -= other.knight || 0
-    result.snob -= other.snob || 0
+      other_qte = other.send("#{unit}")
+      if (!other_qte.nil?)
+        qte_result = qte - other_qte
+        result.send("#{unit}=",qte_result)
+      end
+
+    end
     result
   end
 

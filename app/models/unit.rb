@@ -16,6 +16,11 @@ class Unit
 		end
 	end
 
+	def self.names
+		Unit.all.map(&:name).map(&:to_sym)
+	end
+
+
 	def square_per_minutes
 		(1 / (speed * 60)).round(2)
 	end

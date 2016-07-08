@@ -49,6 +49,7 @@ class Task::PillageAround < Task::Abstract
       @target.save
 
     end
+    
     return Village.pillage_candidates.map(&:next_event).sort.first || (Time.zone.now + 1.hour)
   end
 

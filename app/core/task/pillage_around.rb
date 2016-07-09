@@ -135,6 +135,7 @@ class Task::PillageAround < Task::Abstract
     Screen::ReportView.load_all
     last_report = @target.last_report
     if (last_report.nil?)
+      binding.pry
       return state_send_recognition
     end
 

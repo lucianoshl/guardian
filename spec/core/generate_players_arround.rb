@@ -54,25 +54,52 @@ class PlayerGenerator
     stop = false
     while (!stop)
       # begin
-        # proxy_conf = get_proxy 
 
-        Selenium::WebDriver::Firefox.path = "/home/void/workspace/firefox/firefox"
-        profile = Selenium::WebDriver::Firefox::Profile.new
-        # proxy = Selenium::WebDriver::Proxy.new(:http => "#{proxy_conf.host}:#{proxy_conf.port}")
-        # profile.proxy = proxy 
-        driver = Selenium::WebDriver.for :firefox, :profile => profile
-        browser = Watir::Browser.new(driver)
-        browser.goto(invite_url)
 
-        browser.text_field(:name => 'name').set user.name
-        browser.text_field(:name => 'password').set user.password
-        browser.text_field(:name => 'password_confirm').set user.password
-        browser.text_field(:name => 'email').set user.email
-        browser.text_field(:name => 'email').set user.email
-        browser.checkbox(:name => 'agb').set 'on'
-        browser.button(:id => 'register_button').click
+      works = false
 
+      while(!works)
+        proxy_conf = get_proxy
+        exclusive_client = Mechanize.my
+        exclusive_client.set_proxy(proxy_conf.host,proxy_conf.port)
+        begin
+          exclusive_client.get("https://tribalwars.com.br")
+          works = true
+        rescue Exception => e
+          puts e
+          @invalid_proxies << @current_proxy
+          @current_proxy = nil
+        end
+      end
+
+      Selenium::WebDriver::Firefox.path = "/home/void/workspace/firefox/firefox"
+      profile = Selenium::WebDriver::Firefox::Profile.new
+      proxy = Selenium::WebDriver::Proxy.new
+      proxy.ftp = "#{proxy_conf.host}:#{proxy_conf.port}"
+      proxy.http = "#{proxy_conf.host}:#{proxy_conf.port}"
+      proxy.ssl = "#{proxy_conf.host}:#{proxy_conf.port}"
+      profile.proxy = proxy 
+      driver = Selenium::WebDriver.for :firefox, :profile => profile
+      browser = Watir::Browser.new(driver)
+      browser.goto(invite_url)
+
+      browser.text_field(:name => 'name').set user.name
+      browser.text_field(:name => 'password').set user.password
+      browser.text_field(:name => 'password_confirm').set user.password
+      browser.text_field(:name => 'email').set user.email
+      browser.text_field(:name => 'email').set user.email
+      browser.checkbox(:name => 'agb').set 'on'
+      browser.button(:id => 'register_button').click
+
+      if (browser.h3(class: 'error').exists? && browser.h3(class: 'error').visible?)
         binding.pry
+      end
+
+      browser.close
+
+        # return Index.submit_login('server_br75')
+
+        # binding.pry
         # exclusive_client = Mechanize.my
         # exclusive_client.set_proxy(proxy.host,proxy.port)
         
@@ -84,9 +111,9 @@ class PlayerGenerator
         # form['email'] = user.email
         # form['agb'] = 'on'
         # result = form.submit
-        if (result.search('.error').size > 0)
-          throw Exception.new(result.search('.error').text)
-        end
+        # if (result.search('.error').size > 0)
+        #   throw Exception.new(result.search('.error').text)
+        # end
 
         stop = true
       # rescue Exception => e
@@ -116,8 +143,15 @@ class PlayerGenerator
 
     response = client.post("https://www.tribalwars.com.br/index.php?action=login&server_#{User.current.world}",params)
 
-    response.form.submit
+    result = response.form.submit
+    x,y = result.search('#menu_row2').text.scan(/(\d+)\|(\d+)/).flatten.map(&:to_i)
+    created_village = Village.new(x:x, y:y)
 
+    distance = Village.my.first.distance(created_village)
+    puts "Generated distance = #{distance}"
+    if (distance >= 100)
+      binding.pry
+    end
   end
 
   def run
@@ -129,7 +163,6 @@ class PlayerGenerator
       user = generate_user
       # register(user, Screen::InvitePlayer.new.invite_url)
       register(user, "https://www.tribalwars.com.br/register.php?ref_code=BR677Y57&ref=player_invite_linkrl")
-      binding.pry
       do_first_login(user)
     end
     
@@ -141,7 +174,7 @@ end
 RSpec.describe do
 
   it "generate_players" do
-    # PlayerGenerator.new.run
+    PlayerGenerator.new.run
   end
 
 end

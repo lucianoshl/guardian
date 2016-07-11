@@ -15,6 +15,14 @@ end
 class DeletedPlayerException < Exception
 end
 
+class InvitedPlayerException < Exception
+  attr_accessor :release
+
+  def initialize date
+    self.release = date
+  end
+end
+
 class PartnerAttackingException < Exception
   attr_accessor :release
 
@@ -95,6 +103,11 @@ class Screen::Place < Screen::Basic
 
     if (!msg.match(/Alvo não existe/).nil?)
       raise DeletedPlayerException.new
+    end
+
+    if (!msg.match(/convidou o proprie/).nil?)
+      free_date = msg.scan(/até (.+), pois/).first.first.parse_datetime
+      raise InvitedPlayerException.new(free_date)
     end
     
     raise Exception.new(msg)

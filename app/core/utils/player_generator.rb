@@ -163,6 +163,12 @@ class Utils::PlayerGenerator
   end
 
   def run
+    invite_url = Config.generate_player_arround.invite_url(nil)
+
+    if (invite_url.nil?)
+      return
+    end
+
     @created_players = []
     @register_client = Mechanize.my
     @proxy_lists = nil
@@ -172,7 +178,7 @@ class Utils::PlayerGenerator
       (1..5).each_with_index.map do |index|
         Rails.logger.info("Running number #{index}")
         user = generate_user
-        register(user, Screen::InvitePlayer.new.invite_url)
+        register(user, invite_url)
         do_first_login(user)
       end
     rescue LimitPlayerInDayException => e

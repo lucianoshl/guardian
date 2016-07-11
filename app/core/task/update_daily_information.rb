@@ -20,9 +20,7 @@ class Task::UpdateDailyInformation < Task::Abstract
   end
 
   def generate_player_arround
-    if (Config.generate_player_arround.enabled(false))
-      Utils::PlayerGenerator.new.run
-    end
+    Utils::PlayerGenerator.new.run
   end
 
 end

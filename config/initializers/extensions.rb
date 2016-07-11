@@ -28,6 +28,8 @@ class Object
           date,hour = self.split('. às ')
           date = date.split('.').concat([Time.now.year]).join('/').to_date
           result = Time.zone.parse("#{date} #{hour}")
+      elsif scan(/\w{3} \d+, \d+:\d+/).size > 0
+          result = self.to_datetime.in_time_zone
       else
           raise Exception.new("unsupported parse_datetime date") 
       end

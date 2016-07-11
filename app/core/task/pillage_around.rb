@@ -104,6 +104,10 @@ class Task::PillageAround < Task::Abstract
   def state_newbie_protection
     state_send_command
   end 
+  
+  def state_invited_player
+    state_send_command
+  end
 
   def state_waiting_resources
     state_send_command
@@ -200,6 +204,8 @@ class Task::PillageAround < Task::Abstract
       move_to_newbie_protection(exception.expires)
     rescue SharedConectionException => exception
       move_to_shared_connection
+    rescue InvitedPlayerException => exception
+      move_to_invited_player(exception.expires)
     rescue PartnerAttackingException => exception
       move_to_waiting_partner(exception.release)
     rescue BannedUserException => exception
@@ -231,6 +237,10 @@ class Task::PillageAround < Task::Abstract
   end
 
   def move_to_newbie_protection(date)
+    return next_event(date)
+  end
+
+  def move_to_invited_player(date)
     return next_event(date)
   end
 

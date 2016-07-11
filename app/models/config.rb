@@ -19,7 +19,7 @@ class Config
   end  
 
   def value=(val)
-    self._object = val.class
+    self.clazz = val.class
     self._object = YAML.dump(val) if (!val.nil?)
   end
 

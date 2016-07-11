@@ -16,10 +16,10 @@ class DeletedPlayerException < Exception
 end
 
 class InvitedPlayerException < Exception
-  attr_accessor :release
+  attr_accessor :expires
 
   def initialize date
-    self.release = date
+    self.expires = date
   end
 end
 

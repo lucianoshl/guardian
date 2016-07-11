@@ -11,6 +11,10 @@ RSpec.describe Screen, type: :model do
     Screen::Main.new( @params )
   end
 
+  it "WorldConfig" do
+    Screen::WorldConfig.new
+  end
+
   it "Place" do
     place = Screen::Place.new( @params )
   end

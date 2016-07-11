@@ -15,6 +15,10 @@ class Parser::WorldConfig < Parser::Abstract
         nil
       else
         unit = Unit.new
+        unit.cost = Resource.new
+        unit.cost.wood = line.search('td')[1].text.to_i
+        unit.cost.stone = line.search('td')[2].text.to_i
+        unit.cost.iron = line.search('td')[3].text.to_i
         unit.name = line.search('img').first.attr('src').scan(/unit_(.+)\.png/).first.first
         unit.label = line.search('img').first.attr('title')
         unit.carry = line.search('td')[carry_position+5].text.strip.to_i

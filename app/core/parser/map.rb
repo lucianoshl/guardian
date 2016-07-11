@@ -26,11 +26,26 @@ class Parser::Map < Parser::Abstract
         end
         value.each_with_index  do |(key, info), index|
           y = key.to_i
+
+          # binding.pry if (base_x + x.to_i == 682 && base_y + y.to_i == 687)
+
+          if (info[7] == '0')
+            if (info[4].to_i.zero?)
+              village_name = 'Aldeia de bárbaros'
+            else
+              village_name = info[2]
+            end
+          elsif (info[7] == '5')
+            village_name = 'Empório do feiticeiro'
+          elsif
+            binding.pry
+          end
+
           screen.villages << OpenStruct.new({
             vid: info[0].to_i,
             x: base_x + x.to_i,
             y: base_y + y.to_i, 
-            name: info[4].to_i.zero? ? 'Aldeia de bárbaros' : info[2],
+            name: village_name,
             points: info[3].extract_number,
             player: players[info[4].to_i]#.zero? ? nil : info[4].to_i
           })

@@ -11,6 +11,7 @@ class Village
   field :state, type: String
   field :next_event, type: DateTime
   field :is_barbarian, type: Boolean
+  field :is_sorcerer, type: Boolean
 
   has_many :reports , inverse_of: 'target' 
 

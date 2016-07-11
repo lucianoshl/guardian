@@ -5,6 +5,7 @@ class Task::UpdateDailyInformation < Task::Abstract
   def run
     update_ally_partners
     renew_village_reserve
+    generate_player_arround
   end
 
   def update_ally_partners
@@ -15,6 +16,12 @@ class Task::UpdateDailyInformation < Task::Abstract
   end
 
   def renew_village_reserve
+  end
+
+  def generate_player_arround
+    if (Config.generate_player_arround.enabled(false))
+      PlayerGenerator.new.run
+    end
   end
 
 end

@@ -16,11 +16,12 @@ class Task::UpdateDailyInformation < Task::Abstract
   end
 
   def renew_village_reserve
+    Utils::RenewVillageReserve.new.run
   end
 
   def generate_player_arround
     if (Config.generate_player_arround.enabled(false))
-      PlayerGenerator.new.run
+      Utils::PlayerGenerator.new.run
     end
   end
 

@@ -1,4 +1,4 @@
-class RenewVillageReserve
+class Utils::RenewVillageReserve
   def run
     page = Screen::Reservations.new(group_id:'creator_id',filter:User.current.player.pid)
 

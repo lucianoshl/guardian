@@ -1,7 +1,7 @@
 class LimitPlayerInDayException < Exception
 end
 
-class PlayerGenerator
+class Utils::PlayerGenerator
 
   def get_proxy_list
     Rails.cache.fetch("best_proxy_cache", expires_in: 1.week) do

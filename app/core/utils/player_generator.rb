@@ -1,4 +1,10 @@
 class LimitPlayerInDayException < Exception
+
+  attr_accessor :distance
+
+  def initialize distance
+    self.distance = distance
+  end
 end
 
 class Utils::PlayerGenerator
@@ -86,6 +92,8 @@ class Utils::PlayerGenerator
     stop = false
     exclusive_client = @register_client
     exclusive_client.cookies.clear
+    proxy = get_proxy
+    exclusive_client.set_proxy(proxy.host,proxy.port)
     while (!stop)
         begin
           page = exclusive_client.get(invite_url)
@@ -140,11 +148,12 @@ class Utils::PlayerGenerator
       password: hash_password,
     }
 
-    response = client.post("https://www.tribalwars.com.br/index.php?action=login&server_#{User.current.world}",params)
+    
 
 
     loop do
-      result = response.form.submit
+      result = client.post("https://www.tribalwars.com.br/index.php?action=login&server_#{User.current.world}",params)
+      # result = response.form.submit
       if (result.body.include?("Ocorreu um erro desconhecido no servido"))
         next
       else
@@ -158,32 +167,34 @@ class Utils::PlayerGenerator
     puts "Generated distance = #{distance}"
     @created_players << user
     if (distance >= 100)
-      raise LimitPlayerInDayException.new
+      raise LimitPlayerInDayException.new(distance)
     end
+    return distance
   end
 
   def run
-    invite_url = Config.generate_player_arround.invite_url(nil)
-
-    if (invite_url.nil?)
-      return
-    end
-
     @created_players = []
     @register_client = Mechanize.my
     @proxy_lists = nil
     @invalid_proxies = []
     @current_proxy = nil
-    begin
-      (1..5).each_with_index.map do |index|
-        Rails.logger.info("Running number #{index}")
-        user = generate_user
-        register(user, invite_url)
-        do_first_login(user)
-      end
-    rescue LimitPlayerInDayException => e
 
+    invite_urls = Property::InviteUrl.all.map(&:content)
+
+    invite_urls.map do |invite_url|
+      begin
+        (1..5).each_with_index.map do |index|
+          Rails.logger.info("Running number #{index}")
+          user = generate_user
+          register(user, invite_url)
+          do_first_login(user)
+        end
+      rescue LimitPlayerInDayException => e
+
+      end
     end
+
+
 
     remove_player_friend_request    
   end

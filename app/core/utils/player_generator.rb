@@ -165,10 +165,10 @@ class Utils::PlayerGenerator
 
     distance = Village.my.first.distance(created_village)
     puts "Generated distance = #{distance}"
-    @created_players << user
     if (distance >= 100)
       raise LimitPlayerInDayException.new(distance)
     end
+    Property::InvitedUser.new(user: user.name, distance:distance).save
     return distance
   end
 
@@ -195,8 +195,6 @@ class Utils::PlayerGenerator
     end
 
 
-
-    # remove_player_friend_request    
   end
 
   def remove_player_friend_request

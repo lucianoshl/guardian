@@ -196,7 +196,7 @@ class Utils::PlayerGenerator
 
 
 
-    remove_player_friend_request    
+    # remove_player_friend_request    
   end
 
   def remove_player_friend_request

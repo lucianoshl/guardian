@@ -28,6 +28,10 @@ class Parser::Map < Parser::Abstract
           y = key.to_i
 
           # binding.pry if (base_x + x.to_i == 682 && base_y + y.to_i == 687)
+          if (info.class != Array)
+            next
+          end
+
 
           if (info[7] == '0')
             if (info[4].to_i.zero?)

@@ -121,3 +121,10 @@ class Time
     (init..endd).cover?(self)
   end
 end
+
+module System
+  def self.clean
+    (Mongoid.models - [User,Property::Simple,Property::InvitedUser,Property::InviteUrl]).map{|a| a.all.delete}
+    Rails.cache.clear
+  end
+end

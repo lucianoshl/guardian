@@ -4,7 +4,7 @@ RSpec.describe do
 
   it "generate_players" do
     # binding.pry
-    # Utils::PlayerGenerator.new.run
+    # Utils::PlayerGenerator.new.register_mail('Gerda Elfleda')
   end
 
 end

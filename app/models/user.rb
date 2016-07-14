@@ -23,12 +23,20 @@ class User
     user
   end
 
-
   def self.current
     username = ENV["TW_USER"] || "default"
     Rails.cache.fetch("user_#{username}") do
       User.where(name: username).first 
     end
+  end
+
+  def self.fake
+    user = User.new
+    user.name = I18n.transliterate(Mechanize.new.get("http://www.behindthename.com/random/random.php?number=2&gender=f&surname=&all=yes").search('.heavyhuge').text.strip).split(' ').join(' ')
+    user.password = user.name.parameterize + "-12345"
+    user.email = "#{user.name.parameterize}@invitect-company.com"
+    user.world = User.current.world
+    user
   end
 
 end

@@ -159,9 +159,13 @@ class Task::PillageAround < Task::Abstract
     end
 
     total_resources = last_report.resources.total
-    troops = get_place(@origin).units.distribute(total_resources)
 
-     # || troops.carry < resource_min
+
+    place_units = get_place(@origin).units
+
+    removed = place_units - Troop.new({knight: 1, light: 5})
+
+    troops = removed.distribute(total_resources)
 
     if ((!last_report.resources.nil? && last_report.resources.total < resource_min))
       return move_to_waiting_resources(@target)

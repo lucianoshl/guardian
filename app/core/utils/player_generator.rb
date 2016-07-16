@@ -38,7 +38,7 @@ class Utils::PlayerGenerator
     if (distance >= 20)
       raise LimitPlayerInDayException.new(distance)
     end
-    Property::InvitedUser.new(user: user.name, distance:distance).save
+    Property::InvitedUser.new(name: user.name, distance:distance).save
     return distance
   end
 
@@ -77,12 +77,33 @@ class Utils::PlayerGenerator
 
   def do_login(user)
     base = "https://www.tribalwars.com.br"
+
+    user.name = user.user if user.respond_to?("user")
+
+    if (user.password.nil?)
+      user.password = user.name.parameterize + "-12345"
+    end
+
     select_world_page = @client.post("#{base}/index.php?action=login&show_server_selection=1",{
       user: user.name,
       password: user.password,
       cookie: true,
       clear: true
       });
+
+    if (select_world_page.body.include?("error"))
+      user.password = user.name + "1"
+      select_world_page = @client.post("#{base}/index.php?action=login&show_server_selection=1",{
+        user: user.name,
+        password: user.password,
+        cookie: true,
+        clear: true
+        });
+    end
+
+    binding.pry if (select_world_page.body.include?("error")) 
+
+    user.save
 
     game_screen = @client.post("#{base}/index.php?action=login&server_#{User.current.world}",{
         user: user.name,
@@ -100,6 +121,58 @@ class Utils::PlayerGenerator
     do_login(user)
 
     binding.pry
+  end
+
+  def grow_accounts
+    original_user = User.current
+    # users = Property::InvitedUser.where(password: nil).asc(:distance).to_a
+    users = Property::InvitedUser.where(name: 'Yuina Nedelka').to_a
+    users.each_with_index.map do |user,i|
+
+      attrs = {name: user.name, password: user.password, world: original_user.world}
+      user = User.where(attrs).first || User.new(attrs)
+      user.save
+
+      User.stub(:current) { user }
+      Rails.logger.info("Running for player #{user} #{users.size}/#{i}")
+      @client.clear
+
+
+
+      do_login(user)
+
+      # form = @client.get("https://#{User.current.world}.tribalwars.com.br/game.php?village=18066&screen=settings&mode=account").form
+
+      # form['email'] = "robertohlnero+#{user.name.gsub(' ','-')}@gmail.com"
+      # form['password'] = user.password
+      # form.submit
+
+      build = ["wood","stone","iron","wood","stone","main","main","barracks","barracks","wood","stone","storage","storage","iron","barracks","statue"]
+
+      page = @client.get("https://#{User.current.world}.tribalwars.com.br/game.php?village=18066&screen=main")
+
+      while(!build.empty?)
+        target = build.shift
+
+        url = page.search('a[href*="id=main"]').first.attr('href').gsub('&cheap','')
+        page = @client.get("https://#{User.current.world}.tribalwars.com.br/#{url}")
+
+        url = page.search('a[href*="BuildTimeReduction"]').first.attr('href')
+        page = @client.get("https://#{User.current.world}.tribalwars.com.br/#{url}")
+        binding.pry
+      end
+
+
+
+
+      binding.pry
+
+
+
+
+      # result = Screen::Place.new({},@client).village.name
+      # binding.pry
+    end
   end
 
 end

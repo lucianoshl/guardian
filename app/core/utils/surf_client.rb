@@ -8,11 +8,16 @@ class Utils::SurfClient
     @bad_proxy = []
   end
 
+  def clear
+    @client.cookies.clear
+  end
+
   def get url
     populate_proxy
     page = nil
     loop do
       begin
+        # Rails.logger.info(url)
         page = @client.get(url)
         break
       rescue Exception => e
@@ -30,6 +35,7 @@ class Utils::SurfClient
     page = nil
     loop do
       begin
+        # Rails.logger.info(url)
         page = @client.post(url,parameters)
 
         if (!block.nil? && block.call(page))
@@ -66,10 +72,9 @@ class Utils::SurfClient
     return result
   end
 
-
   def populate_proxy
     if (@current_proxy.nil?)
-      proxy = next_proxy
+      proxy = proxy_list.shift
       Rails.logger.info("Using proxy #{proxy}")
       @current_proxy = @client.set_proxy(proxy.host,proxy.port)
     end
@@ -77,53 +82,15 @@ class Utils::SurfClient
   end
 
   def discart_proxy
+    binding.pry
     @bad_proxy << @current_proxy
     @current_proxy = nil
     populate_proxy
   end
 
-  def next_proxy
-    proxy_list.shift
-    # proxy_list.select do |proxy|
-    #   @bad_proxy.include?(proxy)
-    # end)
-
-    # (proxy_list - @bad_proxy).first
-  end
-
   def proxy_list
     if (@_proxy_list.nil?)
-      @_proxy_list = []
-      untested_proxy = []
-      r = Mechanize.new.get("http://www.gatherproxy.com")
-      r.body.scan(/PROXY_IP":"(.+?)".+?PROXY_PORT":"(.+?)"/).map do |item|
-        untested_proxy << OpenStruct.new(host: item[0], port: item[1].to_i(16))
-      end
-
-      Rails.logger.info("Testing proxy list: start")
-      progress = 0
-
-      bad_proxy = Property::BadProxy.all.map(&:content)
-
-      untested_proxy = untested_proxy.select{|p| !bad_proxy.include?(p.host)}
-
-      threads = untested_proxy.map do |proxy|
-        Thread.new do
-          c = Mechanize.new
-          c.set_proxy(proxy.host,proxy.port)
-          begin
-            c.get("https://www.tribalwars.com.br/")
-            @_proxy_list << proxy
-          rescue
-            Property::BadProxy.new(content: proxy.host).save
-          end
-          progress += 1
-          puts "#{untested_proxy.size}/#{progress}"
-        end
-      end
-      threads.map(&:join)
-      Rails.logger.info("Testing proxy list: end with #{@_proxy_list.size} proxies")
-
+      @_proxy_list = Property::SurfProxy.desc(:level).to_a
     end
     return @_proxy_list
   end

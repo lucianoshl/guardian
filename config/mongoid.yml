@@ -49,10 +49,10 @@ development: &defaults
         # server_selection_timeout: 30
 
         # The maximum number of connections in the connection pool. (default: 5)
-        # max_pool_size: 5
+        max_pool_size: 20
 
         # The minimum number of connections in the connection pool. (default: 1)
-        # min_pool_size: 1
+        min_pool_size: 20
 
         # The time to wait, in seconds, in the connection pool for a connection
         # to be checked in before timing out. (default: 5)

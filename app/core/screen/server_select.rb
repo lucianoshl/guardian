@@ -6,8 +6,6 @@ class Screen::ServerSelect < Screen::Anonymous
   endpoint '/index.php'
   url action: 'login', show_server_selection: 1
   parameters({
-    user: User.current.name,
-    password: User.current.password,
     cookie: true,
     clear: true,
   })

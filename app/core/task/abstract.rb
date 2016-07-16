@@ -62,8 +62,8 @@ class Task::Abstract
       self.class.new.delay(run_at: Time.zone.now.beginning_of_day + 1.day + self.class._run_daily.hours).execute
     elsif (self.class._performs_to)
       self.class.new.delay(run_at: Time.zone.now + self.class._performs_to).execute
-    elsif (result.class == DateTime) 
-      self.class.new.delay(run_at: result).execute
+    elsif ([ActiveSupport::TimeWithZone,DateTime].include?(result.class)) 
+      self.class.new.delay(run_at: result).execute 
     else
       raise Exception.new("Invalid job state #{self.class}")
     end

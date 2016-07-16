@@ -10,7 +10,6 @@ class Task::UpgradeKnight < Task::Abstract
 
     command = place_screen.send_attack(target,troop)
 
-    binding.pry
     return Time.zone.now + ((command.occurence - Time.zone.now)*2 + 30.seconds).seconds
   end
 

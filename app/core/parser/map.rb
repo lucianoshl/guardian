@@ -67,7 +67,7 @@ class Parser::Map < Parser::Abstract
       player.pid = id.to_i
       player.name = content[0]
       player.points = content[1].extract_number
-      player.ally = parse_ally(content[2],item["data"]["allies"][content[2].to_i])
+      player.ally = parse_ally(content[2],item["data"]["allies"][content[2]])
       result[id.to_i] = player
     end
     return result

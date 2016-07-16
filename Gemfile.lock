@@ -88,11 +88,6 @@ GEM
       railties (>= 3.2, < 5.1)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
-    gmail (0.6.0)
-      gmail_xoauth (>= 0.3.0)
-      mail (>= 2.2.1)
-    gmail_xoauth (0.4.1)
-      oauth (>= 0.3.6)
     haml (4.0.7)
       tilt
     health_check (1.5.1)
@@ -165,7 +160,6 @@ GEM
       pkg-config (~> 1.1.7)
     nprogress-rails (0.1.6.7)
     ntlm-http (0.1.1)
-    oauth (0.5.1)
     origin (2.2.0)
     parallel (1.9.0)
     pkg-config (1.1.7)
@@ -343,7 +337,6 @@ DEPENDENCIES
   daemons
   dalli
   delayed_job_mongoid
-  gmail
   health_check
   heroku-api
   jbuilder (~> 2.0)

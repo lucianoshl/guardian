@@ -26,16 +26,20 @@ class Parser::Place < Parser::Basic
       command = OpenStruct.new
       command.returning = row.search('img').first.attr('src').scan('return_').length > 0
       coordinate = row.search('.quickedit-label').to_coordinate
+      command.id = row.search('a').first.attr('href').scan(/id=(\d+)/).extract_number
+      
       if (coordinate.x == 0 && coordinate.y == 0)
-        command_id = row.search('a').attr('href').text.scan(/id=(\d+)/).first.first
-        screen = Screen::InfoCommand.new(id: command_id)
+        screen = Screen::InfoCommand.new(id: command.id)
         command.target = screen.target
         command.origin = screen.origin
       else
         command.target =  Village.where(coordinate).first
+        if (command.target.nil?)
+          screen = Screen::InfoCommand.new(id: command.id)
+          command.target = screen.target
+        end
         command.origin = screen.village
       end
-      command.id = row.search('a').first.attr('href').scan(/id=(\d+)/).extract_number
       command.occurence = row.search('td')[1].text.parse_datetime
       if (!row.search('.command-cancel').first.nil?)
         command.cancel_url = row.search('.command-cancel').first.attr('href')

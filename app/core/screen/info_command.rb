@@ -4,4 +4,6 @@ class Screen::InfoCommand < Screen::Basic
 
   url screen: 'info_command'
 
+  cache 1.year
+
 end

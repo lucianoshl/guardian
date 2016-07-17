@@ -3,6 +3,16 @@ class Property::SurfProxy < Property::Simple
   field :port, type: Integer
   field :level, type: Integer, default: 0
 
+  def up
+    self.level = level + 1
+    self.save
+  end
+
+  def down
+    self.level = level - 1
+    self.save
+  end
+
   def self.populate
     Rails.logger.info("Populate proxy: start")
     Rails.logger.info("Populate proxy: fetch saved proxies")

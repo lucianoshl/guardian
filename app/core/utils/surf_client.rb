@@ -19,6 +19,7 @@ class Utils::SurfClient
       begin
         # Rails.logger.info(url)
         page = @client.get(url)
+        @current_proxy.up
         break
       rescue Exception => e
         Rails.logger.info("Proxy error: #{e}")
@@ -37,6 +38,7 @@ class Utils::SurfClient
       begin
         # Rails.logger.info(url)
         page = @client.post(url,parameters)
+        @current_proxy.up
 
         if (!block.nil? && block.call(page))
           # binding.pry
@@ -76,13 +78,14 @@ class Utils::SurfClient
     if (@current_proxy.nil?)
       proxy = proxy_list.shift
       Rails.logger.info("Using proxy #{proxy}")
-      @current_proxy = @client.set_proxy(proxy.host,proxy.port)
+      @current_proxy = proxy
+      @client.set_proxy(proxy.host,proxy.port)
     end
     return @current_proxy
   end
 
   def discart_proxy
-    binding.pry
+    @current_proxy.down
     @bad_proxy << @current_proxy
     @current_proxy = nil
     populate_proxy

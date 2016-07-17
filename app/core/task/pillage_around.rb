@@ -164,7 +164,7 @@ class Task::PillageAround < Task::Abstract
 
     place_units = get_place(@origin).units
 
-    removed = place_units - Troop.new({knight: 1, light: 5})
+    removed = place_units - Troop.new({knight: 1})
 
     troops = removed.distribute(total_resources)
 

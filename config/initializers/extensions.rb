@@ -99,7 +99,8 @@ end
 
 class Array
   def pmap
-    Parallel.map(self, in_processes: ENV["PMAP_THREADS"] || 4){ |i| yield(i) }
+    parameter = ENV["PMAP_THREADS"].nil? ? 1 : ENV["PMAP_THREADS"].to_i
+    Parallel.map(self, in_processes: parameter || 1){ |i| yield(i) }
   end
 
   def pselect
@@ -123,8 +124,15 @@ class Time
 end
 
 module System
+
   def self.clean
     (Mongoid.models - [User,Property::Simple,Property::InvitedUser,Property::InviteUrl]).map{|a| a.all.delete}
     Rails.cache.clear
   end
+
+  def self.reset
+    Mongoid.models.map{|a| a.all.delete}
+    Rails.cache.clear
+  end
+
 end

@@ -35,7 +35,7 @@ class Utils::PlayerGenerator
 
     distance = Village.my.first.distance(created_village)
     puts "Generated distance = #{distance}"
-    if (distance >= 20)
+    if (distance >= 40)
       raise LimitPlayerInDayException.new(distance)
     end
     Property::InvitedUser.new(name: user.name, distance:distance).save

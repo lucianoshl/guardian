@@ -129,7 +129,7 @@ class Task::PillageAround < Task::Abstract
   def state_waiting_partner
     last_report_partner =  Partner.last_report(@target)
 
-    if (@target.last_report.nil? || @target.last_report.occurrence < last_report_partner.occurrence)
+    if (!last_report_partner.nil? && (@target.last_report.nil? || @target.last_report.occurrence < last_report_partner.occurrence))
       last_report_partner.save
     end
 
@@ -163,6 +163,8 @@ class Task::PillageAround < Task::Abstract
 
 
     place_units = get_place(@origin).units
+
+    # binding.pry
 
     removed = place_units - Troop.new({knight: 1})
 

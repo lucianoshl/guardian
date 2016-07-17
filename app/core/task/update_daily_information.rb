@@ -9,6 +9,7 @@ class Task::UpdateDailyInformation < Task::Abstract
   end
 
   def update_ally_partners
+    return if (User.current.player.nil?)
     my_ally = User.current.player.ally
     return if (my_ally.nil?)
     my_ally.partners = Ally.in(aid: Screen::AllyContracts.new.allies).to_a

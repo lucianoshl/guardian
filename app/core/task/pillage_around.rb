@@ -11,6 +11,9 @@ class Task::PillageAround < Task::Abstract
     if (@places[id].nil?)
       @places[id] = Screen::Place.new(village: village.vid)
     end
+
+    @places[id].units -= Troop.new(knight: 1)
+
     return @places[id]
   end
 
@@ -165,14 +168,8 @@ class Task::PillageAround < Task::Abstract
 
     total_resources = last_report.resources.total
 
+    troops = get_place(@origin).units.distribute(total_resources)
 
-    place_units = get_place(@origin).units
-
-    # binding.pry
-
-    removed = place_units - Troop.new({knight: 1})
-
-    troops = removed.distribute(total_resources)
 
     if ((!last_report.resources.nil? && last_report.resources.total < resource_min))
       return move_to_waiting_resources(@target)

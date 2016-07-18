@@ -2,22 +2,46 @@ class Parser::Main < Parser::Basic
 
   def parse screen
     super
-    queue = (@page.search("tr[class*='buildorder']").map do |line|
-      item = OpenStruct.new
-      item.building = line.attr('class').scan(/buildorder_(.+)/).first.first
-      item.completed_in = line.search('.btn-cancel').first.parent.previous_element.text.parse_datetime
-      item
-    end).sort{|a,b| a.completed_in <=> b.completed_in }
+    buildings_meta_json = JSON.parse(@page.body.scan(/BuildingMain.buildings = ({.+})/).first.first)
 
-    buildings = {}
-    information = JSON.parse(@page.body.scan(/BuildingMain.buildings = ({.*})/).first.first).each do |id,information|
-      buildings[id] = building = OpenStruct.new#(information)
-      build_element = @page.search("#main_buildlink_#{building.id}_#{building.level_next}")
-      building.build_possible = build_element.empty? ? false : build_element.attr('style').nil?
-      building.level = building.level.to_i
-      building.in_queue = queue.map(&:building).include?(id)
-      building.name = id
+    screen.buildings_metadata = {}
+
+    buildings_meta_json.map do |name,value|
+      building = screen.buildings_metadata[name] = Metadata::Building.new
+      building.name = name
+      building.label = value["name"]
+      building.max_level = value["max_level"] 
+      building.min_level = value["min_level"] 
+
+      building.wood_factor = value["wood_factor"]
+      building.stone_factor = value["stone_factor"]
+      building.iron_factor = value["iron_factor"]
+      building.pop_factor = value["pop_factor"]
+      building.build_time_factor = value["build_time_factor"]
+
+      level_next = value["level_next"].to_i 
+
+      building.wood = (value["wood"]/(building.wood_factor ** (level_next - 1))).round
+      building.stone = (value["stone"]/(building.stone_factor ** (level_next - 1))).round
+      building.iron = (value["iron"]/(building.iron_factor ** (level_next - 1))).round
     end
+    
+    # queue = (@page.search("tr[class*='buildorder']").map do |line|
+    #   item = OpenStruct.new
+    #   item.building = line.attr('class').scan(/buildorder_(.+)/).first.first
+    #   item.completed_in = line.search('.btn-cancel').first.parent.previous_element.text.parse_datetime
+    #   item
+    # end).sort{|a,b| a.completed_in <=> b.completed_in }
+
+    # buildings = {}
+    # information = JSON.parse(@page.body.scan(/BuildingMain.buildings = ({.*})/).first.first).each do |id,information|
+    #   buildings[id] = building = OpenStruct.new#(information)
+    #   build_element = @page.search("#main_buildlink_#{building.id}_#{building.level_next}")
+    #   building.build_possible = build_element.empty? ? false : build_element.attr('style').nil?
+    #   building.level = building.level.to_i
+    #   building.in_queue = queue.map(&:building).include?(id)
+    #   building.name = id
+    # end
 
     # game_data = JSON.parse page.body.scan(/game_data = ({.*})/).first.first
 

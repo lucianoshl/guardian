@@ -20,3 +20,5 @@ if (user.player.nil?)
 end
 
 Screen::WorldConfig.new.units.map(&:save) if (Unit.count.zero?)
+
+Metadata::Building.populate

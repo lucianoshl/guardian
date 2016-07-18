@@ -1,4 +1,4 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
+// This is a manife$.AdminLTE.tree(".sidebar")st file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
 // Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
@@ -11,7 +11,6 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery.turbolinks
 //= require jquery_ujs
 //= require bootstrap-sprockets
 
@@ -24,3 +23,17 @@
 //= require jquery.slimscroll
 //= require app
 //= require_tree .
+
+$(document).ready(function() {
+  $.AdminLTE.layout.activate();
+});
+
+$(document).on('page:load', function() {
+  var o;
+  o = $.AdminLTE.options;
+  if (o.sidebarPushMenu) {
+    $.AdminLTE.pushMenu.activate(o.sidebarToggleSelector);
+  }
+  $.AdminLTE.layout.activate();
+  $.AdminLTE.tree(".sidebar");
+});

@@ -121,6 +121,10 @@ class Task::PillageAround < Task::Abstract
   def state_trops_without_spy
     state_send_command
   end   
+  
+  def state_waiting_population
+    state_send_command
+  end   
 
   def state_has_troops
     state_send_command
@@ -217,6 +221,8 @@ class Task::PillageAround < Task::Abstract
       move_to_waiting_partner(exception.release)
     rescue BannedUserException => exception
       move_to_banned
+    rescue NeedsMorePopulationException => exception
+      move_to_waiting_population
     end
   end
 
@@ -233,6 +239,10 @@ class Task::PillageAround < Task::Abstract
   end
 
   def move_to_waiting_resources(village)
+    return next_event(Time.zone.now + 1.hour)
+  end
+
+  def move_to_waiting_population
     return next_event(Time.zone.now + 1.hour)
   end
 

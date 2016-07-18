@@ -23,6 +23,14 @@ class InvitedPlayerException < Exception
   end
 end
 
+class NeedsMorePopulationException < Exception
+  attr_accessor :population
+
+  def initialize population
+    self.population = population
+  end
+end
+
 class PartnerAttackingException < Exception
   attr_accessor :release
 
@@ -109,6 +117,13 @@ class Screen::Place < Screen::Basic
       free_date = msg.scan(/até (.+), pois/).first.first.parse_datetime
       raise InvitedPlayerException.new(free_date)
     end
+
+    if (!msg.match(/A força de ataque precisa/).nil?)
+      min_pop = msg.scan(/de (\d+) hab/).first.first.extract_number
+      raise NeedsMorePopulationException.new(min_pop)
+    end
+
+    
     
     raise Exception.new(msg)
     

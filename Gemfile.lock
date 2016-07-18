@@ -84,6 +84,8 @@ GEM
     excon (0.51.0)
     execjs (2.7.0)
     ffi (1.9.13)
+    filewatcher (0.5.3)
+      trollop (~> 2.0)
     font-awesome-rails (4.6.3.1)
       railties (>= 3.2, < 5.1)
     globalid (0.3.6)
@@ -299,6 +301,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
+    trollop (2.1.2)
     turbolinks (5.0.0)
       turbolinks-source (~> 5)
     turbolinks-source (5.0.0)
@@ -337,6 +340,7 @@ DEPENDENCIES
   daemons
   dalli
   delayed_job_mongoid
+  filewatcher
   health_check
   heroku-api
   jbuilder (~> 2.0)

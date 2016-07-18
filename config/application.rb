@@ -20,6 +20,14 @@ module Guardian
 
     Mongoid.logger.level = Logger::INFO
 
+    if (['dev','test'].include?(Rails.env))
+        Thread.new do 
+            FileWatcher.new(Dir.glob("#{Rails.root}/**/*.rb")).watch do |f| 
+                load(f)
+            end
+        end
+    end
+
     # config.log_level = :debug
 
     # Settings in config/environments/* take precedence over those specified here.

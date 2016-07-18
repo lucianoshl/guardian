@@ -114,8 +114,8 @@ class Screen::Place < Screen::Basic
     end
 
     if (!msg.match(/convidou o proprie/).nil?)
-      free_date = msg.scan(/até (.+), pois/).first.first.parse_datetime
-      raise InvitedPlayerException.new(free_date)
+      # free_date = msg.scan(/até (.+), pois/).first.first.parse_datetime
+      raise InvitedPlayerException.new(Time.zone.now + 1.day)
     end
 
     if (!msg.match(/A força de ataque precisa/).nil?)

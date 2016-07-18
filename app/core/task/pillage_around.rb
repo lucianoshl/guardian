@@ -50,7 +50,7 @@ class Task::PillageAround < Task::Abstract
 
     end
     
-    return Village.pillage_candidates.map(&:next_event).sort.first || (Time.zone.now + 1.hour)
+    return Village.pillage_candidates.map(&:next_event).compact.sort.first || (Time.zone.now + 1.hour)
   end
 
   def state_send_command

@@ -27,7 +27,7 @@ class Parser::Place < Parser::Basic
       command.returning = row.search('img').first.attr('src').scan('return_').length > 0
       coordinate = row.search('.quickedit-label').to_coordinate
       command.id = row.search('a').first.attr('href').scan(/id=(\d+)/).extract_number
-      
+
       if (coordinate.x == 0 && coordinate.y == 0)
         screen = Screen::InfoCommand.new(id: command.id)
         command.target = screen.target
@@ -40,6 +40,7 @@ class Parser::Place < Parser::Basic
         end
         command.origin = screen.village
       end
+
       command.occurence = row.search('td')[1].text.parse_datetime
       if (!row.search('.command-cancel').first.nil?)
         command.cancel_url = row.search('.command-cancel').first.attr('href')

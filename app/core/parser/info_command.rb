@@ -6,6 +6,12 @@ class Parser::InfoCommand < Parser::Basic
 
     screen.origin = Village.where(vid: origin_id).first
     screen.target = Village.where(vid: target_id).first
+
+    if screen.target.nil?
+      screen.target = Screen::InfoVillage.new(id:target_id).village
+      screen.target.save
+    end
+    
   end
 
 end

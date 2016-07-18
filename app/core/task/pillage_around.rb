@@ -12,7 +12,7 @@ class Task::PillageAround < Task::Abstract
       @places[id] = Screen::Place.new(village: village.vid)
     end
 
-    @places[id].units -= Troop.new(knight: 1)
+    @places[id].units.knight = 0
 
     return @places[id]
   end

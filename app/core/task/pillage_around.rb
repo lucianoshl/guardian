@@ -247,7 +247,7 @@ class Task::PillageAround < Task::Abstract
     return next_event(command.occurence)
   end
   def move_to_banned
-    return next_event(Time.zone.now + 1.day)
+    return next_event(Time.zone.now + 1.hour)
   end
 
   def move_to_newbie_protection(date)

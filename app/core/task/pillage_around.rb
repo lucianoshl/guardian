@@ -172,7 +172,8 @@ class Task::PillageAround < Task::Abstract
 
 
     if ((!last_report.resources.nil? && last_report.resources.total < resource_min))
-      return move_to_waiting_resources(@target)
+      total_resources = 100
+      # return move_to_waiting_resources(@target)
     end
 
     if (troops.total.zero?)

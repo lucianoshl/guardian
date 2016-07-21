@@ -20,7 +20,8 @@ class Task::PillageAround < Task::Abstract
 
     candidates = candidates.map do |target|
       closer = closer_villages(target)
-      [target,closer,closer.first.distance(target)]
+      distance = closer.first.nil? ? -1 : closer.first.distance(target)
+      [target,closer,distance]
     end
 
     candidates = candidates.sort{|a,b| a[2] <=> b[2]}

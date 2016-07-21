@@ -139,7 +139,8 @@ class Task::PillageAround < Task::Abstract
 
 
     if ((!last_report.resources.nil? && last_report.resources.total < resource_min))
-      return move_to_waiting_resources(@target)
+      total_resources = 100
+      # return move_to_waiting_resources(@target)
     end
 
     if (troops.total.zero?)
@@ -214,7 +215,7 @@ class Task::PillageAround < Task::Abstract
     return next_event(command.occurence)
   end
   def move_to_banned
-    return next_event(Time.zone.now + 1.day)
+    return next_event(Time.zone.now + 1.hour)
   end
 
   def move_to_newbie_protection(date)

@@ -231,14 +231,14 @@ class Task::PillageAround < Task::Abstract
   end
 
   def move_to_waiting_troops(troops_to_wait)
-    next_command
+    return next_event(next_returning)
   end
 
   def move_to_waiting_spies(troops_to_wait)
-    next_command
+    return next_event(next_returning)
   end
 
-  def next_command
+  def next_returning
     other = @origin_candidates.shift
 
     if (!other.nil?)
@@ -251,7 +251,7 @@ class Task::PillageAround < Task::Abstract
 
     next_returning = commands_with_order.select(&:returning).first || commands_with_order.first
     next_returning = next_returning.nil? ? (Time.zone.now + 1.hour) : next_returning.occurence
-    return next_event(next_returning)
+    return next_returning
   end
 
   def next_event date

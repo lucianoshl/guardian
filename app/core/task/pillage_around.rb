@@ -1,20 +1,13 @@
 class Task::PillageAround < Task::Abstract
 
-  def closer_villages
-    @my_villages.select{|a| a.distance(@target) <= Config.pillager.distance(10) }.sort do |a,b|
-      a.distance(@target) <=> b.distance(@target)
+  def closer_villages(target)
+    @my_villages.select{|a| a.distance(target) <= Config.pillager.distance(10) }.sort do |a,b|
+      a.distance(target) <=> b.distance(target)
     end
   end
 
   def get_place village
-    id = village.vid
-    if (@places[id].nil?)
-      @places[id] = Screen::Place.new(village: village.vid)
-    end
-
-    @places[id].units.knight = 0
-
-    return @places[id]
+    Screen::Place.get(village.vid)
   end
 
   def run
@@ -22,10 +15,18 @@ class Task::PillageAround < Task::Abstract
 
     @my_villages = Village.my.to_a
 
-    @places = {}
-
     info "Running for #{candidates.size} candidates"
-    candidates.each do |target|
+
+    candidates = candidates.map do |target|
+      closer = closer_villages(target)
+      [target,closer,closer.first.distance(target)]
+    end
+
+    candidates = candidates.sort{|a,b| a[2] <=> b[2]}
+
+    Screen::ReportView.load_all
+    
+    candidates.each do |target,closer_villages|
       @target = target
       @origin_candidates = closer_villages
 
@@ -35,7 +36,7 @@ class Task::PillageAround < Task::Abstract
 
       @origin = @origin_candidates.shift
 
-      current_state = target.state || 'send_command'
+      current_state = equivalent_state(target.state || 'send_command')
 
       begin
         info("Running state #{current_state} for #{@target} using #{@origin.nil? ? "FAR AWAY!!" : @origin.name}")
@@ -71,7 +72,7 @@ class Task::PillageAround < Task::Abstract
     base_attack = Troop.new(spy: spies)
 
     if (!get_place(@origin).units.contains(base_attack)) then
-      return move_to_waiting_troops(base_attack)
+      return move_to_waiting_spies(base_attack)
     else
       return send_attack(base_attack)   
     end
@@ -82,16 +83,15 @@ class Task::PillageAround < Task::Abstract
     equivalents = {}
     equivalents['banned'] = 'send_command'
     equivalents['waiting_troops'] = 'send_command'
+    equivalents['waiting_spies'] = 'send_command'
     equivalents['newbie_protection'] = 'send_command'
+    equivalents['invited_player'] = 'send_command'
     equivalents['waiting_resources'] = 'send_command'
     equivalents['shared_connection'] = 'send_command'
     equivalents['trops_without_spy'] = 'send_command'
+    equivalents['waiting_population'] = 'send_command'
     equivalents['has_troops'] = 'send_command'
-    return equivalents[state];
-  end
-
-  def state_banned
-    state_send_command
+    return equivalents[state] || state
   end
 
   def state_far_away
@@ -100,38 +100,6 @@ class Task::PillageAround < Task::Abstract
     end
     state_send_command
   end
-
-  def state_waiting_troops
-    state_send_command
-  end
-  
-  def state_newbie_protection
-    state_send_command
-  end 
-  
-  def state_invited_player
-    state_send_command
-  end
-
-  def state_waiting_resources
-    state_send_command
-  end 
-
-  def state_shared_connection
-    state_send_command
-  end 
-  
-  def state_trops_without_spy
-    state_send_command
-  end   
-  
-  def state_waiting_population
-    state_send_command
-  end   
-
-  def state_has_troops
-    state_send_command
-  end 
 
   def state_waiting_partner
     last_report_partner =  Partner.last_report(@target)
@@ -144,7 +112,6 @@ class Task::PillageAround < Task::Abstract
   end 
 
   def state_waiting_report
-    Screen::ReportView.load_all
     last_report = @target.last_report
     if (last_report.nil?)
       return state_send_recognition
@@ -263,6 +230,14 @@ class Task::PillageAround < Task::Abstract
   end
 
   def move_to_waiting_troops(troops_to_wait)
+    next_command
+  end
+
+  def move_to_waiting_spies(troops_to_wait)
+    next_command
+  end
+
+  def next_command
     other = @origin_candidates.shift
 
     if (!other.nil?)
@@ -271,7 +246,7 @@ class Task::PillageAround < Task::Abstract
       return state_send_recognition
     end
 
-    commands_with_order = @places.values.select{|a| a.village.distance(@target) <= Config.pillager.distance(10) }.map(&:commands).flatten.sort{|a,b| a.occurence <=> b.occurence}
+    commands_with_order = Screen::Place.all.select{|a| a.village.distance(@target) <= Config.pillager.distance(10) }.map(&:commands).flatten.sort{|a,b| a.occurence <=> b.occurence}
 
     next_returning = commands_with_order.select(&:returning).first || commands_with_order.first
     next_returning = next_returning.nil? ? (Time.zone.now + 1.hour) : next_returning.occurence

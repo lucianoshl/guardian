@@ -43,6 +43,8 @@ end
 
 class Screen::Place < Screen::Basic
 
+  @@places = {}
+
   attr_accessor :units,:commands,:incomings,:supports,:form,:unit_metadata
 
   url screen: 'place'  
@@ -123,14 +125,26 @@ class Screen::Place < Screen::Basic
       raise NeedsMorePopulationException.new(min_pop)
     end
 
-    
-    
     raise Exception.new(msg)
     
   end
 
   def has_command village
     commands.select{|a| village == a.target && !a.returning }.first
+  end
+
+  def self.get(vid)
+    if (@@places[vid].nil?)
+      @@places[vid] = Screen::Place.new(village: vid)
+    end
+
+    @@places[vid].units.knight = 0
+
+    return @@places[vid]
+  end
+
+  def self.all
+    @@places.values
   end
 
 end

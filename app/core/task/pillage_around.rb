@@ -97,7 +97,7 @@ class Task::PillageAround < Task::Abstract
   end
 
   def state_far_away
-    if (closer_villages.empty?)
+    if (closer_villages(@target).empty?)
       return ["far_away",Time.zone.now + 1.day]
     end
     state_send_command

@@ -147,4 +147,8 @@ class Screen::Place < Screen::Basic
     @@places.values
   end
 
+  def self.reset
+    @@places = {}
+  end
+
 end

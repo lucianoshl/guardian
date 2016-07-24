@@ -3,9 +3,9 @@ class Unit
 
 	field :name, type: String
 	field :label, type: String
-	# field :type, type: String
 	field :carry, type: Integer
 	field :attack, type: Integer 
+	field :population, type: Integer 
 	field :speed, type: Float
 
 	embeds_one :cost, as: :resourcesable, class_name: Resource.to_s

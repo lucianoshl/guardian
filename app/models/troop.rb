@@ -1,5 +1,4 @@
 class ImpossibleUpgrade < Exception
-
 end
 
 class Troop
@@ -84,14 +83,14 @@ class Troop
       actual_carry = Troop.new(troops).carry
 
       while(actual_carry - Unit.get(weak_unit).carry >= pillage)
-          if (troops[weak_unit] == 0)
-            weak_order = troops.sort{|a,b| Unit.get(a[0]).attack <=> Unit.get(b[0]).attack }.select{|a,b| b> 0}
-            raise ImpossibleUpgrade.new if weak_order.empty?
-            weak_unit = weak_order.first.first
-            next
-          end
-          troops[weak_unit] -= 1
-          actual_carry = Troop.new(troops).carry
+        if (troops[weak_unit] == 0)
+          weak_order = troops.sort{|a,b| Unit.get(a[0]).attack <=> Unit.get(b[0]).attack }.select{|a,b| b> 0}
+          raise ImpossibleUpgrade.new if weak_order.empty?
+          weak_unit = weak_order.first.first
+          next
+        end
+        troops[weak_unit] -= 1
+        actual_carry = Troop.new(troops).carry
       end
       break
     end
@@ -135,36 +134,72 @@ class Troop
     result
   end
 
-    def +(other)
-    result = self.clone
-
-    result.spear ||= 0
-    result.sword ||= 0
-    result.axe ||= 0
-    result.archer ||= 0
-    result.spy ||= 0
-    result.light ||= 0
-    result.marcher ||= 0
-    result.heavy ||= 0
-    result.ram ||= 0
-    result.catapult ||= 0
-    result.knight ||= 0
-    result.snob ||= 0
-
-    result.spear += other.spear || 0
-    result.sword += other.sword || 0
-    result.axe += other.axe || 0
-    result.archer += other.archer || 0
-    result.spy += other.spy || 0
-    result.light += other.light || 0
-    result.marcher += other.marcher || 0
-    result.heavy += other.heavy || 0
-    result.ram += other.ram || 0
-    result.catapult += other.catapult || 0
-    result.knight += other.knight || 0
-    result.snob += other.snob || 0
-    result
+  def population
+    troops = self.instance_values
+    total = 0
+    self.instance_values.map do |unit,qte|
+      total += Unit.get(unit).population*qte
+    end
+    total
   end
+
+  def increase_population(disponible,target_population)
+    result = self.clone.instance_values
+    disponible = disponible.instance_values
+    actual_pop = self.population
+
+    
+    Unit.gt(carry:0).asc(:carry).map do |unit|
+      qte = disponible[unit.name]
+      if (!qte.nil? && !qte.zero?)
+        # binding.pry
+        while(actual_pop < target_population && qte > 0)
+          result[unit.name] ||= 0
+          result[unit.name] += 1
+          qte -= 1
+          actual_pop += unit.population
+        end
+      end
+    end
+    result = Troop.new(result)
+
+    if (result.population != target_population)
+      raise ImpossibleUpgrade.new
+    end
+
+    return result
+  end
+
+  # def +(other)
+  #   result = self.clone
+
+  #   result.spear ||= 0
+  #   result.sword ||= 0
+  #   result.axe ||= 0
+  #   result.archer ||= 0
+  #   result.spy ||= 0
+  #   result.light ||= 0
+  #   result.marcher ||= 0
+  #   result.heavy ||= 0
+  #   result.ram ||= 0
+  #   result.catapult ||= 0
+  #   result.knight ||= 0
+  #   result.snob ||= 0
+
+  #   result.spear += other.spear || 0
+  #   result.sword += other.sword || 0
+  #   result.axe += other.axe || 0
+  #   result.archer += other.archer || 0
+  #   result.spy += other.spy || 0
+  #   result.light += other.light || 0
+  #   result.marcher += other.marcher || 0
+  #   result.heavy += other.heavy || 0
+  #   result.ram += other.ram || 0
+  #   result.catapult += other.catapult || 0
+  #   result.knight += other.knight || 0
+  #   result.snob += other.snob || 0
+  #   result
+  # end
 
   def *(value)
     result = self.instance_values.clone

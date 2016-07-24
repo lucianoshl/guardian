@@ -64,10 +64,11 @@ class Screen::Place < Screen::Basic
     if (!partner_time.nil?)
       raise PartnerAttackingException.new(partner_time)
     end
+    spies = Screen::Place.spy_qte
 
-    troops.spy ||= 0
-
-    troops.spy ||= 4 if ((self.units.spy - troops.spy) >= 4)
+    if (troops.spy.nil? || troops.spy.zero?)
+      troops.spy = self.units.spy >= spies ? spies : 0
+    end
 
     form.fill(troops.instance_values)
     form.fill(x: target.x , y: target.y)
@@ -86,7 +87,8 @@ class Screen::Place < Screen::Basic
     parse(confirm_form.submit(confirm_form.buttons.first))
 
     possible_commands = self.commands.select do |command|
-      command.target.x == target.x && command.target.y == target.y && !command.returning
+            !command.returning && !command.target.nil? && 
+       command.target.x == target.x && command.target.y == target.y
     end
 
     (possible_commands.sort { |a, b| a.occurence <=> b.occurence }).last
@@ -131,6 +133,10 @@ class Screen::Place < Screen::Basic
 
   def has_command village
     commands.select{|a| village == a.target && !a.returning }.first
+  end
+
+  def self.spy_qte
+    4
   end
 
   def self.get(vid)

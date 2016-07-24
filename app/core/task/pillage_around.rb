@@ -85,6 +85,7 @@ class Task::PillageAround < Task::Abstract
     equivalents = {}
     equivalents['banned'] = 'send_command'
     equivalents['waiting_troops'] = 'send_command'
+    equivalents['waiting_strong_troops'] = 'send_command'
     equivalents['waiting_spies'] = 'send_command'
     equivalents['newbie_protection'] = 'send_command'
     equivalents['invited_player'] = 'send_command'
@@ -142,6 +143,7 @@ class Task::PillageAround < Task::Abstract
 
     if ((!last_report.resources.nil? && last_report.resources.total < resource_min))
       total_resources = 80
+      troops = get_place(@origin).units.distribute(total_resources)
       # return move_to_waiting_resources(@target)
     end
 
@@ -161,7 +163,7 @@ class Task::PillageAround < Task::Abstract
       begin
         troops = troops.upgrade(get_place(@origin).units - troops,total_resources)
       rescue ImpossibleUpgrade => e
-        return move_to_waiting_troops(nil)
+        return move_to_waiting_strong_troops(nil)
       end
     end
 
@@ -169,6 +171,10 @@ class Task::PillageAround < Task::Abstract
   end
 
   def send_attack troops
+
+    # troops.spy ||= 0
+    # spies = Screen::Place.spy_qte
+    # troops.spy ||= spies if (get_place(@origin).units.spy >= spies)
 
     command = get_place(@origin).has_command(@target)
     if (!command.nil?)
@@ -189,8 +195,19 @@ class Task::PillageAround < Task::Abstract
     rescue BannedUserException => exception
       move_to_banned
     rescue NeedsMorePopulationException => exception
-      move_to_waiting_population
+      return increase_population(troops,exception.population)
     end
+  end
+
+  def increase_population(troops,population)
+    troops_old = troops
+    begin
+      troops = troops.increase_population(get_place(@origin).units,population)
+    rescue ImpossibleUpgrade => e
+      return move_to_waiting_troops
+    end
+
+    return send_attack(troops)
   end
 
   def move_to_shared_connection
@@ -230,6 +247,10 @@ class Task::PillageAround < Task::Abstract
 
   def move_to_has_troops
     return next_event(Time.zone.now + 1.day)
+  end
+
+  def move_to_waiting_strong_troops(troops_to_wait)
+    return next_event(next_returning)
   end
 
   def move_to_waiting_troops(troops_to_wait)

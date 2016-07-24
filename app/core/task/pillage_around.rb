@@ -204,7 +204,7 @@ class Task::PillageAround < Task::Abstract
     begin
       troops = troops.increase_population(get_place(@origin).units,population)
     rescue ImpossibleUpgrade => e
-      return move_to_waiting_troops
+      return move_to_waiting_troops(nil)
     end
 
     return send_attack(troops)

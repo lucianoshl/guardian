@@ -138,7 +138,7 @@ class Troop
     troops = self.instance_values
     total = 0
     self.instance_values.map do |unit,qte|
-      total += Unit.get(unit).population*qte
+      total += Unit.get(unit).population*(qte||0)
     end
     total
   end

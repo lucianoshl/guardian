@@ -1,7 +1,7 @@
 class VillageController < ApplicationController
   def index
 
-    query = Village.asc(:next_event)
+    query = Village.not_in(state:[:far_away]).asc(:next_event)
     if (!params[:threat].nil?)
         query = query.in(state: [:has_troops,:strong,:trops_without_spy])
     end

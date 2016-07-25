@@ -14,4 +14,8 @@ module VillageHelper
       }
     end).join.html_safe
   end
+
+  def render_coord(village)
+    "(#{village.x}|#{village.y}) K#{village.y/100}#{village.x/100}"
+  end
 end

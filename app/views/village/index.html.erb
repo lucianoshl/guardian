@@ -6,7 +6,7 @@
           <tbody><tr>
             <th>Coordenadas</th>
             <th>Nome</th>
-            <th>Pontos</th>
+            <th class="text-right">Pontos</th>
             <th>Estado</th>
             <th>Próximo evento</th>
           </tr>
@@ -21,11 +21,16 @@
             my_village.distance(a) <=> my_village.distance(b)
 
            }.each do |village|
+
+            if (village.state == "trops_without_spy")
+              current_troops = village.last_report.target_troops
+            end
+
             %>
             <tr class="village-line" village-id="<%= village.id %>">
-              <td><%= village.x %>|<%= village.y %></td> 
-              <td><%= village.name %></td> 
-              <td><%= village.points %></td> 
+              <td><%= render_coord(village) %></td> 
+              <td><%= village.name %><%= render_troops(current_troops,false) %></p></td> 
+              <td class="text-right"><%= number_with_delimiter(village.points,delimiter: '.') %></td> 
               <td><%= village.state %></td> 
               <td><%= village.next_event.nil? ? nil : village.next_event.strftime("%d/%m - %H:%M:%S") %></td> 
             </tr>

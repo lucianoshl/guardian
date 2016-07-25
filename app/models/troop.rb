@@ -145,14 +145,12 @@ class Troop
 
   def increase_population(disponible,target_population)
     result = self.clone.instance_values
-    disponible = disponible.instance_values
+    disponible = (disponible - self).instance_values
     actual_pop = self.population
 
-    
     Unit.gt(carry:0).asc(:carry).map do |unit|
       qte = disponible[unit.name]
       if (!qte.nil? && !qte.zero?)
-        # binding.pry
         while(actual_pop < target_population && qte > 0)
           result[unit.name] ||= 0
           result[unit.name] += 1

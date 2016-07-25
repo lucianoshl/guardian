@@ -195,8 +195,8 @@ class Task::PillageAround < Task::Abstract
     rescue BannedUserException => exception
       move_to_banned
     rescue NeedsMorePopulationException => exception
-      # return increase_population(troops,exception.population)
-      move_to_waiting_resources
+      return increase_population(troops,exception.population)
+      # move_to_waiting_resources
     end
   end
 

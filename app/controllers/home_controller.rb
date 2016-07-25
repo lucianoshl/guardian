@@ -14,16 +14,21 @@ class HomeController < ApplicationController
       ]
     }
 
-    info = Report.pillage_statistics
+    states = Village.distinct(:state).select{|a| a != "far_away"}
+    chart = states.pmap {|a| [a,Village.where(state: a).count] }.sort{|a,b| a[1] <=> b[1]}.reverse
 
-    @graph_loot_eficiency = {
-      labels: info.map{|a| a.first.strftime("%d/%m") + " sleep="+a[1].to_s }, 
+
+    generator = ColorGenerator.new saturation: 1, value: 1.0
+
+    colors = (1..chart.size).map { "rgba(#{generator.create_rgb.join(',')}, 1)" }
+
+    @data = {
+      labels: chart.map(&:first),
       datasets: [
         {
-          label: "Eficiência",
-          backgroundColor: "green",
-          borderColor: "rgba(220,220,220,1)",
-          data: info.map{|a| a.last}
+            label: "My First dataset",
+            backgroundColor: colors,
+            data: chart.map(&:last)
         }
       ]
     }

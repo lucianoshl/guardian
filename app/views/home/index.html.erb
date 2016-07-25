@@ -12,11 +12,11 @@
   <div class="col-md-6">
     <div class="box">
       <div class="box-header with-border">
-        <h3 class="box-title">Eficiência dos saques </h3>
+        <h3 class="box-title">Distribuição dos status</h3>
       </div>
       <div class="box-body">
-        <%= bar_chart @graph_loot_eficiency,{height: 150}.merge(@opts) %>
-      </div>
-    </div>
+       <%= doughnut_chart(@data,{height: 150*2}) %>
+     </div>
+   </div>
   </div>
 </div>

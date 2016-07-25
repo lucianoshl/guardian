@@ -13,7 +13,8 @@ class VillageController < ApplicationController
     nils, not_nils = query.partition { |p| p.next_event.nil? }
     @villages = not_nils + nils
 
-    chart = Village.distinct(:state).pmap {|a| [a,Village.where(state: a).count] }.sort{|a,b| a[1] <=> b[1]}.reverse
+    states = Village.distinct(:state).select{|a| a != "far_away"}
+    chart = states.pmap {|a| [a,Village.where(state: a).count] }.sort{|a,b| a[1] <=> b[1]}.reverse
 
 
     generator = ColorGenerator.new saturation: 1, value: 1.0

@@ -72,7 +72,12 @@ class Screen::Anonymous
 
   def parse page
     parser = self.class.name.gsub("Screen::","Parser::").constantize
+    check_bot(page)
     parser.new(page).parse(self)
+  end
+
+  def check_bot page
+    raise Exception("bot_protection") if (page.search('#bot_check').size > 0)
   end
 
   def client

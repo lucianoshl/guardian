@@ -124,16 +124,16 @@ class Task::PillageAround < Task::Abstract
       return move_to_has_troops
     end
 
-    if (last_report.has_troops?)
-      return move_to_trops_without_spy
-    end
-
     expire_report_in = Config.pillager.report_expiration_time(3).hours
 
     resource_min = Config.pillager.min_resource_to_pillage(100)  
 
     if (last_report.resources.nil? || (Time.zone.now - last_report.occurrence)/expire_report_in > 1)
       return state_send_recognition
+    end
+
+    if (last_report.has_troops?)
+      return move_to_trops_without_spy
     end
 
     total_resources = last_report.resources.total

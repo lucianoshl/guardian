@@ -77,7 +77,8 @@ class Screen::Anonymous
   end
 
   def check_bot page
-    raise Exception("bot_protection") if (page.search('#bot_check').size > 0)
+    # raise Exception("bot_protection") if (page.search('#bot_check').size > 0)
+    raise Exception.new("bot_protection") if (!page.search('body').attr('data-bot-protect').nil?) 
   end
 
   def client

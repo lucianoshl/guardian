@@ -11,6 +11,16 @@ class Screen::Logged < Screen::Anonymous
     @client
   end
 
+  def parse page
+    parser = self.class.name.gsub("Screen::","Parser::").constantize
+    check_bot(page)
+    parser.new(page).parse(self)
+  end
+
+  def check_bot page
+    raise Exception.new("bot_protection") if (!page.search('body').attr('data-bot-protect').nil?) 
+  end
+
   def request url
     page = _request(method,url)
     Rails.logger.info "#{method} #{url}"

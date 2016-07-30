@@ -35,7 +35,7 @@ class Task::PillageAround < Task::Abstract
       if (@origin_candidates.empty?)
         @target.state = "far_away"
       end
-      
+
       @origin = @origin_candidates.shift
 
       current_state = equivalent_state(target.state || 'send_command')
@@ -225,11 +225,11 @@ class Task::PillageAround < Task::Abstract
   end
 
   def move_to_waiting_resources(village=nil)
-    return next_event(Time.zone.now + 1.hour)
+    return next_event(Time.zone.now + 12.hours)
   end
 
   def move_to_waiting_population
-    return next_event(Time.zone.now + 1.hour)
+    return next_event(Time.zone.now + 12.hours)
   end
 
   def move_to_waiting_report(command)

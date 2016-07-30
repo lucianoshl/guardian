@@ -35,7 +35,7 @@ class Task::PillageAround < Task::Abstract
       if (@origin_candidates.empty?)
         @target.state = "far_away"
       end
-
+      
       @origin = @origin_candidates.shift
 
       current_state = equivalent_state(target.state || 'send_command')
@@ -93,7 +93,7 @@ class Task::PillageAround < Task::Abstract
     equivalents['shared_connection'] = 'send_command'
     equivalents['trops_without_spy'] = 'send_command'
     equivalents['waiting_population'] = 'send_command'
-    equivalents['has_troops'] = 'send_command'
+    equivalents['has_troops'] = 'waiting_report'
     return equivalents[state] || state
   end
 

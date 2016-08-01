@@ -17,19 +17,6 @@
         </a>
       </div>
     </div>
-
-    <!-- search form (Optional) -->
-<!--     <form action="#" method="get" class="sidebar-form">
-      <div class="input-group">
-        <input type="text" name="q" class="form-control" placeholder="Search..."/>
-        <span class="input-group-btn">
-          <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
-        </span>
-      </div>
-    </form> -->
-    <!-- /.search form -->
-
-    <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
       <li class="header">HEADER</li> 
       <li class="<%= request.path == '/' ? 'active' : nil %>">
@@ -37,6 +24,10 @@
       </li>
       <li class="<%= active_route?('/my_villages') %>">
         <a href="/my_villages"><i class='fa fa-home'></i> <span>Aldeias</span></a>
+      </li>
+
+      <li class="<%= active_route?('/command') %>">
+        <a href="/commands"><i class='fa fa-exchange'></i> <span>Comandos</span></a>
       </li>
       <li class="<%= active_route?('/task') %>">
         <a href="<%= task_index_path %>"><i class='fa fa-clock-o'></i> <span>Tarefas</span></a>

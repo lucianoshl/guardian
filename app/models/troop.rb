@@ -168,36 +168,15 @@ class Troop
     return result
   end
 
-  # def +(other)
-  #   result = self.clone
-
-  #   result.spear ||= 0
-  #   result.sword ||= 0
-  #   result.axe ||= 0
-  #   result.archer ||= 0
-  #   result.spy ||= 0
-  #   result.light ||= 0
-  #   result.marcher ||= 0
-  #   result.heavy ||= 0
-  #   result.ram ||= 0
-  #   result.catapult ||= 0
-  #   result.knight ||= 0
-  #   result.snob ||= 0
-
-  #   result.spear += other.spear || 0
-  #   result.sword += other.sword || 0
-  #   result.axe += other.axe || 0
-  #   result.archer += other.archer || 0
-  #   result.spy += other.spy || 0
-  #   result.light += other.light || 0
-  #   result.marcher += other.marcher || 0
-  #   result.heavy += other.heavy || 0
-  #   result.ram += other.ram || 0
-  #   result.catapult += other.catapult || 0
-  #   result.knight += other.knight || 0
-  #   result.snob += other.snob || 0
-  #   result
-  # end
+  def +(other)
+    result = self.instance_values.clone
+    other = other.instance_values.clone
+    Unit.names.map(&:to_s).map do |unit_name|
+      result[unit_name] ||= 0
+      result[unit_name] += (other[unit_name] || 0)
+    end
+    return Troop.new(result)
+  end
 
   def *(value)
     result = self.instance_values.clone

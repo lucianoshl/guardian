@@ -16,6 +16,10 @@ module VillageHelper
   end
 
   def render_coord(village)
-    "(#{village.x}|#{village.y}) K#{village.y/100}#{village.x/100}"
+    %{
+      <a href=\"/village/#{village.id}\">
+        (#{village.x}|#{village.y}) K#{village.y/100}#{village.x/100}
+      </a>
+    }.html_safe
   end
 end

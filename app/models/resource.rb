@@ -7,6 +7,12 @@ class Resource
   
   embedded_in :resourcesable, polymorphic: true
 
+  after_initialize do
+    self.wood ||= 0
+    self.stone ||= 0
+    self.iron ||= 0
+  end
+
   def total
     wood + stone + iron
   end

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   get 'village/waiting_report' => 'village#waiting_report'
 
-  resources :village,:task,:report,:my_villages,:task
+  resources :village,:task,:report,:my_villages,:task,:command
 
   get 'cookie/latest'
 

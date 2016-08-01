@@ -1,13 +1,13 @@
 class Screen::Logged < Screen::Anonymous
 
+  def self.client
+    _client = Mechanize.my
+    _client.user_agent_alias = 'iPhone'
+    _client.add_cookies(Cookie.latest)
+  end
+
   def client
-     if @client.nil?
-      @client = Mechanize.my
-
-      @client.user_agent_alias = 'iPhone'
-
-      @client.add_cookies(Cookie.latest)
-     end
+    @client = Screen::Logged.client if @client.nil?
     @client
   end
 

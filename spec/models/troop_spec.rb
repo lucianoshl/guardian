@@ -11,6 +11,15 @@ RSpec.describe Troop, type: :model do
     expect((Troop.new(spear: 5 ,sword: 5) - Troop.new(spear: 5)).sword).to equal(5)
   end
 
+  it "troop+" do
+    result = Troop.new(spy: 5, axe: 1) + Troop.new(spear: 5, axe: 2)
+    expect(result.spy).to equal(5)
+    expect(result.spear).to equal(5)
+    expect(result.axe).to equal(3)
+  end
+
+  
+
   it "troop_increase_poulation" do
  
     troop = Troop.new({"spear"=>21, "sword"=>10, "spy"=>4})

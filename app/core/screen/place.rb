@@ -149,6 +149,10 @@ class Screen::Place < Screen::Basic
     return @@places[vid]
   end
 
+  def self.load_all
+    Village.my.map{|v| get(v.vid) }
+  end
+
   def self.all
     @@places.values
   end

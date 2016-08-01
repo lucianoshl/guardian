@@ -6,15 +6,13 @@ class Parser::InfoCommand < Parser::Basic
 
     deleted_village = @page.search('h2').text.include?("A aldeia não existe mais")
 
-    if (target_id.nil? && !deleted_village)
-      screen.target = Village.where(vid: target_id).first
-      if screen.target.nil?
-        screen.target = Screen::InfoVillage.new(id:target_id).village
-        screen.target.save
-      end
-    end
-
+    screen.target = Village.where(vid: target_id).first
     screen.origin = Village.where(vid: origin_id).first
+
+    if (screen.target.nil? && !deleted_village)
+      screen.target = Screen::InfoVillage.new(id:target_id).village
+      screen.target.save
+    end
   end
 
 end

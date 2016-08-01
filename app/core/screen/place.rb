@@ -150,7 +150,7 @@ class Screen::Place < Screen::Basic
   end
 
   def self.load_all
-    Village.my.map{|v| Screen::Place.new(village: vid) }
+    Village.my.map{|v| Screen::Place.new(village: v.vid) }
   end
 
   def self.all

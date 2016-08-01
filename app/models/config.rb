@@ -8,7 +8,14 @@ class Config
 
   def self.method_missing(m, *args, &block) 
     return Config.new(section: m)
-  end  
+  end
+
+  after_save do
+    if (self.name == "distance")
+      Task::PlayerMonitor.new.run
+      Village.where(state:'far_away').map(&:clean_state)
+    end
+  end
 
   def method_missing(m, *args, &block) 
     conf = self.class.where(section: section,name: m).first || Config.new(section: section,name: m)

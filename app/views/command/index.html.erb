@@ -3,6 +3,8 @@
     <div class="box">
       <div class="box-body">
         <dl class="dl-horizontal" class="col-md-6">
+          <dt>Total</dt>
+          <dd><%= @commands.size %></dd>
           <dt>Recursos Fora</dt>
           <dd><%= render_resource(@out_pillage) %></dd>
           <dt>Tropas Fora</dt>
@@ -10,7 +12,6 @@
         </dl>
         <table class="table table-hover villages">
           <tbody><tr>
-            <th></th>
             <th>Origem</th>
             <th>Destino</th>
             <th>Tropas</th>
@@ -21,12 +22,12 @@
           @commands.sort{|a,b| a.occurence <=> b.occurence}.each do |command|
             %>
             <tr>
-              <td>
-                <i class='fa <%= command.returning ? 'fa-arrow-left' : 'fa-arrow-right' %>'></i>
-              </td> 
               <td><%= render_coord(command.origin) %></td> 
               <td><%= render_coord(command.target) %></td> 
-              <td><%= render_troops(command.troops,false) %></td> 
+              <td>
+                <i class='fa <%= command.returning ? 'fa-arrow-left' : 'fa-arrow-right' %>'></i>
+                <%= render_troops(command.troops,false) %>    
+              </td> 
               <td><%= command.pillage.nil? ? '-' : render_resource(command.pillage) %></td> 
               <td><%= command.occurence.strftime("%d/%m - %H:%M:%S") %></td> 
             </tr>

@@ -225,11 +225,11 @@ class Task::PillageAround < Task::Abstract
   end
 
   def move_to_waiting_resources(village=nil)
-    return next_event(Time.zone.now + 6.hours)
+    return next_event(Time.zone.now + 3.hours)
   end
 
   def move_to_waiting_population
-    return next_event(Time.zone.now + 6.hours)
+    return next_event(Time.zone.now + 3.hours)
   end
 
   def move_to_waiting_report(command)

@@ -1,6 +1,10 @@
 class CommandController < ApplicationController
+
+  helper_method :out_values
+
   def index
-    @commands = (Screen::Place.load_all.map(&:commands).flatten.map do |command|
+    all_places = Screen::Place.load_all
+    @commands = (all_places.map(&:commands).flatten.pmap do |command|
       key = "command_controller_command_#{command.id}_#{command.returning}"
       
       json_extra = Rails.cache.fetch(key, expires_in: 1.year) do
@@ -13,12 +17,23 @@ class CommandController < ApplicationController
       command
     end).compact
 
-    @out_troops = Troop.new
-    @out_pillage = Resource.new
-    @commands.map do |command|
-      @out_troops += command.troops if (!command.troops.nil?)
-      @out_pillage += command.pillage if (!command.pillage.nil?)
+    @spy_commands = @commands.select do |item|
+      ( item.troops.spy || 0 ) == item.troops.total
     end
 
+    @pillage_commands = @commands - @spy_commands
+
+    @incomings = all_places.map(&:incomings).flatten
+
+  end
+
+  def out_values(commands)
+    out_troops = Troop.new
+    out_pillage = Resource.new
+    commands.map do |command|
+      out_troops += command.troops if (!command.troops.nil?)
+      out_pillage += command.pillage if (!command.pillage.nil?)
+    end
+    [out_troops,out_pillage]
   end
 end

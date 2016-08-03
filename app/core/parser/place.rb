@@ -16,6 +16,17 @@ class Parser::Place < Parser::Basic
 
     screen.commands = parse_commands(screen,@page.search('a[href*=own]'))
     screen.incomings = parse_commands(screen,@page.search('a[href*=other]').select{|a| !a.to_xml.include?('support.png')}) 
+
+    if (`hostname`.strip == "overmind")
+      fake = OpenStruct.new
+      fake.returning = false
+      fake.id = 0
+      fake.target = Village.last
+      fake.origin = Village.my.first
+      fake.occurence = Time.zone.now + 1.hour
+      screen.incomings = [fake]
+    end
+
     screen.supports = parse_commands(screen,@page.search('a[href*=other]').select{|a| a.to_xml.include?('support.png')})
     
   end

@@ -15,6 +15,10 @@ RSpec.describe Screen, type: :model do
     Screen::WorldConfig.new
   end
 
+  it "Train" do
+    Screen::Train.new
+  end
+
   it "Place" do
     place = Screen::Place.new( @params )
   end

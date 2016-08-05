@@ -3,7 +3,7 @@ class MyVillagesController < ApplicationController
     @villages = Village.my.to_a
 
     @screens = {}
-    @villages.map { |v| @screens[v.vid] = Screen::Place.new(village: v.vid) }
+    @villages.map { |v| @screens[v.vid] = Screen::Train.new(village: v.vid) }
   end
 
   def show

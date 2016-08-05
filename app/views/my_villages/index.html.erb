@@ -7,7 +7,8 @@
             <th>Coordenadas</th>
             <th>Nome</th>
             <th>Pontos</th>
-            <th>Tropas</th>
+            <th>Tropas na praça</th>
+            <th>Tropas total</th>
             <th>Recursos</th>
             <th>Armazém</th>
           </tr>
@@ -18,7 +19,8 @@
             <td><%= render_coord(village) %></td> 
             <td><%= village.name %></td> 
             <td><%= village.points %></td> 
-            <td><%= render_troops(@screens[village.vid].units,false) %></td> 
+            <td><%= render_troops(@screens[village.vid].current_units,false) %></td> 
+            <td><%= render_troops(@screens[village.vid].all_units,false) %></td> 
             <td><%= render_resource(@screens[village.vid].resources) %></td> 
             <td><%= @screens[village.vid].storage_size %></td> 
           </tr>

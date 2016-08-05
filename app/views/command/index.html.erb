@@ -1,46 +1,3 @@
-<%
-def render_commands(commands)
-  out_troops,out_pillage = out_values(commands)
-  %>
-  <dl class="dl-horizontal" class="col-md-6">
-    <dt>Total</dt>
-    <dd><%= commands.size %></dd>
-    <dt>Recursos Fora</dt>
-    <dd><%= render_resource(out_pillage) %></dd>
-    <dt>Tropas Fora</dt>
-    <dd><%= render_troops(out_troops,false) %></dd>
-  </dl>
-  <table class="table table-hover villages">
-    <tbody>
-      <tr>
-        <th>Origem</th>
-        <th>Destino</th>
-        <th>Tropas</th>
-        <th>Recursos</th>
-        <th>Ocorrencia</th>
-      </tr>
-      <% 
-      commands.sort{|a,b| a.occurence <=> b.occurence}.each do |command|
-        %>
-        <tr>
-          <td><%= render_coord(command.origin) %></td> 
-          <td><%= render_coord(command.target) %></td> 
-          <td>
-            <i class='fa <%= command.returning ? 'fa-arrow-left' : 'fa-arrow-right' %>'></i>
-            <%= render_troops(command.troops,false) %>    
-          </td> 
-          <td><%= command.pillage.nil? ? '-' : render_resource(command.pillage) %></td> 
-          <td><%= command.occurence.strftime("%d/%m - %H:%M:%S") %></td> 
-        </tr>
-        <% 
-      end
-      %>
-    </tbody>
-  </table>
-  <% 
-end 
-%>
-
 <div class="nav-tabs-custom">
   <ul class="nav nav-tabs pull-right">
     <li class="active"><a href="#tab_1-1" data-toggle="tab" aria-expanded="true">Comandos</a></li>
@@ -51,46 +8,19 @@ end
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="tab_1-1">
-      <%= render_commands(@commands) %>
+      <%= render :template => "command/commands.html.erb", :locals => { commands: @commands  } %>
     </div>
     <!-- /.tab-pane -->
     <div class="tab-pane" id="tab_1-2">
-      <%= render_commands(@pillage_commands) %>
+      <%= render :template => "command/pillage.html.erb", :locals => { commands: @pillage_commands } %>
     </div>
     <!-- /.tab-pane -->
     <div class="tab-pane" id="tab_1-3">
-      <%= render_commands(@spy_commands) %>
+      <%= render :template => "command/spy.html.erb", :locals => { commands: @spy_commands } %>
     </div>
     <!-- /.tab-pane -->
     <div class="tab-pane" id="tab_1-4">
-      <dl class="dl-horizontal" class="col-md-6">
-        <dt>Total</dt>
-        <dd><%= @incomings.size %></dd>
-      </dl>
-      <table class="table table-hover villages">
-        <tbody>
-          <tr>
-            <th>Origem</th>
-            <th>Destino</th>
-            <th>Tropa provavel</th>
-            <th>Ataque visto em</th>
-            <th>Ataque bate em</th>
-          </tr>
-          <% 
-          @incomings.sort{|a,b| a.occurence <=> b.occurence}.each do |command|
-            %>
-            <tr>
-              <td><%= render_coord(command.origin) %></td> 
-              <td><%= render_coord(command.target) %></td> 
-              <td><%= "implementar" %></td> 
-              <td><%= "implementar" %></td> 
-              <td><%= command.occurence.strftime("%d/%m - %H:%M:%S") %></td> 
-            </tr>
-            <% 
-          end
-          %>
-        </tbody>
-      </table>
+      <%= render :template => "command/incomming.html.erb", :locals => { commands: @incomings } %>
     </div>
     <!-- /.tab-pane -->
   </div>

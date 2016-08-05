@@ -1,0 +1,37 @@
+<%
+  out_troops,out_pillage = out_values(commands)
+%>
+
+<dl class="dl-horizontal" class="col-md-6">
+  <dt>Total</dt>
+  <dd><%= commands.size %></dd>
+  <dt>Recursos Fora</dt>
+  <dd><%= render_resource(out_pillage) %></dd>
+  <dt>Tropas Fora</dt>
+  <dd><%= render_troops(out_troops,false) %></dd>
+</dl>
+<table class="table table-hover villages">
+  <tbody>
+    <tr>
+      <th>Origem</th>
+      <th>Destino</th>
+      <th>Tropas</th>
+      <th>Ocorrencia</th>
+    </tr>
+    <% 
+    commands.sort{|a,b| a.occurence <=> b.occurence}.each do |command|
+      %>
+      <tr>
+        <td><%= render_coord(command.origin) %></td> 
+        <td><%= render_coord(command.target) %></td> 
+        <td>
+          <i class='fa <%= command.returning ? 'fa-arrow-left' : 'fa-arrow-right' %>'></i>
+          <%= render_troops(command.troops,false) %>    
+        </td>
+        <td><%= command.occurence.strftime("%d/%m - %H:%M:%S") %></td> 
+      </tr>
+      <% 
+    end
+    %>
+  </tbody>
+</table>

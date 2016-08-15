@@ -41,7 +41,7 @@
 						<tr class="report-line" report-id="<%= report.id %>">
 							<td><img src="<%= @report_enum[report.status.to_sym] %>" alt="<%= report.status %>" /></td> 
 							<td><%= report.occurrence.strftime("%d/%m - %H:%M:%S") %></td> 
-							<td><%= render_troops(report.target_troops,false) %></td> 
+							<td><%= render_troops(Troop.new(report.target_troops) - Troop.new(report.target_troops_losses),false) %></td> 
 							<td><%= render_buildings(report.target_buildings) %></td> 
 							<td><%= render_resource(report.resources) %></td> 
 							<td><%= render_resource(report.pillage) %></td> 

@@ -145,6 +145,12 @@ class Screen::Place < Screen::Basic
     end
 
     @@places[vid].units.knight = 0
+    @@places[vid].units.ligth = 0
+    @@places[vid].units.axe = 0
+
+    if (@@places[vid].units.spy > 200)
+      @@places[vid].units.spy = 200 
+    end
 
     return @@places[vid]
   end

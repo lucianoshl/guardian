@@ -2,8 +2,6 @@ class Report
   include Mongoid::Document
   include Mongoid::Enum
 
-
-
   field :erase_url, type: String
   enum :status, [:win, :lost, :win_lost, :spy, :error, :spy_lost ]
   belongs_to :origin, class_name: Village.to_s

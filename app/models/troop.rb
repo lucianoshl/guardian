@@ -34,7 +34,7 @@ class Troop
   def distribute amount
     troops = self.clone.instance_values
     result = {}
-    Unit.gt(carry:0).not_in(name: :knight).asc(:attack).map do |unit|
+    Unit.gt(carry:0).not_in(name: :knight).asc(:speed).map do |unit|
       unit_qte = troops[unit.name] || 0
       if (unit_qte > 0)
         while (amount > 0 && !unit_qte.zero?)

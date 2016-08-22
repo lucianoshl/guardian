@@ -17,6 +17,9 @@ class Village
 
   belongs_to :player
 
+  index({ x: 1, y: 1 }, { unique: true })
+  index({ vid: 1 }, { unique: true })
+
   def clean_state
       self.state = nil;
       self.next_event = nil

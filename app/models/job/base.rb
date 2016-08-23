@@ -27,7 +27,7 @@ class Job::Base
   end
 
   def execute
-    info "Running #{self.class}"
+    puts "Running #{self.class}"
     init = Time.zone.now.beginning_of_day + Config.sleep_mode.start(4).hours
     endd = init + Config.sleep_mode.duration(6).hours
     enable = Config.sleep_mode.enabled(true)

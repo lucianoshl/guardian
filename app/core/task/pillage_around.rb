@@ -67,10 +67,10 @@ class Task::PillageAround < Task::Abstract
     end
 
     @target.last_report.nil? ? state_send_recognition : state_waiting_report
-  end
+  end 
 
   def state_send_recognition
-    spies = @target.player.nil? ? 4 : 5
+    spies = @target.player_id.nil? ? 4 : 5
     base_attack = Troop.new(spy: spies)
 
     if (!get_place(@origin).units.contains(base_attack)) then
@@ -235,6 +235,7 @@ class Task::PillageAround < Task::Abstract
   def move_to_waiting_report(command)
     return next_event(command.occurence)
   end
+
   def move_to_banned
     return next_event(Time.zone.now + 1.hour)
   end

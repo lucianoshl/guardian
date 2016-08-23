@@ -13,7 +13,9 @@
       Delayed::Job.asc(:run_at).each_with_index do |job,i|
         %>
         <tr>
-          <td><%= job.handler.scan(/Task::(.+) /).first.first %></td>
+          <% task_name = job.handler.scan(/Task::(.+) /).first  %>
+
+          <td><%= task_name.nil? ? "anonymous" : task_name.first %></td>
           <td>
             <%= job.run_at.strftime("%d/%m - %H:%M:%S") %> 
             <%= job.run_at < Time.zone.now ? "(Atrasado)" : "" %>

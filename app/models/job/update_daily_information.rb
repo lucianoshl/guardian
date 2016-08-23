@@ -1,5 +1,7 @@
 class Job::UpdateDailyInformation < Job::Base
 
+  # Delayed::Job.all.select{|a|a.attributes["handler"].include?("Job::Up")}.map(&:delete)
+  in_development
   run_daily 12
 
   def run

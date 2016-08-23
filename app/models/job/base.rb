@@ -3,9 +3,7 @@ class Job::Base
   include Mongoid::Document
   field :state, type: String, default: 'starting'
 
-  has_one :active_job, class_name: Delayed::Backend::Mongoid::Job
-
-  
+  has_one :active_job, class_name: "Delayed::Job"
 
   class << self
     attr_accessor :_run_daily,:_in_development
@@ -59,8 +57,8 @@ class Job::Base
   def schedule(time)
     self.save
     self.active_job.delete if (!self.active_job.nil?)
-    self.active_job = self.delay(run_at: time).execute.class
-    self.save
+    self.active_job = self.delay(run_at: time).execute
+    self.save!
   end
 
 end

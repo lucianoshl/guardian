@@ -57,8 +57,9 @@ class Job::Base
   end
 
   def schedule(time)
+    self.save
     self.active_job.delete if (!self.active_job.nil?)
-    self.active_job = self.class.new.delay(run_at: time).execute.class
+    self.active_job = self.delay(run_at: time).execute.class
     self.save
   end
 

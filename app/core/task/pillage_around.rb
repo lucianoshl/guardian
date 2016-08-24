@@ -48,6 +48,7 @@ class Task::PillageAround < Task::Abstract
         target.delete
         next
       end
+      info("Finish Running for #{@target}")
       raise Exception.new("state not returned _next_event or state") if (_next_event.nil? || state.nil?)
 
       @target.state = state

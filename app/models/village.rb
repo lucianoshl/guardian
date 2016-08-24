@@ -13,6 +13,8 @@ class Village
   field :is_barbarian, type: Boolean
   field :is_sorcerer, type: Boolean
 
+  field :use_in_pillage, type: Boolean, default: true
+
   has_many :reports , inverse_of: 'target' 
 
   belongs_to :player
@@ -63,7 +65,13 @@ class Village
 
     self.in(state: [:ally,:strong]).update_all(next_event: nil,state: nil)
 
-    gt(points: threshold).update_all(next_event: nil,state: :strong)
+    strong_villages = Player.gt(points: threshold).map(&:villages).flatten
+
+    strong_villages.map do |strong|
+      strong.next_event = nil
+      strong.state = :strong
+      strong.save
+    end
 
     ally = User.current.player.ally
     

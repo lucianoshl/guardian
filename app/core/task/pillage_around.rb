@@ -41,7 +41,7 @@ class Task::PillageAround < Task::Abstract
       current_state = equivalent_state(target.state || 'send_command')
 
       begin
-        info("-----------------------------------------------------------------------".light_cyan)
+        info("-----------------------------------------------------------------------")
         info("Running state #{current_state} for #{@target} using #{@origin.nil? ? "FAR AWAY!!" : @origin.name}")
         info("@origin=#{@origin}")
         info("@candidates=#{@origin_candidates}")
@@ -179,11 +179,6 @@ class Task::PillageAround < Task::Abstract
   end
 
   def send_attack troops
-
-    # troops.spy ||= 0
-    # spies = Screen::Place.spy_qte
-    # troops.spy ||= spies if (get_place(@origin).units.spy >= spies)
-
     command = get_place(@origin).has_command(@target)
     if (!command.nil?)
       return move_to_waiting_report(command)
@@ -191,6 +186,7 @@ class Task::PillageAround < Task::Abstract
     
     begin
       command = get_place(@origin).send_attack(@target,troops)
+      info("Command sent with #{troops}")
       return move_to_waiting_report(command)
     rescue NewbieProtectionException => exception
       move_to_newbie_protection(exception.expires)
@@ -203,9 +199,7 @@ class Task::PillageAround < Task::Abstract
     rescue BannedUserException => exception
       move_to_banned
     rescue NeedsMorePopulationException => exception
-      # return increase_population(troops,exception.population)
       move_to_waiting_population
-      # move_to_waiting_resources
     end
   end
 

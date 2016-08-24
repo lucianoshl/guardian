@@ -41,8 +41,10 @@ class Task::PillageAround < Task::Abstract
       current_state = equivalent_state(target.state || 'send_command')
 
       begin
-        info("-----------------------------------------------------------------------")
+        info("-----------------------------------------------------------------------".light_cyan)
         info("Running state #{current_state} for #{@target} using #{@origin.nil? ? "FAR AWAY!!" : @origin.name}")
+        info("@origin=#{@origin}")
+        info("@candidates=#{@origin_candidates}")
         state,_next_event = self.send("state_#{current_state}")
       rescue DeletedPlayerException => e
         target.delete
@@ -279,10 +281,12 @@ class Task::PillageAround < Task::Abstract
       return state_send_recognition
     end
 
+    info("Checking next commands for all villages...")
     commands_with_order = Screen::Place.all.select{|a| a.village.distance(@target) <= Config.pillager.distance(10) }.map(&:commands).flatten.sort{|a,b| a.occurence <=> b.occurence}
 
     result = commands_with_order.select(&:returning).first || commands_with_order.first
     result = result.nil? ? (Time.zone.now + 1.hour) : result.occurence
+    info("... next command in #{result}")
     return result
   end
 

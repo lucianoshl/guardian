@@ -280,9 +280,9 @@ class Task::PillageAround < Task::Abstract
 
     commands_with_order = Screen::Place.all.select{|a| a.village.distance(@target) <= Config.pillager.distance(10) }.map(&:commands).flatten.sort{|a,b| a.occurence <=> b.occurence}
 
-    next_returning = commands_with_order.select(&:returning).first || commands_with_order.first
-    next_returning = next_returning.nil? ? (Time.zone.now + 1.hour) : next_returning.occurence
-    return next_returning
+    result = commands_with_order.select(&:returning).first || commands_with_order.first
+    result = result.nil? ? (Time.zone.now + 1.hour) : result.occurence
+    return result
   end
 
   def next_event date

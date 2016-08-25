@@ -215,55 +215,67 @@ class Task::PillageAround < Task::Abstract
   end
 
   def move_to_shared_connection
+    info("now moving to " + __method__.gsub('move_to_','').black.on_white)
     return next_event(Time.zone.now + 2.hour)
   end
 
   def move_to_waiting_partner(release_time)
+    info("now moving to " + __method__.gsub('move_to_','').black.on_white)
     return next_event(release_time + 10.minutes)
   end
 
   def move_to_trops_without_spy
+    info("now moving to " + __method__.gsub('move_to_','').black.on_white)
     return next_event(Time.zone.now + 3.hour)
   end
 
   def move_to_waiting_resources(village=nil)
+    info("now moving to " + __method__.gsub('move_to_','').black.on_white)
     return next_event(Time.zone.now + 3.hours)
   end
 
   def move_to_waiting_population
+    info("now moving to " + __method__.gsub('move_to_','').black.on_white)
     return next_event(Time.zone.now + 3.hours)
   end
 
   def move_to_waiting_report(command)
-    info("now moving to " + "waiting_report".black.on_white)
+    info("now moving to " + __method__.gsub('move_to_','').black.on_white)
     return next_event(command.occurence)
   end
  
   def move_to_banned
+    info("now moving to " + __method__.gsub('move_to_','').black.on_white)
     return next_event(Time.zone.now + 1.hour)
   end
 
   def move_to_newbie_protection(date)
+    info("now moving to " + __method__.gsub('move_to_','').black.on_white)
     return next_event(date)
   end
 
   def move_to_invited_player(date)
+    info("now moving to " + __method__.gsub('move_to_','').black.on_white)
     return next_event(date)
   end
 
   def move_to_has_troops
+    info("now moving to " + __method__.gsub('move_to_','').black.on_white)
     return next_event(Time.zone.now + 1.day)
   end
 
   def move_to_waiting_strong_troops(troops_to_wait)
+    info("now moving to " + __method__.gsub('move_to_','').black.on_white)
     return next_event(next_returning)
   end
 
   def move_to_waiting_troops(troops_to_wait)
+    info("now moving to " + __method__.gsub('move_to_','').black.on_white)
     return next_event(next_returning)
   end
 
   def move_to_waiting_spies(troops_to_wait)
+    info("now moving to " + __method__.gsub('move_to_','').black.on_white)
     return next_event(next_returning)
   end
 

@@ -186,4 +186,8 @@ class Troop
     return Troop.new(result)
   end
 
+  def to_h
+    instance_values
+  end
+
 end

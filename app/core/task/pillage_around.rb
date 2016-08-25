@@ -43,7 +43,7 @@ class Task::PillageAround < Task::Abstract
       begin
         info("-----------------------------------------------------------------------")
         info("Running state #{current_state} for #{@target} using #{@origin.nil? ? "FAR AWAY!!" : @origin.name}")
-        info("@origin=#{@origin.name}")
+        info("@origin=#{@origin.nil? ? "nil" : @origin.name}")
         info("@candidates=#{@origin_candidates.map(&:name)}")
         state,_next_event = self.send("state_#{current_state}")
       rescue DeletedPlayerException => e

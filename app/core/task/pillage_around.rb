@@ -186,7 +186,7 @@ class Task::PillageAround < Task::Abstract
     
     begin
       command = get_place(@origin).send_attack(@target,troops)
-      info("Command sent with #{troops}")
+      info("Command sent with #{troops.to_h}")
       return move_to_waiting_report(command)
     rescue NewbieProtectionException => exception
       move_to_newbie_protection(exception.expires)
@@ -235,9 +235,10 @@ class Task::PillageAround < Task::Abstract
   end
 
   def move_to_waiting_report(command)
+    info("now moving to " + "waiting_report".black.on_white)
     return next_event(command.occurence)
   end
-
+ 
   def move_to_banned
     return next_event(Time.zone.now + 1.hour)
   end

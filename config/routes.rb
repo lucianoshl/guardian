@@ -13,6 +13,12 @@ Rails.application.routes.draw do
 
   resources :village,:task,:report,:my_villages,:task,:command
 
+  resources :my_villages do
+    member do
+      get '/pillage/change' => 'my_villages#pillage_change'
+    end
+  end
+
   get 'cookie/latest'
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'

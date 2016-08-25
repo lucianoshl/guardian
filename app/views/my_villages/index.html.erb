@@ -1,35 +1,28 @@
-<div class="row">
-  <div class=" col-md-12">
-    <div class="box">
-      <div class="box-body">
-        <table class="table table-hover villages">
-          <tbody><tr>
-            <th>Coordenadas</th>
-            <th>Nome</th>
-            <th>Pontos</th>
-            <th>Tropas na praça</th>
-            <th>Tropas total</th>
-            <th>Recursos</th>
-            <th>Armazém</th>
-          </tr>
-          <% 
-            @villages.each do |village|
-          %>
-          <tr>
-            <td><%= render_coord(village) %></td> 
-            <td><%= village.name %></td> 
-            <td><%= village.points %></td> 
-            <td><%= render_troops(@screens[village.vid].current_units,false) %></td> 
-            <td><%= render_troops(@screens[village.vid].all_units,false) %></td> 
-            <td><%= render_resource(@screens[village.vid].resources) %></td> 
-            <td><%= @screens[village.vid].storage_size %></td> 
-          </tr>
-            <% 
-          end
-          %>
-        </tbody></table>
+<% 
+@villages.each do |village|
+  %>
+  <div class="col-md-6">
+    <div class="box box-solid">
+      <div class="box-header with-border">
+        <h3 class="box-title"><%= village.name %></h3>
+        <span class="pull-right"><%= render_troops(@screens[village.vid].all_units,false) %></span>
       </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <dl class="dl-horizontal">
+          <dt>Recursos</dt>
+          <dd><%= render_resource(@screens[village.vid].resources) %></dd>
+          <dt>Tropas paradas</dt>
+          <dd><%= render_troops(@screens[village.vid].current_units,false) %></dd>
+          <dt>Tropas fora</dt>
+          <dd><%= render_troops(Troop.new(@screens[village.vid].all_units) - Troop.new(@screens[village.vid].current_units) ,false) %></dd>
+          <dt>Utilizar em saques</dt>
+          <dd on-click="/my_village/<%= village.id %>/pillage/change"><%= check_box("user_for_pillage", village.id, {checked: village.use_in_pillage != false}) %></dd>
+        </dl>
+      </div>
+      <!-- /.box-body -->
     </div>
   </div>
-</div>
-
+  <%
+end
+%>

@@ -299,7 +299,7 @@ class Task::PillageAround < Task::Abstract
 
   def next_event date
     if (date.class == Array && date.size == 2)
-      date = date[1]
+      return date
     end
     backtrace = Thread.current.backtrace
     state = backtrace[2].scan(/`(.*)'/).first.first.gsub('move_to_','')

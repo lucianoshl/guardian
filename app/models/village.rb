@@ -84,7 +84,7 @@ class Village
     blacklist = ['jukita650']
 
     Player.in(name: blacklist).to_a.map do |player|
-      player.map(&:villages).map do |black_village|
+      player.villages.map do |black_village|
         black_village.next_event = nil
         black_village.state = :ally
         black_village.save

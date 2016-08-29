@@ -43,6 +43,7 @@ group :production do
   gem 'unicorn'
   gem 'daemons'
   gem 'rails_real_favicon'
+  gem 'heroku-deflater'
 end
 
 group :development, :test do

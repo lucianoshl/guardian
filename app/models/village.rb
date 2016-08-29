@@ -81,6 +81,16 @@ class Village
       self.in(vid: ids).update_all(next_event: nil,state: :ally)
     end
 
+    blacklist = ['juka650']
+
+    Player.in(name: blacklist).map do |player|
+      player.map(&:villages).map do |black_village|
+        black_village.next_event = nil
+        black_village.state = :ally
+        black_village.save
+      end
+    end
+
     lte(points:threshold).not_in(state: [:ally,:strong])
   end
 

@@ -81,7 +81,7 @@ class Village
       self.in(vid: ids).update_all(next_event: nil,state: :ally)
     end
 
-    blacklist = ['juka650']
+    blacklist = ['jukita650']
 
     Player.in(name: blacklist).map do |player|
       player.map(&:villages).map do |black_village|

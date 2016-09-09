@@ -167,24 +167,4 @@ class Screen::Place < Screen::Basic
     @@places = {}
   end
 
-  def client
-    @client = Mobile::Client.client if @client.nil?
-    @client
-  end
-
-  def request url
-    page = _request(method,url)
-    Rails.logger.info "#{method} #{url}"
-    if (!Cookie.is_logged?(page))
-      client.add_cookies(MobileCookie.do_login)
-      page = _request(method,url)
-    end
-
-    if (!Cookie.is_logged?(page))
-      raise Exception.new("Error on login")
-    end
-
-    return page
-  end
-
 end

@@ -7,7 +7,7 @@ class Screen::Logged < Screen::Anonymous
   end
 
   def client
-    @client = Screen::Logged.client if @client.nil?
+    @client = Mobile::Client.client if @client.nil?
     @client
   end
 
@@ -21,11 +21,26 @@ class Screen::Logged < Screen::Anonymous
     raise Exception.new("bot_protection") if (!page.search('body').attr('data-bot-protect').nil?) 
   end
 
+  # def request url
+  #   page = _request(method,url)
+  #   Rails.logger.info "#{method} #{url}"
+  #   if (!Cookie.is_logged?(page))
+  #     client.add_cookies(Cookie.do_login)
+  #     page = _request(method,url)
+  #   end
+
+  #   if (!Cookie.is_logged?(page))
+  #     raise Exception.new("Error on login")
+  #   end
+
+  #   return page
+  # end
+
   def request url
     page = _request(method,url)
     Rails.logger.info "#{method} #{url}"
     if (!Cookie.is_logged?(page))
-      client.add_cookies(Cookie.do_login)
+      client.add_cookies(MobileCookie.do_login)
       page = _request(method,url)
     end
 

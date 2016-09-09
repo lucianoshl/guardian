@@ -26,7 +26,7 @@ class Task::PillageAround < Task::Abstract
 
     candidates = candidates.sort{|a,b| a[2] <=> b[2]}
 
-    Screen::ReportView.load_all
+    Mobile::ReportList.load_all
     
     candidates.each do |target,closer_villages|
       @target = target

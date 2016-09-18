@@ -12,8 +12,8 @@ if (user.player.nil?)
 	x,y = player_info_page.body.scan(/\d{3}\|\d{3}/).first.split("|").map(&:to_i)
 
 
-	Task::PlayerMonitor.new.run(Village.new(x: x, y: y))
-  Task::UpdateDailyInformation.new.update_ally_partners
+	Task::PlayerMonitor.new.run([Village.new(x: x, y: y)])
+  	Task::UpdateDailyInformation.new.update_ally_partners
 	
 	user.player = Player.find_by(name: user.name)
 	user.save

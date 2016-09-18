@@ -8,7 +8,7 @@ class Mobile::Base < Mobile::Abstract
 
 	Mobile::Client.client.add_cookies(MobileCookie.latest)
 
-	$sid = MobileCookie.latest.first.value.gsub('0%3A','')
+	$sid = MobileCookie.latest.first.nil? ? nil : MobileCookie.latest.first.value.gsub('0%3A','')
 
 	def before_request args
 		if (!$sid.nil? && args.first != $sid)

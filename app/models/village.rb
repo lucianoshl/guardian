@@ -61,6 +61,7 @@ class Village
   end
 
   def self.pillage_candidates
+    Rails.logger.info("Searching pillage_candidates: start")
     threshold = User.current.player.points * 0.6
 
     self.in(state: [:ally,:strong]).update_all(next_event: nil,state: nil)
@@ -91,7 +92,9 @@ class Village
       end
     end
 
-    lte(points:threshold).not_in(state: [:ally,:strong])
+    result = lte(points:threshold).not_in(state: [:ally,:strong])
+    Rails.logger.info("Searching pillage_candidates: end")
+    result
   end
 
   def self.my

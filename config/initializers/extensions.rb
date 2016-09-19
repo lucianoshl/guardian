@@ -124,6 +124,12 @@ class Time
   end
 end
 
+class ActiveSupport::TimeWithZone
+  def render 
+    strftime("%d/%m - %H:%M:%S")
+  end
+end
+
 module System
 
   def self.clean

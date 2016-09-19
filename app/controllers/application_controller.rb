@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  layout 'admin_lte_2'
 
   before_filter do 
     @report_enum =  {

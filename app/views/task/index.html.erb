@@ -2,16 +2,15 @@
 
   <div class="box-body">
     <table class="table table-bordered">
-      <tbody><tr>
+      <tr>
         <th>Atividade</th>
         <th>Horário</th>
         <th>Ultima Execução</th>
         <th class="text-center">Status</th>
         <th>Ações</th>
       </tr>
-      <% 
-      Delayed::Job.asc(:run_at).each_with_index do |job,i|
-        %>
+      <tbody>
+        <% Delayed::Job.asc(:run_at).each_with_index do |job,i|  %>
         <tr>
           <% task_name = job.handler.scan(/Task::(.+) /).first  %>
 
@@ -37,10 +36,9 @@
           <td>
             <a class="btn btn-success btn-ty" href="/task/run_now/<%= job.id %>"><i class="fa fa-play"></i></a>
           </td>
+        <% end %>
         </tr>
-        <% 
-      end
-      %>
-    </tr>
-  </tbody></table>
+      </tbody>
+    </table>
+  </div>
 </div>

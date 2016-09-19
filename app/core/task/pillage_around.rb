@@ -242,7 +242,7 @@ class Task::PillageAround < Task::Abstract
 
   def move_to_waiting_report(command)
     info("now moving to " + __method__.to_s.gsub('move_to_','').black.on_white)
-    return next_event(command.occurence)
+    return next_event(command.occurence + 1.second)
   end
  
   def move_to_banned

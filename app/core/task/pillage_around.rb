@@ -79,8 +79,7 @@ class Task::PillageAround < Task::Abstract
 
   def state_send_recognition
     # spies = @target.player_id.nil? ? 4 : 5
-    spies = 1
-    base_attack = Troop.new(spy: spies)
+    base_attack = Troop.new(spy: Screen::Place.spy_qte)
 
     if (!get_place(@origin).units.contains(base_attack)) then
       return move_to_waiting_spies(base_attack)

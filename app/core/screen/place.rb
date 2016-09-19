@@ -136,7 +136,7 @@ class Screen::Place < Screen::Basic
   end
 
   def self.spy_qte
-    4
+    1
   end
 
   def self.get(vid)

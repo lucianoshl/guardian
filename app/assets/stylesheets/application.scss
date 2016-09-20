@@ -22,6 +22,8 @@ $nprogress-color: #ecf0f5;
 @import "bootstrap";
 @import "AdminLTE/AdminLTE";
 @import "AdminLTE/skins/skin-purple-light";
+@import "theme";
+@import "village";
 
 body {
 	padding-top: 50px;

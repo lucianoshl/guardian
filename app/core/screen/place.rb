@@ -64,7 +64,7 @@ class Screen::Place < Screen::Basic
     if (!partner_time.nil?)
       raise PartnerAttackingException.new(partner_time)
     end
-    spies = Screen::Place.spy_qte
+    spies = Screen::Place.spy_qte(target)
 
     if (troops.spy.nil? || troops.spy.zero?)
       troops.spy = self.units.spy >= spies ? spies : 0
@@ -136,7 +136,7 @@ class Screen::Place < Screen::Basic
   end
 
   def self.spy_qte
-    1
+  	@target.player_id.nil? ? 1 : 5
   end
 
   def self.get(vid)

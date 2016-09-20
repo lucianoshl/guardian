@@ -4,11 +4,12 @@ class CommandController < ApplicationController
 
   def index
     all_places = Screen::Place.load_all
-    @commands = (all_places.map(&:commands).flatten.pmap do |command|
+    first_place = all_places.first
+    @commands = (all_places.map(&:commands).flatten.map do |command|
       key = "command_controller_command_#{command.id}_#{command.returning}"
       
       json_extra = Rails.cache.fetch(key, expires_in: 1.year) do
-        JSON.parse(Screen::Logged.client.get("https://#{User.current.world}.tribalwars.com.br/game.php?village=#{command.origin.vid}&screen=info_command&ajax=details&id=#{command.id}").body)
+        JSON.parse(first_place.client.get("https://#{User.current.world}.tribalwars.com.br/game.php?village=#{command.origin.vid}&screen=info_command&ajax=details&id=#{command.id}").body)
       end
 
       next if (!json_extra["no_authorization"].nil?)

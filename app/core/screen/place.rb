@@ -135,8 +135,8 @@ class Screen::Place < Screen::Basic
     commands.select{|a| village == a.target && !a.returning }.first
   end
 
-  def self.spy_qte
-  	@target.player_id.nil? ? 1 : 5
+  def self.spy_qte(target)
+  	target.player_id.nil? ? 1 : 5
   end
 
   def self.get(vid)

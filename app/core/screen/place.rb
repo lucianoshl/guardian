@@ -70,7 +70,7 @@ class Screen::Place < Screen::Basic
       troops.spy = self.units.spy >= spies ? spies : 0
     end
 
-    form.fill(troops.instance_values)
+    form.fill(troops.to_h)
     form.fill(x: target.x , y: target.y)
 
     if ('attack' == type)

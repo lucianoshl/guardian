@@ -9,22 +9,22 @@ class Troop
   end
 
   def total
-    self.units_hash.values.inject(&:+) || 0
+    self.to_h.values.inject(&:+) || 0
   end
 
   def validate
-    if (self.units_hash.values.select{|a| a < 0}.size > 0)
+    if (self.to_h.values.select{|a| a < 0}.size > 0)
       raise Exception.new("Invalid troop")
     end
   end
 
   def contains other 
     result = self - other
-    result.units_hash.values.select{|a| a < 0}.empty?
+    result.to_h.values.select{|a| a < 0}.empty?
   end
 
   def slow_unit
-    self.units_hash.select{|unit,qte| qte > 0}.keys.map{|a| Unit.get(a) }.sort{|a,b| a.speed <=> b.speed }.first
+    self.to_h.select{|unit,qte| qte > 0}.keys.map{|a| Unit.get(a) }.sort{|a,b| a.speed <=> b.speed }.first
   end
 
   def travel_time origin,target
@@ -32,7 +32,7 @@ class Troop
   end
 
   def distribute amount
-    troops = self.clone.units_hash
+    troops = self.clone.to_h
     result = {}
     Unit.gt(carry:0).not_in(name: :knight).asc(:speed).map do |unit|
       unit_qte = troops[unit.name] || 0
@@ -53,7 +53,7 @@ class Troop
     parameters[:def_wall] = wall
     parameters[:moral] = moral || 0
     parameters[:night] = 'on' if (night_bonus)
-    self.units_hash.each do |unit, qte|
+    self.to_h.each do |unit, qte|
       parameters["att_#{unit}"] = qte.to_s
     end
 
@@ -61,13 +61,13 @@ class Troop
   end
 
   def upgrade(disponible,pillage)
-    troops = self.clone.units_hash
+    troops = self.clone.to_h
     troops.each do |unit,qte|
       if (qte.zero?)
         troops.delete(unit)
       end
     end
-    disponible = disponible.clone.units_hash
+    disponible = disponible.clone.to_h
 
     alternatives = disponible.sort{|b,a| Unit.get(a[0]).attack <=> Unit.get(b[0]).attack }.select{|a| a[1] > 0 && Unit.get(a[0]).carry > 0}
 
@@ -95,14 +95,14 @@ class Troop
       break
     end
     
-    raise ImpossibleUpgrade.new if (self.units_hash == troops)
+    raise ImpossibleUpgrade.new if (self.to_h == troops)
 
     return Troop.new(troops)
   end
 
   def carry
     total = 0
-    self.units_hash.each do |unit, qte|
+    self.to_h.each do |unit, qte|
       total += Unit.get(unit).carry*qte
     end
     return total
@@ -110,7 +110,7 @@ class Troop
 
   def cost
     result = Resource.new(wood:0,stone:0,iron:0)
-    self.units_hash.each do |unit, qte|
+    self.to_h.each do |unit, qte|
       result += Unit.get(unit).cost*qte
     end
     return result
@@ -135,17 +135,17 @@ class Troop
   end
 
   def population
-    troops = self.units_hash
+    troops = self.to_h
     total = 0
-    self.units_hash.map do |unit,qte|
+    self.to_h.map do |unit,qte|
       total += Unit.get(unit).population*(qte||0)
     end
     total
   end
 
   def increase_population(disponible,target_population)
-    result = self.clone.units_hash
-    disponible = (disponible - self).units_hash
+    result = self.clone.to_h
+    disponible = (disponible - self).to_h
     actual_pop = self.population
 
     Unit.gt(carry:0).asc(:carry).map do |unit|
@@ -169,8 +169,8 @@ class Troop
   end
 
   def +(other)
-    result = self.units_hash.clone
-    other = other.units_hash.clone
+    result = self.to_h.clone
+    other = other.to_h.clone
     Unit.names.map(&:to_s).map do |unit_name|
       result[unit_name] ||= 0
       result[unit_name] += (other[unit_name] || 0)
@@ -179,7 +179,7 @@ class Troop
   end
 
   def *(value)
-    result = self.units_hash.clone
+    result = self.to_h.clone
     result.map do |unit,qte|
       result[unit] *= value
     end
@@ -187,7 +187,7 @@ class Troop
   end
 
 
-  def units_hash
+  def to_h
     r = self.attributes.clone
     r.delete('_id')
     return r

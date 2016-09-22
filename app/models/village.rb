@@ -17,7 +17,12 @@ class Village
 
   has_many :reports , inverse_of: 'target' 
 
+  embeds_one :reserved_troops, class_name: Troop.to_s
+
   belongs_to :player
+
+  scope :my, -> { where(player: User.current.player) }
+  scope :targets, -> { not_in(player: [User.current.player]) }
 
   index({ x: 1, y: 1 }, { unique: true })
   index({ vid: 1 }, { unique: true })
@@ -95,10 +100,6 @@ class Village
     result = lte(points:threshold).not_in(state: [:ally,:strong])
     Rails.logger.info("Searching pillage_candidates: end")
     result
-  end
-
-  def self.my
-    where(player: User.current.player)
   end
   
   def self.clean_all_states

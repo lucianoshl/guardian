@@ -2,10 +2,10 @@ class ImpossibleUpgrade < Exception
 end
 
 class Troop
-  include ActiveAttr::MassAssignment
+  include Mongoid::Document
 
   Unit.names.map do |unit_name|
-    attr_accessor unit_name
+    field unit_name.to_sym, type: Integer, default: 0
   end
 
   def total
@@ -184,10 +184,6 @@ class Troop
       result[unit] *= value
     end
     return Troop.new(result)
-  end
-
-  def to_h
-    instance_values
   end
 
 end

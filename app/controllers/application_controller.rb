@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
 
   before_filter do 
+
+
     @report_enum =  {
       win: 'https://brs1.tribalwars.com.br/graphic/dots/green.png',
       win_lost: 'https://brs1.tribalwars.com.br/graphic/dots/yellow.png',

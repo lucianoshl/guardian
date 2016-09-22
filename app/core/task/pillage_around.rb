@@ -7,7 +7,7 @@ class Task::PillageAround < Task::Abstract
   end
 
   def get_place village
-    Screen::Place.get(village.vid)
+    Screen::Place.get_free(village.vid)
   end
 
   def run

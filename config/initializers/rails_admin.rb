@@ -1,5 +1,7 @@
 RailsAdmin.config do |config|
 
+  config.included_models = ["Village"]
+
   ### Popular gems integration
 
   ## == Devise ==
@@ -18,6 +20,19 @@ RailsAdmin.config do |config|
   # config.audit_with :paper_trail, 'User', 'PaperTrail::Version' # PaperTrail >= 3.0.0
 
   ### More at https://github.com/sferik/rails_admin/wiki/Base-configuration
+
+  config.model Village do
+    list do
+      field :coordinate do
+        formatted_value do
+          "#{bindings[:object].x} | #{bindings[:object].y}"
+        end
+      end
+      field :name
+      field :points
+      scopes [:my,:targets]
+    end
+  end
 
   config.actions do
     dashboard                     # mandatory

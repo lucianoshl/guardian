@@ -152,7 +152,7 @@ class Screen::Place < Screen::Basic
   def self.get_free(vid)
     place = self.get(vid)
 
-    config = Village.where(vid: vid).first.reserved_troops
+    config = Village.where(vid: vid).first.reserved_troops.to_h
 
     if (!config.nil?)
       set_to_zero = config.select{|k,v| v == -1 }.map(&:first)

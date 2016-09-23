@@ -5,7 +5,7 @@ class Troop
   include Mongoid::Document
 
   Unit.names.map do |unit_name|
-    field unit_name.to_sym, type: Integer, default: 0
+    field unit_name.to_sym, type: Integer
   end
 
   def total

@@ -163,11 +163,12 @@ class Screen::Place < Screen::Basic
       end
 
       set_to_number.map do |unit,value|
-         if (place.units[unit] <= value) 
+        next if place.units[unit].nil?
+        if (place.units[unit] <= value) 
           place.units[unit] = 0
-         else
+        else
           place.units[unit] -= value
-         end
+        end
       end
     end
 

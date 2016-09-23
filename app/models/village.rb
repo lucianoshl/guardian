@@ -70,16 +70,17 @@ class Village
     Rails.logger.info("Searching pillage_candidates: start")
     threshold = User.current.player.points * 0.6
 
+
+    Rails.logger.info("Reset ally and strong: start")
     self.in(state: [:ally,:strong]).update_all(next_event: nil,state: nil)
+    Rails.logger.info("Reset ally and strong: end")
 
-    strong_villages = Player.gt(points: threshold).map(&:villages).flatten
+    Rails.logger.info("Update strong players: start")
+    strong_villages = Village.in(player_id: Player.gt(points: threshold).pluck(:id) )
+    strong_villages.update_all(next_event: nil,state: :strong)
+    Rails.logger.info("Update strong players: end")
 
-    strong_villages.map do |strong|
-      strong.next_event = nil
-      strong.state = :strong
-      strong.save
-    end
-
+    Rails.logger.info("Update allies players: start")
     ally = User.current.player.ally
     
     if (!ally.nil?)
@@ -87,16 +88,17 @@ class Village
       ids = partners_villages.concat(ally.players).map(&:villages).flatten.map(&:vid)
       self.in(vid: ids).update_all(next_event: nil,state: :ally)
     end
+    Rails.logger.info("Update allies players: end")
 
-    blacklist = ['jukita650']
+    # blacklist = ['jukita650']
 
-    Player.in(name: blacklist).to_a.map do |player|
-      player.villages.map do |black_village|
-        black_village.next_event = nil
-        black_village.state = :ally
-        black_village.save
-      end
-    end
+    # Player.in(name: blacklist).to_a.map do |player|
+    #   player.villages.map do |black_village|
+    #     black_village.next_event = nil
+    #     black_village.state = :ally
+    #     black_village.save
+    #   end
+    # end
 
     result = lte(points:threshold).not_in(state: [:ally,:strong])
     Rails.logger.info("Searching pillage_candidates: end")

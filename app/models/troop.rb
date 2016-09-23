@@ -4,6 +4,8 @@ end
 class Troop
   include Mongoid::Document
 
+  embedded_in :village
+
   Unit.names.map do |unit_name|
     field unit_name.to_sym, type: Integer
   end

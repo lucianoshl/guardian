@@ -30,6 +30,12 @@ RailsAdmin.config do |config|
   ### More at https://github.com/sferik/rails_admin/wiki/Base-configuration
 
   config.model Village do
+
+    edit do
+      field :reserved_troops
+      field :use_in_pillage
+    end
+
     list do
       field :coordinate do
         formatted_value do

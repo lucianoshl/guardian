@@ -18,6 +18,8 @@ class Village
   has_many :reports , inverse_of: 'target' 
 
   embeds_one :reserved_troops, class_name: Troop.to_s
+
+  accepts_nested_attributes_for :reserved_troops
   
 
   belongs_to :player

@@ -17,7 +17,6 @@ class Village
 
   has_many :reports , inverse_of: 'target' 
 
-  accepts_nested_attributes_for :reserved_troops
   belongs_to :player
 
   index({ x: 1, y: 1 }, { unique: true })

@@ -16,6 +16,8 @@ Bundler.require(*Rails.groups)
 
 module Guardian
   class Application < Rails::Application
+    config.i18n.available_locales = ['pt-BR','en']
+    config.i18n.default_locale = 'pt-BR'
     config.time_zone = Time.zone = 'Brasilia'
 
     Mongoid.logger.level = Logger::INFO

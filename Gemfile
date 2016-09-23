@@ -65,7 +65,6 @@ gem 'active_attr'
 gem "mongoid-enum"
 gem "parallel"
 gem 'chartjs-ror'
-# gem 'jquery-slimscroll-rails'
 gem 'color-generator'
 gem 'colorize'
 gem 'watir-webdriver'
@@ -75,4 +74,4 @@ gem 'dalli'
 gem 'socket.io-client-simple'
 gem 'heroku-api'
 gem 'filewatcher'
-# gem 'websocket-client-simple'
+gem 'rails-i18n', '~> 4.0.0'

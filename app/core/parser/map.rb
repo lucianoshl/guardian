@@ -3,7 +3,17 @@ class Parser::Map < Parser::Abstract
   def parse screen
     screen.villages = []
 
-    JSON.parse(@page.body).each do |item|
+    json = JSON.parse(@page.body)    
+
+    @all_allies = {}
+
+    json.map do |item|
+      item["data"]["allies"].map do |k,v|
+        @all_allies[k] = v
+      end
+    end
+
+    json.each do |item|
       villages = item['data']['villages']
 
       players = parse_players(item)
@@ -67,7 +77,7 @@ class Parser::Map < Parser::Abstract
       player.pid = id.to_i
       player.name = content[0]
       player.points = content[1].extract_number
-      player.ally = parse_ally(content[2],item["data"]["allies"][content[2].to_i])
+      player.ally = parse_ally(content[2],@all_allies[content[2]])
       result[id.to_i] = player
     end
     return result

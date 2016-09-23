@@ -7,7 +7,7 @@ class Task::PillageAround < Task::Abstract
   end
 
   def get_place village
-    Screen::Place.get(village.vid)
+    Screen::Place.get_free(village.vid)
   end
 
   def run
@@ -169,6 +169,7 @@ class Task::PillageAround < Task::Abstract
 
     while (!troops.win?(last_report.moral,last_report.target_buildings["wall"],false))
       begin
+        Rails.logger.info("Running simulator #{troops.to_h}")
         troops = troops.upgrade(get_place(@origin).units - troops,total_resources)
       rescue ImpossibleUpgrade => e
         return move_to_waiting_strong_troops(nil)

@@ -16,6 +16,10 @@ class Mobile::ReportList < Mobile::Base
 		report_list = Mobile::ReportList.new('attack',0,0,2000).reports
 		report_list.map do |report_id|
 			report_screen = Mobile::ReportView.new(id: report_id)
+
+			raise Exception.new("Relatorio com problema") if (report_screen.report.occurrence > Time.zone.now)
+
+
 			raise "Error reading report=#{report_id} Errors = #{report_screen.report.errors.inspect}" if (!report_screen.report.save)
 			erase(report_id)
 		end

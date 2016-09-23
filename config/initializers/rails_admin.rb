@@ -1,6 +1,14 @@
 RailsAdmin.config do |config|
 
-  config.included_models = ["Village","Report"]
+  config.included_models = [Village,Report]
+
+  report_enum =  {
+    win: 'https://brs1.tribalwars.com.br/graphic/dots/green.png',
+    win_lost: 'https://brs1.tribalwars.com.br/graphic/dots/yellow.png',
+    spy: 'https://brs1.tribalwars.com.br/graphic/dots/blue.png',
+    spy_lost: 'https://brs1.tribalwars.com.br/graphic/dots/red_blue.png',
+    lost: 'https://brs1.tribalwars.com.br/graphic/dots/red.png',
+  } 
 
   ### Popular gems integration
 
@@ -34,16 +42,32 @@ RailsAdmin.config do |config|
     end
   end
 
+  config.model Report do
+    list do
+      field :status do
+        label :hidden => true
+        formatted_value do
+          bindings[:view].tag(:img, { :src => report_enum[bindings[:object].status] })
+        end
+      end
+      field :target
+      field :occurrence
+      scopes [:important,:normal]
+    end
+  end
+
   config.actions do
     dashboard                     # mandatory
     index                         # mandatory
-    new
-    export
-    bulk_delete
+    new do
+      except [Report]
+    end
+    # export
+    # bulk_delete
     show
     edit
-    delete
-    show_in_app
+    # delete
+    # show_in_app
 
     ## With an audit adapter, you can add:
     # history_index

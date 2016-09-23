@@ -32,7 +32,9 @@ class Report
   embeds_one :pillage, as: :resourcesable, class_name: Resource.to_s
   embeds_one :resources, as: :resourcesable, class_name: Resource.to_s
 
-  scope :important,->(){not_in(_status: [:win,:spy]).where(read: false).desc(:occurrence)}
+  scope :important,->(){not_in(_status: [:win,:spy]).desc(:occurrence)}
+  scope :important_unread,->(){important.where(read: false).desc(:occurrence)}
+  scope :normal,->(){Report.in(_status: [:win,:spy]).desc(:occurrence)}
 
   def erase screen
     screen.request(self.erase_url)

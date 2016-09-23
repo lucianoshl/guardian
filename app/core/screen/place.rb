@@ -70,7 +70,7 @@ class Screen::Place < Screen::Basic
       troops.spy = self.units.spy >= spies ? spies : 0
     end
 
-    form.fill(troops.to_h)
+    form.fill(troops.instance_values)
     form.fill(x: target.x , y: target.y)
 
     if ('attack' == type)
@@ -145,35 +145,14 @@ class Screen::Place < Screen::Basic
     end
 
     @@places[vid].units.knight = 0
+    # @@places[vid].units.light = 0
+    # @@places[vid].units.axe = 0
+
+    # if (@@places[vid].units.spy <= 200)
+    #   @@places[vid].units.spy = 0 
+    # end
 
     return @@places[vid]
-  end
-
-  def self.get_free(vid)
-    place = self.get(vid)
-
-    config = Village.where(vid: vid).first.reserved_troops.to_h
-
-    if (!config.nil?)
-      set_to_zero = config.select{|k,v| v == -1 }.map(&:first)
-      set_to_number = config.select{|k,v| v != -1 }.to_h
-
-      set_to_zero.map do |unit_name|
-         place.units[unit_name] = 0
-      end
-
-      set_to_number.map do |unit,value|
-        next if place.units[unit].nil?
-        if (place.units[unit] <= value) 
-          place.units[unit] = 0
-        else
-          place.units[unit] -= value
-        end
-      end
-    end
-
-    return place
-
   end
 
   def self.load_all

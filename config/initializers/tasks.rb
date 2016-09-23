@@ -2,7 +2,6 @@ Dir["#{Rails.root}/app/core/task/*.rb"].map{|f| ActiveSupport::Dependencies.load
 
 Task.constants.map do |const|
   task = Task.const_get(const)
-  Rails.logger.info("Running init_schedules for #{task}")
   task.init_schedules if (task.respond_to?('init_schedules'))
 end
 

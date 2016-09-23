@@ -1,6 +1,6 @@
 RailsAdmin.config do |config|
 
-  config.included_models = [Village.to_s,Troop.to_s]
+  config.included_models = ["Village"]
 
   ### Popular gems integration
 

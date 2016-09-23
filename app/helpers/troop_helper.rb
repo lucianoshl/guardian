@@ -1,6 +1,7 @@
 module TroopHelper
   def render_troops(troops,complete=true)
-    troops = troops.to_h
+    troops = troops.instance_values if (troops.class == Troop)
+    troops = troops.to_h if (troops.class != Hash && troops.class != Troop)
 
     if (!complete)
       troops = (troops.select do |unit,qte|

@@ -70,7 +70,7 @@ class Task::Abstract
   end
 
   def info *args
-    Rails.logger.info args.join(' ')
+    puts args.join(' ')
   end
 
 end

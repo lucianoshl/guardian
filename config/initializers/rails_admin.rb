@@ -1,6 +1,6 @@
 RailsAdmin.config do |config|
 
-  config.included_models = [Village,Report,Troop]
+  config.included_models = [Village,Report,Troop,Config]
 
   report_enum =  {
     win: 'https://brs1.tribalwars.com.br/graphic/dots/green.png',

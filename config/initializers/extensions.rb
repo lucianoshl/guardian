@@ -7,7 +7,6 @@ class Object
       OpenStruct.new({ x: values[0].to_i, y: values[1].to_i })
   end
   def parse_datetime
-    binding.pry
       result = nil
       if self.include?('hoje')
           formated = gsub(/hoje ../, Date.today.to_s)

@@ -7,6 +7,7 @@ class Object
       OpenStruct.new({ x: values[0].to_i, y: values[1].to_i })
   end
   def parse_datetime
+    binding.pry
       result = nil
       if self.include?('hoje')
           formated = gsub(/hoje ../, Date.today.to_s)
@@ -22,7 +23,7 @@ class Object
           raise Exception.new("result < Time.now") if result < Time.now
           result =    result
       elsif scan(/... \d{1,2}, \d{4}/).size > 0 then
-          result = Time.zone.parse self
+          result = Time.zone.parse( self.scan(/\w+/)[0,2].join(' ') + ' ' + self.scan(/\w+/)[3,3].join(':') )
 
       elsif scan(/\d+\.\d+\. .. \d+\:\d+/).size > 0 then  # ["22.09. às 13:45"]
           date,hour = self.split('. às ')

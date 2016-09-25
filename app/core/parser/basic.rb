@@ -19,6 +19,8 @@ class Parser::Basic < Parser::Abstract
 
     screen.gamejs_path = @page.body.scan(/http.+mobile.js/).first.gsub('mobile','game')
 
+    screen.csrf_token = @page.body.scan(/csrf_token = '(.+)'/).first.first
+
   end
 
 end

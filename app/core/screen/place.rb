@@ -62,8 +62,11 @@ class Screen::Place < Screen::Basic
     partner_time = Partner.is_attacking?(target)
 
     if (!partner_time.nil?)
+      target.increase_limited_by_partner
       raise PartnerAttackingException.new(partner_time)
     end
+
+    target.reset_partner_count
     spies = Screen::Place.spy_qte(target)
 
     if (troops.spy.nil? || troops.spy.zero?)

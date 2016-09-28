@@ -10,6 +10,11 @@ class Partner
     villages = villages.select{|a| a.next_event > Time.zone.now }
 
     same = villages.select{|other| target.distance(other).zero? }.first
+
+    if ((target.limit_partner || 0) > 3)
+      binding.pry
+    end
+
     if (same.nil?)
       return nil
     end

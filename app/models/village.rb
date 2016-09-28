@@ -4,6 +4,8 @@ class Village
   field :x, type: Integer
   field :y, type: Integer
 
+  field :limit_partner, type: Integer
+
   field :name, type: String
   field :points, type: Integer
   field :points_history, type: Array
@@ -14,7 +16,6 @@ class Village
   field :is_sorcerer, type: Boolean
 
   field :use_in_pillage, type: Boolean, default: true
-
   field :in_blacklist, type: Boolean, default: false
 
   has_many :reports , inverse_of: 'target' 
@@ -117,6 +118,18 @@ class Village
 
   def inative_players
     monitor.map{|a| [a,a.points_history.last] }.select{|a| a[1]["date"] <= Time.zone.now - 3.day }.map{|a| a[0]}
+  end
+
+  def increase_limited_by_partner
+    self.limit_partner = 0 if (self.limit_partner.nil?)
+    self.limit_partner += 1
+    self.save
+    Rails.logger.info("Increasing limit partner from #{self.limit_partner} to #{self.limit_partner+1}".red.on_white)
+  end
+
+  def reset_partner_count
+    self.limit_partner = 0
+    self.save
   end
 
 end

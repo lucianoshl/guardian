@@ -97,9 +97,16 @@ class Troop
       break
     end
     
-    raise ImpossibleUpgrade.new if (self.to_h == troops)
+    raise ImpossibleUpgrade.new if (self.eq?(troops))
 
     return Troop.new(troops)
+  end
+
+  def eq?(other)
+    if (other.class == Hash)
+      return Troop.new(other).to_h == self.to_h
+    end
+    other.to_h == self.to_h
   end
 
   def carry

@@ -227,4 +227,13 @@ class Troop
     return Troop.new(result)
   end
 
+  def self.from_building?(building,name)
+    locations = {
+      barracks: ['spear','sword','axe'],
+      stable: ['spy','light','heavy'],
+      garage: ['ram','catapult']
+    }
+    return locations[building.to_sym].include?(name.to_s)
+  end
+
 end

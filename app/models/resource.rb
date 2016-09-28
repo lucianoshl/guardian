@@ -37,6 +37,10 @@ class Resource
     new wood: wood, stone: stone, iron: iron
   end
 
+  def include?(other)
+    binding.pry
+  end
+
   def *(other)
     result = self.clone
     result.wood *= other
@@ -53,4 +57,16 @@ class Resource
     return result
   end
 
+end
+
+
+class Hash
+  def to_resource
+    hash = self.with_indifferent_access
+    result = Resource.new
+    result.wood = hash["wood"]
+    result.stone = hash["stone"]
+    result.iron = hash["iron"]
+    return result
+  end
 end

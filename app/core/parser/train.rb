@@ -15,10 +15,14 @@ class Parser::Train < Parser::Basic
 
     screen.production_units = {}
     screen.release_time = {}
+
+    screen.release_time['barracks'] ||= Time.zone.now
+    screen.release_time['stable'] ||= Time.zone.now
+    screen.release_time['garage'] ||= Time.zone.now
+
     @page.search('div[id*=replace]').map do |element|
       building = element.attr('id').gsub('replace_','')
       screen.production_units[building] ||= {}
-      screen.release_time[building] ||= Time.zone.now
 
       element.search('.queueItem').map do |queueItem|
         unit = queueItem.search('img').first.attr('src').scan(/unit_(\w+).png/).first.first

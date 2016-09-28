@@ -1,4 +1,14 @@
 GIT
+  remote: git://github.com/lucianoshl/rvt.git
+  revision: d9ddc5ebadf399a3f62f9859b38af2abc3725729
+  specs:
+    rvt (1.0.0)
+      activemodel (>= 4.0)
+      coffee-rails
+      railties (>= 4.0)
+      sprockets-rails
+
+GIT
   remote: git://github.com/turbolinks/turbolinks-classic.git
   revision: 37a7c296232d20a61bd1946f600da7f2009189db
   specs:
@@ -275,11 +285,6 @@ GEM
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
     rubyzip (1.2.0)
-    rvt (0.9.9)
-      activemodel (~> 4.0)
-      coffee-rails (~> 4.0)
-      railties (~> 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
     safe_yaml (1.0.4)
     sass (3.4.22)
     sass-rails (5.0.5)
@@ -373,7 +378,7 @@ DEPENDENCIES
   rails_admin
   rails_real_favicon
   rspec-rails
-  rvt
+  rvt!
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   selenium-webdriver

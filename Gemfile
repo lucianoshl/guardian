@@ -34,7 +34,6 @@ group :test do
 end
 
 group :development do
-  gem 'web-console', '~> 2.0'
   gem 'thin'
 end
 
@@ -75,3 +74,4 @@ gem 'socket.io-client-simple'
 gem 'heroku-api'
 gem 'filewatcher'
 gem 'rails-i18n', '~> 4.0.0'
+gem 'rvt'

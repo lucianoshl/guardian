@@ -275,6 +275,11 @@ GEM
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
     rubyzip (1.2.0)
+    rvt (0.9.9)
+      activemodel (~> 4.0)
+      coffee-rails (~> 4.0)
+      railties (~> 4.0)
+      sprockets-rails (>= 2.0, < 4.0)
     safe_yaml (1.0.4)
     sass (3.4.22)
     sass-rails (5.0.5)
@@ -327,11 +332,6 @@ GEM
       raindrops (~> 0.7)
     watir-webdriver (0.9.1)
       selenium-webdriver (>= 2.46.2)
-    web-console (2.3.0)
-      activemodel (>= 4.0)
-      binding_of_caller (>= 0.7.2)
-      railties (>= 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
     webrobots (0.1.2)
     websocket (1.2.3)
     websocket-client-simple (0.3.0)
@@ -373,6 +373,7 @@ DEPENDENCIES
   rails_admin
   rails_real_favicon
   rspec-rails
+  rvt
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   selenium-webdriver
@@ -384,7 +385,6 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   unicorn
   watir-webdriver
-  web-console (~> 2.0)
 
 RUBY VERSION
    ruby 2.3.1p112

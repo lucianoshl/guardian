@@ -34,6 +34,7 @@ RailsAdmin.config do |config|
     edit do
       field :reserved_troops
       field :use_in_pillage
+      field :in_blacklist
     end
 
     list do

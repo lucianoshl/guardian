@@ -15,6 +15,8 @@ class Village
 
   field :use_in_pillage, type: Boolean, default: true
 
+  field :in_blacklist, type: Boolean, default: false
+
   has_many :reports , inverse_of: 'target' 
 
   embeds_one :reserved_troops, class_name: Troop.to_s
@@ -26,6 +28,8 @@ class Village
 
   scope :my, -> { where(player: User.current.player) }
   scope :targets, -> { not_in(player: [User.current.player]) }
+  scope :monitor, -> { targets.in(state: ["trops_without_spy","strong","has_troops"]) }
+  scope :blacklist, -> { targets.where(in_blacklist: true) }
 
   index({ x: 1, y: 1 }, { unique: true })
   index({ vid: 1 }, { unique: true })
@@ -109,6 +113,10 @@ class Village
   
   def self.clean_all_states
     Village.all.map(&:clean_state)
+  end
+
+  def inative_players
+    monitor.map{|a| [a,a.points_history.last] }.select{|a| a[1]["date"] <= Time.zone.now - 3.day }.map{|a| a[0]}
   end
 
 end

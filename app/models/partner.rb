@@ -11,11 +11,7 @@ class Partner
 
     same = villages.select{|other| target.distance(other).zero? }.first
 
-    if ((target.limit_partner || 0) > 3)
-      binding.pry
-    end
-
-    if (same.nil?)
+    if (same.nil? || (target.limit_partner || 0) > 3)
       return nil
     end
     same.next_event

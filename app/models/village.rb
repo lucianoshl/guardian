@@ -15,8 +15,9 @@ class Village
   field :is_barbarian, type: Boolean
   field :is_sorcerer, type: Boolean
 
+  field :in_blacklist, type: Boolean
+
   field :use_in_pillage, type: Boolean, default: true
-  field :in_blacklist, type: Boolean, default: false
 
   has_many :reports , inverse_of: 'target' 
 
@@ -30,7 +31,6 @@ class Village
   scope :my, -> { where(player: User.current.player) }
   scope :targets, -> { not_in(player: [User.current.player]) }
   scope :monitor, -> { targets.in(state: ["trops_without_spy","strong","has_troops"]) }
-  scope :blacklist, -> { targets.where(in_blacklist: true) }
 
   index({ x: 1, y: 1 }, { unique: true })
   index({ vid: 1 }, { unique: true })
@@ -97,17 +97,11 @@ class Village
     end
     Rails.logger.info("Update allies players: end")
 
-    # blacklist = ['jukita650']
+    Rails.logger.info("Update blacklist players: start")
+    Village.in(player_id: Player.blacklist.pluck(:id)).update_all(next_event: nil,state: :blacklist)
+    Rails.logger.info("Update blacklist players: end")
 
-    # Player.in(name: blacklist).to_a.map do |player|
-    #   player.villages.map do |black_village|
-    #     black_village.next_event = nil
-    #     black_village.state = :ally
-    #     black_village.save
-    #   end
-    # end
-
-    result = lte(points:threshold).not_in(state: [:ally,:strong])
+    result = lte(points:threshold).not_in(state: [:ally,:strong,:blacklist])
     Rails.logger.info("Searching pillage_candidates: end")
     result
   end

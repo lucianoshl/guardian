@@ -7,7 +7,7 @@ class Troop
   embedded_in :village
 
   Unit.names.map do |unit_name|
-    field unit_name.to_sym, type: Integer
+    field unit_name.to_sym, type: Integer, default: 0
   end
 
   def total
@@ -193,6 +193,31 @@ class Troop
     r = self.attributes.clone
     r.delete('_id')
     return r
+  end
+
+  def remove_negative
+    result = self.to_h.clone
+    result.map do |unit,qte|
+      if (qte < 0)
+        result.delete(unit)
+      end
+    end
+    return Troop.new(result)
+  end
+
+  def from_building name
+    locations = {
+      barracks: ['spear','sword','axe'],
+      stable: ['spy','light','heavy'],
+      garage: ['ram','catapult']
+    }
+    result = self.to_h.clone
+    result.map do |unit,qte|
+      if (!locations[name.to_sym].include?(unit.to_s))
+        result[unit] = 0
+      end
+    end
+    return Troop.new(result)
   end
 
 end

@@ -5,6 +5,8 @@ pt-BR:
     models:
       report: Relatórios
       village: Aldeias
+      config: Configurações
+      player: Jogadores
     attributes:
       report:
         target: Alvo

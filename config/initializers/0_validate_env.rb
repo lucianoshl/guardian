@@ -1,3 +1,5 @@
+Rails.logger.level = 0
+
 variables = ['MONGO_URL','HEROKU_KEY','TW_USER','TW_PASSWORD','TW_WORLD']
 invalid_config = variables.select{ |a| !ENV[a].nil? }.empty?
 if (invalid_config)

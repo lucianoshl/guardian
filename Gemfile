@@ -29,9 +29,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-group :test do
-  gem "rspec-rails"
-end
+# group :test do
+gem "rspec-rails"
+# end
 
 group :development do
   gem 'thin'
@@ -74,4 +74,3 @@ gem 'socket.io-client-simple'
 gem 'heroku-api' 
 gem 'filewatcher'
 gem 'rails-i18n', '~> 4.0.0'
-# gem 'rvt', github: 'lucianoshl/rvt'

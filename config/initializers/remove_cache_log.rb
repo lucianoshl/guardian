@@ -1,2 +1,2 @@
 Rails.cache.silence!
-Dalli.logger.level = Logger::ERROR
+# Dalli.logger.level = Logger::ERROR

@@ -62,4 +62,8 @@ class Mobile::Abstract
 	def client
 		Mobile::Client.new
 	end
+
+	def client_time
+		Time.zone.now.to_i * 1000
+	end
 end

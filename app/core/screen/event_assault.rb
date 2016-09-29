@@ -11,7 +11,7 @@ class Screen::EventAssault < Screen::Basic
   def put_mercenary(event)
   	parameters = {area: event}
 
-  	result = client.post("https://#{User.current.world}.tribalwars.com.br/game.php?screen=event_assault&ajaxaction=reinforce&h=#{csrf_token}&client_time=#{Time.zone.now.to_i * 1000}",parameters)
+  	result = client.post("https://#{User.current.world}.tribalwars.com.br/game.php?screen=event_assault&ajaxaction=reinforce&h=#{csrf_token}&client_time=#{client_time}",parameters)
   end
 
 end

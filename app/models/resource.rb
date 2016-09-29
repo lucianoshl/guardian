@@ -38,7 +38,7 @@ class Resource
   end
 
   def include?(other)
-    binding.pry
+    !(self - other).has_negative?
   end
 
   def *(other)
@@ -55,6 +55,18 @@ class Resource
     result.stone += other.stone
     result.iron += other.iron
     return result
+  end
+
+  def -(other)
+    result = self.clone
+    result.wood += other.wood
+    result.stone += other.stone
+    result.iron += other.iron
+    return result
+  end
+
+  def has_negative?
+    wood < 0 || stone < 0 || iron < 0
   end
 
 end

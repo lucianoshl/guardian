@@ -29,6 +29,7 @@ class Task::AutoRecruit < Task::Abstract
 			seconds_to_train = train_until - train_screen.release_time[building]
 			building_to_train = to_train.from_building(building)
 			building_to_train.to_h.map do |unit,qte|
+				next if (train_screen.train_info[unit].nil?)
 				train_seconds = train_screen.train_info[unit]["build_time"]
 				while (seconds_to_train > 0 && qte > 0) 
 					to_train_in_time[unit] += 1

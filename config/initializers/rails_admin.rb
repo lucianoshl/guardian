@@ -45,7 +45,7 @@ RailsAdmin.config do |config|
       end
       field :name
       field :points
-      scopes [:my,:targets]
+      scopes(Village.scopes.keys - [:page])
     end
   end
 

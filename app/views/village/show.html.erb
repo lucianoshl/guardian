@@ -13,8 +13,10 @@
 					<dd><%= @village.points %></dd>
 					<dt>Dono</dt>
 					<dd><%= @village.player.nil? ? "Barbaro": @village.player.name %></dd>
-					<dt>Statue</dt>
+					<dt>Estado</dt>
 					<dd><%= @village.state %></dd>
+					<dt>Limite dos parceiros</dt>
+					<dd><%= @village.limit_partner %></dd>
 					<dt>Próximo evento</dt>
 					<dd><%= @village.next_event.nil? ? nil : @village.next_event.strftime("%d/%m - %H:%M:%S") %></dd>
 					<dt>Ações</dt>

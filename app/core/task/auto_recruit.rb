@@ -9,19 +9,23 @@ class Task::AutoRecruit < Task::Abstract
 	end
 
 	def recruit village
-		return if (true)
-
 		train_time = self.class._performs_to
 		train_until = Time.zone.now + train_time
 
 		train_screen = Screen::Train.new(id: village.vid)
+
+		half_storage = (Screen::Train.new.storage_size * 0.5).ceil
+
+		limit_resources = Resource.new(wood: half_storage, stone: half_storage, iron: half_storage)
+
+
 		complete_units = {}
 		train_screen.production_units.values.map{|a| complete_units.merge!(a)}
 		complete_units = Troop.new(train_screen.total_units) + Troop.new(complete_units)
 
 		train_config = Troop.new(light: 1000, axe: 5000,ram: 100)
 
-		to_train = (train_config - complete_units).remove_negative
+		to_train = (train_config - complete_units).rezmove_negative
 
 		target_buildings = train_screen.release_time.to_a.select{|a| a[1] < train_until }.map(&:first)
 
@@ -44,7 +48,9 @@ class Task::AutoRecruit < Task::Abstract
 		train_times = {}
 		target_buildings.map {|a| train_times[a] = 0}
 
-		resources = train_screen.resources
+		resources = train_screen.resources - limit_resources
+
+		return if (resources.has_negative?)
 
 		real_train = Troop.new
 		to_train_in_time = to_train_in_time.to_h

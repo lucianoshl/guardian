@@ -9,7 +9,8 @@ RSpec.describe Report, type: :model do
   end
 
   it "pillage_statistics" do
-    Report.pillage_statistics
+    # Report.pillage_statistics
+    Mobile::ReportList.load_all
   end
 
   # it "load_report" do

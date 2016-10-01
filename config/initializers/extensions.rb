@@ -24,6 +24,7 @@ class Object
       elsif scan(/... \d{1,2}, \d{4}/).size > 0 then
           raw = self.gsub('Set','Sep').gsub('Out','Oct')
           result = DateTime.strptime(raw,"%b %d, %Y %H:%M:%S")
+          result = result.to_datetime.change(offset: Time.zone.now.strftime("%z"))
 
       elsif scan(/\d+\.\d+\. .. \d+\:\d+/).size > 0 then  # ["22.09. às 13:45"]
           date,hour = self.split('. às ')

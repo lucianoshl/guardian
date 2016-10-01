@@ -25,7 +25,7 @@ class Task::AutoRecruit < Task::Abstract
 
 		train_config = Troop.new(light: 1000, axe: 5000,ram: 100)
 
-		to_train = (train_config - complete_units).rezmove_negative
+		to_train = (train_config - complete_units).remove_negative
 
 		target_buildings = train_screen.release_time.to_a.select{|a| a[1] < train_until }.map(&:first)
 

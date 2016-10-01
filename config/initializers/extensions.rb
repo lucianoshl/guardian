@@ -22,7 +22,7 @@ class Object
           raise Exception.new("result < Time.now") if result < Time.now
           result =    result
       elsif scan(/... \d{1,2}, \d{4}/).size > 0 then
-          raw = self.gsub('Set','Sep')
+          raw = self.gsub('Set','Sep').gsub('Out','Oct')
           result = DateTime.strptime(raw,"%b %d, %Y %H:%M:%S")
 
       elsif scan(/\d+\.\d+\. .. \d+\:\d+/).size > 0 then  # ["22.09. às 13:45"]

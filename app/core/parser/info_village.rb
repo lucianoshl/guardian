@@ -15,6 +15,8 @@ class Parser::InfoVillage < Parser::Abstract
     
     if (@page.body.scan(/info_player.+id=(\d+)/).size > 0)
       village.player_id = @page.body.scan(/info_player.+id=(\d+)/).extract_number
+    else
+      village.player_id = nil
     end
 
     village.is_barbarian = village.player_id.nil?

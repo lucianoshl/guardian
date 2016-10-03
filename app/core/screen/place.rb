@@ -66,6 +66,11 @@ class Screen::Place < Screen::Basic
       raise PartnerAttackingException.new(partner_time)
     end
 
+    village_info = Screen::InfoVillage.new(id: target.vid)
+    if (!village_info.village.player_id.nil?)
+      binding.pry
+    end
+
     target.reset_partner_count
     spies = Screen::Place.spy_qte(target)
 

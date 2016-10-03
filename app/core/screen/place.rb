@@ -68,7 +68,10 @@ class Screen::Place < Screen::Basic
 
     village_info = Screen::InfoVillage.new(id: target.vid)
     if (!village_info.village.player_id.nil?)
-      binding.pry
+      player_info = Screen::InfoPlayer.new(id: village_info.village.player_id)
+      if (!player_info.ally_id.nil?)
+        binding.pry
+      end
     end
 
     target.reset_partner_count

@@ -48,7 +48,11 @@ class Task::AutoRecruit < Task::Abstract
 		train_times = {}
 		target_buildings.map {|a| train_times[a] = 0}
 
-		resources = train_screen.resources - limit_resources
+		if (!two_itens_in_build_queue?(village))
+			resources = train_screen.resources - limit_resources
+		else
+			resources = train_screen.resources
+		end
 
 		return if (resources.has_negative?)
 
@@ -77,6 +81,11 @@ class Task::AutoRecruit < Task::Abstract
 		end
 
 		train_screen.train(real_train)
+	end
+
+	def two_itens_in_build_queue?(village)
+		main_screen = Screen::Main.new(id: village.vid)
+		main_screen.queue.size >= 2
 	end
 
 end

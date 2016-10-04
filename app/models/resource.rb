@@ -59,9 +59,9 @@ class Resource
 
   def -(other)
     result = self.clone
-    result.wood += other.wood
-    result.stone += other.stone
-    result.iron += other.iron
+    result.wood -= other.wood
+    result.stone -= other.stone
+    result.iron -= other.iron
     return result
   end
 

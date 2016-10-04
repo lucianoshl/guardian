@@ -1,6 +1,6 @@
 RailsAdmin.config do |config|
 
-  config.included_models = [Village,Report,Troop,Config,Player]
+  config.included_models = [Village,Report,Troop,Config,Player,Partner]
 
   report_enum =  {
     win: 'https://brs1.tribalwars.com.br/graphic/dots/green.png',
@@ -45,7 +45,7 @@ RailsAdmin.config do |config|
       end
       field :name
       field :points
-      scopes [:my,:targets]
+      scopes(Village.scopes.keys - [:page])
     end
   end
 

@@ -1,6 +1,14 @@
+class InexistentVillage < Exception
+end
+
 class Parser::InfoVillage < Parser::Abstract
 
   def parse(screen)
+    vid = @page.uri.to_s.scan(/id=(\d+)/).first.first.to_i
+    if @page.body.force_encoding("utf-8").include?('aldeia não existe')
+      raise InexistentVillage.new("Aldeia com vid=#{vid} não existe")
+    end
+
     screen.village = village = Village.new
 
     village.vid = @page.uri.to_s.scan(/id=(\d+)/).first.first.to_i

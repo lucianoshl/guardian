@@ -30,7 +30,10 @@ class Village
 
   scope :my, -> { where(player: User.current.player) }
   scope :targets, -> { not_in(player: [User.current.player]) }
-  scope :monitor, -> { targets.in(state: ["trops_without_spy","strong","has_troops"]) }
+  scope :monitor, -> { targets.in(state: Village.threat_status) }
+  scope :inative_players, -> do 
+    self.in( id: monitor.map{|a| [a,a.points_history.last] }.select{|a| a[1]["date"] <= Time.zone.now - 3.day }.map{|a| a[0]}.map(&:id) )
+  end
 
   index({ x: 1, y: 1 }, { unique: true })
   index({ vid: 1 }, { unique: true })
@@ -110,9 +113,9 @@ class Village
     Village.all.map(&:clean_state)
   end
 
-  def inative_players
-    monitor.map{|a| [a,a.points_history.last] }.select{|a| a[1]["date"] <= Time.zone.now - 3.day }.map{|a| a[0]}
-  end
+  # def inative_players
+  #   monitor.map{|a| [a,a.points_history.last] }.select{|a| a[1]["date"] <= Time.zone.now - 3.day }.map{|a| a[0]}
+  # end
 
   def increase_limited_by_partner
     self.limit_partner = 0 if (self.limit_partner.nil?)
@@ -124,6 +127,15 @@ class Village
   def reset_partner_count
     self.limit_partner = 0
     self.save
+  end
+
+
+  def is_threat?
+    Village.threat_status.include?(self.state)
+  end
+
+  def self.threat_status
+    ["trops_without_spy","strong","has_troops"]
   end
 
 end

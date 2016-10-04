@@ -31,7 +31,13 @@
               <td><%= render_coord(village) %></td> 
               <td><%= village.name %><%= render_troops(current_troops,false) %></td> 
               <td class="text-right"><%= number_with_delimiter(village.points,delimiter: '.') %></td> 
-              <td><%= village.state %></td> 
+              <td> 
+                <span class="label <%= 
+                village.state == 'ally' ? 'label-primary' :
+                 ( village.is_threat? ? 'label-danger' : 'label-success' ) %>">
+                  <%= village.state %>
+                </span>
+              </td> 
               <td><%= village.next_event.nil? ? nil : village.next_event.strftime("%d/%m - %H:%M:%S") %></td> 
             </tr>
             <% 

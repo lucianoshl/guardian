@@ -7,10 +7,16 @@ pt-BR:
       village: Aldeias
       config: Configurações
       player: Jogadores
+      partner: Parceiros
     attributes:
       report:
         target: Alvo
         occurrence: ocorrência
+      village:
+        my: 'Minhas Aldeias'
+        coordinate: Coordenada
+        name: Nome
+        points: Pontos
     errors:
       messages:
         record_invalid: 'A validação falhou: %{errors}'

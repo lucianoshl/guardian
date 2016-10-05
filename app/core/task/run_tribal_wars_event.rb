@@ -4,7 +4,7 @@ class Task::RunTribalWarsEvent < Task::Abstract
     screen = Screen::EventAssault.new
     Rails.logger.info("Event enable: #{screen.enabled}".white.on_blue)
     if (!screen.enabled)
-        return 1.month
+        return Time.zone.now + 1.month
     end
     Rails.logger.info("We have #{screen.mercenaries_amount} free in event")
     if (screen.mercenaries_amount > 0)

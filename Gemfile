@@ -34,7 +34,7 @@ gem "rspec-rails"
 # end
 
 group :development do
-  gem 'thin'
+  gem 'puma'
 end
 
 group :production do

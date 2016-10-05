@@ -75,3 +75,5 @@ gem 'heroku-api'
 gem 'filewatcher'
 gem 'rails-i18n', '~> 4.0.0'
 gem 'washbullet'
+
+gem 'rails_admin_material_theme', '~> 0.2.0'

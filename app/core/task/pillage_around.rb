@@ -199,6 +199,8 @@ class Task::PillageAround < Task::Abstract
       move_to_waiting_partner(exception.release)
     rescue BannedUserException => exception
       move_to_banned
+    rescue InexistentVillage => e
+      move_to_banned
     rescue NeedsMorePopulationException => exception
       move_to_waiting_population
     end

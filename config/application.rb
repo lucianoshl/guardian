@@ -31,6 +31,9 @@ module Guardian
     end
 
     config.log_level = :debug
+
+    ENV['RAILS_ADMIN_THEME'] = 'material_theme'
+
     # Rails.logger.level = :debug
 
     # Settings in config/environments/* take precedence over those specified here.

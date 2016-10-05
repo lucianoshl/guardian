@@ -25,13 +25,13 @@ class Parser::Main < Parser::Basic
       building.stone = (value["stone"]/(building.stone_factor ** (level_next - 1))).round
       building.iron = (value["iron"]/(building.iron_factor ** (level_next - 1))).round
     end
-    
-    # queue = (@page.search("tr[class*='buildorder']").map do |line|
-    #   item = OpenStruct.new
-    #   item.building = line.attr('class').scan(/buildorder_(.+)/).first.first
-    #   item.completed_in = line.search('.btn-cancel').first.parent.previous_element.text.parse_datetime
-    #   item
-    # end).sort{|a,b| a.completed_in <=> b.completed_in }
+
+    screen.queue = (@page.search('.queueItem').map do |line|
+      item = OpenStruct.new
+      item.building = line.search('img').attr('src').value.scan(/\/([a-z]+)\d*.png/).first.first
+      item.completed_in = line.search('div')[3].text.strip.split(' - ').last.to_datetime
+      item
+    end).sort{|a,b| a.completed_in <=> b.completed_in }
 
     # buildings = {}
     # information = JSON.parse(@page.body.scan(/BuildingMain.buildings = ({.*})/).first.first).each do |id,information|

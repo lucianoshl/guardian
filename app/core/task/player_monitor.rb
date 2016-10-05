@@ -27,6 +27,8 @@ class Task::PlayerMonitor < Task::Abstract
 
     targets = pair.sort{|a,b| a[:distance]<=>b[:distance]}.map {|a| a[:target]}
 
+    Village.not_in(vid: targets.map(&:vid)).delete_all
+
     Rails.logger.info("Merging new information with saved villages start")
     targets = (targets.pmap do |item|
       village = saved[item.vid] || Village.new

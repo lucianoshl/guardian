@@ -2,6 +2,8 @@ class Parser::EventAssault < Parser::Basic
 
   def parse screen
   	super
+    screen.enabled = @page.search('.event-action-button').size > 0
+
   	json = screen.json = JSON.parse "[#{@page.body.scan(/EventAssault.init\(({.*})\)/).first.first}]"
   	energy = json[1]["energy"]
 

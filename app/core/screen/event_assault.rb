@@ -1,6 +1,6 @@
 class Screen::EventAssault < Screen::Basic
 
-  attr_accessor :mercenaries_amount,:next_free_mercenary,:json
+  attr_accessor :mercenaries_amount,:next_free_mercenary,:json,:enabled
 
   url screen: 'event_assault'
 

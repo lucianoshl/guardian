@@ -67,7 +67,7 @@ RailsAdmin.config do |config|
     dashboard                     # mandatory
     index                         # mandatory
     new do
-      except [Report]
+      except [Report,Village]
     end
     # export
     # bulk_delete
@@ -75,6 +75,7 @@ RailsAdmin.config do |config|
     edit
     # delete
     show_in_app
+    charts
 
     ## With an audit adapter, you can add:
     # history_index

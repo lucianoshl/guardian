@@ -1,5 +1,7 @@
 class Village
   include Mongoid::Document
+  include RailsAdminCharts
+
   field :vid, type: Integer
   field :x, type: Integer
   field :y, type: Integer
@@ -136,6 +138,17 @@ class Village
 
   def self.threat_status
     ["trops_without_spy","strong","has_troops"]
+  end
+
+  def self.graph_data since=30.days.ago
+    (self.distinct(:state) - ['far_away']).map do |a|
+      total = where(state:a).count
+     {name: "#{a.humanize} (#{total})" , y: total }
+   end
+  end
+
+  def self.chart_type
+    return 'pie'
   end
 
 end

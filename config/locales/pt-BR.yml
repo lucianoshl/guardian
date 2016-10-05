@@ -1,6 +1,16 @@
 
 ---
 pt-BR:
+  admin:
+    actions:
+      charts:
+        menu: Gráficos
+        title: Gráficos
+    scopes:
+      my: 'Minhas Aldeias'
+      targets: Alvos
+      monitor: Ameaças
+      inative_players: Inativos
   mongoid:
     models:
       report: Relatórios
@@ -13,7 +23,6 @@ pt-BR:
         target: Alvo
         occurrence: ocorrência
       village:
-        my: 'Minhas Aldeias'
         coordinate: Coordenada
         name: Nome
         points: Pontos

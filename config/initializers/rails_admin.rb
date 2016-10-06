@@ -10,32 +10,25 @@ RailsAdmin.config do |config|
     lost: 'https://brs1.tribalwars.com.br/graphic/dots/red.png',
   } 
 
-  ### Popular gems integration
-
-  ## == Devise ==
-  # config.authenticate_with do
-  #   warden.authenticate! scope: :user
-  # end
-  # config.current_user_method(&:current_user)
-
-  ## == Cancan ==
-  # config.authorize_with :cancan
-
-  ## == Pundit ==
-  # config.authorize_with :pundit
-
-  ## == PaperTrail ==
-  # config.audit_with :paper_trail, 'User', 'PaperTrail::Version' # PaperTrail >= 3.0.0
-
-  ### More at https://github.com/sferik/rails_admin/wiki/Base-configuration
-
   config.model Job::Reserve do
 
-    edit do
+    # register do
+    #   field :x
+    #   field :y
+    # end
+
+    list do
+      field :state
       field :x
       field :y
-      field :active_job
+      # field :active_job do
+      #   formatted_value do
+      #     binding.pry
+      #     "#{bindings[:object].active_job.run_at}"
+      #   end
+      # end
     end
+
   end
 
   config.model Village do
@@ -81,7 +74,9 @@ RailsAdmin.config do |config|
     # export
     bulk_delete
     show
-    edit
+    edit do
+      except [Job::Reserve]
+    end
     delete
     show_in_app
     charts

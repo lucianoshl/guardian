@@ -166,7 +166,7 @@ class Screen::Place < Screen::Basic
   end
 
   def self.get_free(vid)
-    place = self.get(vid)
+    place = self.get(vid).clone
 
     config = Village.where(vid: vid).first.reserved_troops.to_h
 
@@ -174,22 +174,23 @@ class Screen::Place < Screen::Basic
       set_to_zero = config.select{|k,v| v == -1 }.map(&:first)
       set_to_number = config.select{|k,v| v != -1 }.to_h
 
+      units = place.units = place.units.clone
+
       set_to_zero.map do |unit_name|
-         place.units[unit_name] = 0
+         units[unit_name] = 0
       end
 
       set_to_number.map do |unit,value|
-        next if place.units[unit].nil?
-        if (place.units[unit] <= value) 
-          place.units[unit] = 0
+        next if units[unit].nil?
+        if (units[unit] <= value) 
+          units[unit] = 0
         else
-          place.units[unit] -= value
+          units[unit] -= value
         end
       end
     end
 
     return place
-
   end
 
   def self.load_all

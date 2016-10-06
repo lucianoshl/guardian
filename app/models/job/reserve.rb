@@ -26,6 +26,7 @@ class Job::Reserve < Job::Abstract
 	def execute
 		screen = Screen::Reservations.new
 		reserve = screen.search_reserve(x,y)
+		binding.pry
 		if (reserve.nil?)
 			binding.pry
 			do_reserve(OpenStruct.new(x: x, y: y))

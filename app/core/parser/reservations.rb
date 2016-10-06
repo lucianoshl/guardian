@@ -10,7 +10,7 @@ class Parser::Reservations < Parser::Basic
       reserve.village = line.search('a:first').text.to_coordinate
       reserve_link = line.search('a[href*=delete_reservation]')
       reserve.cancel_url = line.search('a[href*=delete_reservation]').last.attr('href') if (!reserve_link.empty?)
-      reserve.expiration_time = line.search('.more_info p:last').text.split('o:').last.to_datetime
+      reserve.expiration_time = line.search('.more_info p:last').text.split('o:').last.parse_datetime
       reserve
     end
     screen.reserve_search_form = @page.forms[2]

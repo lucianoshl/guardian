@@ -33,7 +33,12 @@ class Job::Abstract
 
     elsif self.state.eql? 'scheduled'
       change_state('running')
+      begin
       result = self.execute
+      rescue e
+        change_state('error')
+        raise e
+      end
       change_state('scheduled')
       schedule_job(result) if !result.eql?(remove_job)
       self.delete if result.eql? remove_job

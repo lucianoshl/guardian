@@ -41,6 +41,9 @@ class Object
 end
 
 class Delayed::Job
+
+  belongs_to :job, class_name: "Job::Abstract" 
+
   def run_now(unlock=false)
     self.run_at = Time.zone.now
     self.attempts = 0

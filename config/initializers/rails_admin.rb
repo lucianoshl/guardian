@@ -1,6 +1,6 @@
 RailsAdmin.config do |config|
 
-  config.included_models = [Village,Report,Troop,Config,Player,Partner]
+  config.included_models = [Village,Report,Troop,Config,Player,Partner,Job::Reserve]
 
   report_enum =  {
     win: 'https://brs1.tribalwars.com.br/graphic/dots/green.png',
@@ -28,6 +28,14 @@ RailsAdmin.config do |config|
   # config.audit_with :paper_trail, 'User', 'PaperTrail::Version' # PaperTrail >= 3.0.0
 
   ### More at https://github.com/sferik/rails_admin/wiki/Base-configuration
+
+  config.model Job::Reserve do
+
+    edit do
+      field :x
+      field :y
+    end
+  end
 
   config.model Village do
 
@@ -70,10 +78,10 @@ RailsAdmin.config do |config|
       except [Report,Village]
     end
     # export
-    # bulk_delete
+    bulk_delete
     show
     edit
-    # delete
+    delete
     show_in_app
     charts
 

@@ -9,7 +9,8 @@ RSpec.describe Task::PillageAround, type: :model do
     # Task::PillageAround.new.test_local
     # Task::AutoRecruit.new.test_local
     # Task::UpdateDailyInformation.new.test_local
-    Task::RunTribalWarsEvent.new.test_local
+    # Task::RunTribalWarsEvent.new.test_local
+    # screen = Screen::Main.new
     # Dummy.new.run
   end
 

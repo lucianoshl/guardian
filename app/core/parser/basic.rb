@@ -21,6 +21,8 @@ class Parser::Basic < Parser::Abstract
 
     screen.csrf_token = @page.body.scan(/csrf_token = '(.+)'/).first.first
 
+    screen.incomings = json['player']['incomings'].to_i
+
   end
 
 end

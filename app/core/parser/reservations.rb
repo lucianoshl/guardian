@@ -5,12 +5,15 @@ class Parser::Reservations < Parser::Basic
     itens = @page.search('#reservations').search('tr')
     itens.shift
     itens.pop
-    screen.reserves = itens.map do |line|
+    screen.reserves = itens.map do |line| 
       reserve = OpenStruct.new
-      reserve.village = Village.where(vid: line.search('a').first.attr('href').scan(/id=(\d+)/).first.first).first
-      reserve.cancel_url = line.search('a[href*=delete_reservation]').last.attr('href')
+      reserve.village = line.search('a:first').text.to_coordinate
+      reserve_link = line.search('a[href*=delete_reservation]')
+      reserve.cancel_url = line.search('a[href*=delete_reservation]').last.attr('href') if (!reserve_link.empty?)
+      reserve.expiration_time = line.search('.more_info p:last').text.split('o:').last.to_datetime
       reserve
     end
+    screen.reserve_search_form = @page.forms[2]
     screen.reserve_form = @page.forms[3]
   end
 

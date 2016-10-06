@@ -35,7 +35,7 @@ class Job::Abstract
       change_state('running')
       begin
       result = self.execute
-      rescue e
+      rescue Exception => e
         change_state('error')
         raise e
       end

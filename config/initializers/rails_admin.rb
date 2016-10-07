@@ -12,10 +12,10 @@ RailsAdmin.config do |config|
 
   config.model Job::Reserve do
 
-    # register do
-    #   field :x
-    #   field :y
-    # end
+    edit do
+      field :x
+      field :y
+    end
 
     list do
       field :state
@@ -29,12 +29,6 @@ RailsAdmin.config do |config|
           end
         end
       end
-      # field :active_job do
-      #   formatted_value do
-      #     binding.pry
-      #     "#{bindings[:object].active_job.run_at}"
-      #   end
-      # end
     end
 
   end
@@ -71,6 +65,15 @@ RailsAdmin.config do |config|
       field :occurrence
       scopes [:important,:normal]
     end
+
+    show do
+      field :report  do
+        formatted_value do
+          bindings[:view].render :partial => "rails_admin/main/report", :locals => {:field => self, :object => bindings[:object] }
+        end
+      end
+    end
+
   end
 
   config.actions do
@@ -83,7 +86,7 @@ RailsAdmin.config do |config|
     bulk_delete
     show
     edit do
-      except [Job::Reserve]
+      except [Job::Reserve,Report]
     end
     delete
     show_in_app

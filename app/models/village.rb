@@ -141,11 +141,10 @@ class Village
   end
 
   def self.graph_data since=30.days.ago
-    result = (self.distinct(:state) - ['far_away']).map do |a|
+    ((self.distinct(:state) - ['far_away']).map do |a|
       total = where(state:a).count
      {name: "#{a.humanize} (#{total})" , y: total }
-   end
-   result.sort{|a,b| a[:y] <=> a[:b] }
+   end).sort { |a,b| b[:y] <=> a[:y] }
   end
 
   def self.chart_type

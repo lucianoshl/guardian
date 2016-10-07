@@ -21,10 +21,12 @@ RailsAdmin.config do |config|
       field :state
       field :x
       field :y
-      field :scheduled do
+      field :active_job do
         formatted_value do
-          run_at = bindings[:object].active_job.run_at
-          run_at.strftime("%d/%m - %H:%M:%S") if (!run_at.nil?)
+          if (!bindings[:object].active_job.nil?)
+            run_at = bindings[:object].active_job.run_at
+            run_at.strftime("%d/%m - %H:%M:%S") if (!run_at.nil?)
+          end
         end
       end
       # field :active_job do

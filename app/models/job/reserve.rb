@@ -27,7 +27,7 @@ class Job::Reserve < Job::Abstract
 		screen = Screen::Reservations.new
 		reserve = screen.search_reserve(x,y)
 		if (reserve.nil?)
-			do_reserve(OpenStruct.new(x: x, y: y))
+			screen.do_reserve(OpenStruct.new(x: x, y: y))
 			return remove_job
 		else
 			return reserve.expiration_time

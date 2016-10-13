@@ -9,7 +9,7 @@ class Task::AutoRecruit < Task::Abstract
 	end
 
 	def recruit village
-		# return
+		return
 		train_time = self.class._performs_to
 		train_until = Time.zone.now + train_time
 

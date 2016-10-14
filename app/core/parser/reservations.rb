@@ -13,6 +13,8 @@ class Parser::Reservations < Parser::Basic
       reserve.expiration_time = line.search('.more_info p:last').text.split('o:').last.parse_datetime
       reserve
     end
+
+    screen.forms = @page.forms
     screen.reserve_search_form = @page.forms[2]
     screen.reserve_form = @page.forms[3]
   end

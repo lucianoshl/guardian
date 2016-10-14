@@ -26,7 +26,7 @@ RSpec.describe Job::Reserve , type: :model do
   end
 
   it "execute_reserve" do
-    job = Job::Reserve.new(x: 399, y: 418).execute
+    job = Job::Reserve.new(x: 398, y: 413).execute
   end
 
 end

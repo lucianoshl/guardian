@@ -3,7 +3,7 @@ class Job::Abstract
   include Mongoid::Document
   field :state, type: String, default: 'starting'
 
-  has_one :active_job, class_name: "Delayed::Backend::Mongoid::Job" 
+  has_one :active_job, class_name: "Delayed::Backend::Mongoid::Job", :dependent => :destroy
 
   def self.run_daily hour
     self._run_daily = hour

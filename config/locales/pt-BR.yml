@@ -17,8 +17,11 @@ pt-BR:
       village: Aldeias
       config: Configurações
       player: Jogadores
+      job: Tarefas
       partner: Parceiros
     attributes:
+      job:
+        state: Estado
       report:
         target: Alvo
         occurrence: ocorrência

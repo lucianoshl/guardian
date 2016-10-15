@@ -44,6 +44,7 @@ end
 class Screen::Place < Screen::Basic
 
   @@places = {}
+  @@removed_by_config = []
 
   attr_accessor :units,:commands,:incomings,:supports,:form,:unit_metadata
 
@@ -166,11 +167,12 @@ class Screen::Place < Screen::Basic
   end
 
   def self.get_free(vid)
-    place = self.get(vid).clone
+    place = self.get(vid)
 
     config = Village.where(vid: vid).first.reserved_troops.to_h
 
-    if (!config.nil?)
+    if (!config.nil? && !@@removed_by_config.include?(vid))
+      @@removed_by_config << vid
       set_to_zero = config.select{|k,v| v == -1 }.map(&:first)
       set_to_number = config.select{|k,v| v != -1 }.to_h
 
@@ -203,6 +205,7 @@ class Screen::Place < Screen::Basic
 
   def self.reset
     @@places = {}
+    @@removed_by_config = []
   end
 
 end

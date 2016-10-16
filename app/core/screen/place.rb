@@ -44,9 +44,8 @@ end
 class Screen::Place < Screen::Basic
 
   @@places = {}
-  @@removed_by_config = []
 
-  attr_accessor :units,:commands,:incomings,:supports,:form,:unit_metadata
+  attr_accessor :units,:free_units,:commands,:incomings,:supports,:form,:unit_metadata
 
   url screen: 'place'  
 
@@ -79,12 +78,11 @@ class Screen::Place < Screen::Basic
       end
     end
 
-
     target.reset_partner_count
     spies = Screen::Place.spy_qte(target)
 
     if (troops.spy.nil? || troops.spy.zero?)
-      troops.spy = self.units.spy >= spies ? spies : 0
+      troops.spy = self.free_units.spy >= spies ? spies : 0
     end
 
     form.fill(troops.to_h)
@@ -161,38 +159,9 @@ class Screen::Place < Screen::Basic
       @@places[vid] = Screen::Place.new(village: vid)
     end
 
-    @@places[vid].units.knight = 0
+    @@places[vid].free_units.knight = 0
 
     return @@places[vid]
-  end
-
-  def self.get_free(vid)
-    place = self.get(vid)
-
-    config = Village.where(vid: vid).first.reserved_troops.to_h
-
-    if (!config.nil? && !@@removed_by_config.include?(vid))
-      @@removed_by_config << vid
-      set_to_zero = config.select{|k,v| v == -1 }.map(&:first)
-      set_to_number = config.select{|k,v| v != -1 }.to_h
-
-      units = place.units = place.units.clone
-
-      set_to_zero.map do |unit_name|
-         units[unit_name] = 0
-      end
-
-      set_to_number.map do |unit,value|
-        next if units[unit].nil?
-        if (units[unit] <= value) 
-          units[unit] = 0
-        else
-          units[unit] -= value
-        end
-      end
-    end
-
-    return place
   end
 
   def self.load_all
@@ -205,7 +174,6 @@ class Screen::Place < Screen::Basic
 
   def self.reset
     @@places = {}
-    @@removed_by_config = []
   end
 
 end

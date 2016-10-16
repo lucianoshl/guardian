@@ -7,7 +7,7 @@ class Task::PillageAround < Task::Abstract
   end
 
   def get_place village
-    Screen::Place.get_free(village.vid)
+    Screen::Place.get(village.vid)
   end
 
   def run
@@ -81,7 +81,7 @@ class Task::PillageAround < Task::Abstract
     # spies = @target.player_id.nil? ? 4 : 5
     base_attack = Troop.new(spy: Screen::Place.spy_qte(@target))
 
-    if (!get_place(@origin).units.contains(base_attack)) then
+    if (!get_place(@origin).free_units.contains(base_attack)) then
       return move_to_waiting_spies(base_attack)
     else
       return send_attack(base_attack)   
@@ -146,12 +146,12 @@ class Task::PillageAround < Task::Abstract
 
     total_resources = last_report.resources.total
 
-    troops = get_place(@origin).units.distribute(total_resources)
+    troops = get_place(@origin).free_units.distribute(total_resources)
 
 
     if ((!last_report.resources.nil? && last_report.resources.total < resource_min))
       total_resources = resource_min
-      troops = get_place(@origin).units.distribute(resource_min)
+      troops = get_place(@origin).free_units.distribute(resource_min)
       # return move_to_waiting_resources(@target)
     end
 
@@ -161,16 +161,16 @@ class Task::PillageAround < Task::Abstract
 
     # night_bonus = (Time.zone.now.beginning_of_day..Time.zone.now.beginning_of_day+8.hours).cover?(Time.zone.now)
 
-    if (!get_place(@origin).units.ram.nil? && get_place(@origin).units.ram > 0)
+    if (!get_place(@origin).free_units.ram.nil? && get_place(@origin).free_units.ram > 0)
       rams = last_report.rams_to_destroy_wall
-      troops.ram = get_place(@origin).units.ram < rams ? get_place(@origin).units.ram : rams
+      troops.ram = get_place(@origin).free_units.ram < rams ? get_place(@origin).free_units.ram : rams
     end
 
 
     while (!troops.win?(last_report.moral,last_report.target_buildings["wall"],false))
       begin
         Rails.logger.info("Running simulator #{troops.to_h}")
-        troops = troops.upgrade(get_place(@origin).units - troops,total_resources)
+        troops = troops.upgrade(get_place(@origin).free_units - troops,total_resources)
       rescue ImpossibleUpgrade => e
         return move_to_waiting_strong_troops(nil)
       end
@@ -209,7 +209,7 @@ class Task::PillageAround < Task::Abstract
   def increase_population(troops,population)
     troops_old = troops
     begin
-      troops = troops.increase_population(get_place(@origin).units,population)
+      troops = troops.increase_population(get_place(@origin).free_units,population)
     rescue ImpossibleUpgrade => e
       return move_to_waiting_troops(nil)
     end

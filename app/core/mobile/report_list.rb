@@ -23,7 +23,11 @@ class Mobile::ReportList < Mobile::Base
 
 			raise "Error reading report=#{report_id} Errors = #{report_screen.report.errors.inspect}" if (!saved && !report_screen.report.save)
 
-			erase(report_id) if report_screen.report.origin_troops["snob"] <= 0
+			my_attack_troops = Troop.new(report_screen.report.origin_troops)
+
+			not_erase = my_attack_troops.snob > 0 || my_attack_troops.population >= 1000
+
+			erase(report_id) if !not_erase
 		end
 		Rails.logger.debug("Loading all reports: end")
 	end

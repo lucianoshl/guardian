@@ -84,7 +84,7 @@ class Parser::Place < Parser::Basic
         command.origin = screen.village
       end
 
-      binding.pry if (command.target.nil? || command.origin.nil?)
+      # binding.pry if (command.target.nil? || command.origin.nil?)
 
       command.occurence = row.search('td')[1].text.parse_datetime
       if (!row.search('.command-cancel').first.nil?)

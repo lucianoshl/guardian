@@ -11,6 +11,8 @@ class Mobile::ReportView < Mobile::Base
 
 		self.report = report = Report.new
 
+		report.rid = page.uri.to_s.scan(/id=(\d+)/).extract_number
+
 		report.moral = page.search('#attack_luck').first.next.next.text.extract_number
 		report.luck = page.search('#attack_luck').text.strip.scan(/\d+\.\d+/).first.to_f
 

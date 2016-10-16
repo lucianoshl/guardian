@@ -1,6 +1,8 @@
 class Report
   include Mongoid::Document
   include Mongoid::Enum
+  
+  field :rid, type: Integer
 
   field :erase_url, type: String
   enum :status, [:win, :lost, :win_lost, :spy, :error, :spy_lost ]

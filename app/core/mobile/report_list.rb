@@ -19,9 +19,11 @@ class Mobile::ReportList < Mobile::Base
 
 			raise Exception.new("Relatorio com problema #{report_id} #{report_screen.report.occurrence}") if (report_screen.report.occurrence > Time.zone.now)
 
+			saved = Report.where(rid: report_id).count > 0
 
-			raise "Error reading report=#{report_id} Errors = #{report_screen.report.errors.inspect}" if (!report_screen.report.save)
-			erase(report_id)
+			raise "Error reading report=#{report_id} Errors = #{report_screen.report.errors.inspect}" if (!saved && !report_screen.report.save)
+
+			erase(report_id) if report_screen.report.origin_troops["snob"] <= 0
 		end
 		Rails.logger.debug("Loading all reports: end")
 	end

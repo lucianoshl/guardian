@@ -12,8 +12,7 @@ class Task::AutoRecruit < Task::Abstract
       end
     end
 
-    dates.compact.sort{|a,b| a <=> b}.first
-    binding.pry
+    dates.flatten.compact.sort{|a,b| a <=> b}.first
   end
 
   def recruit village
@@ -102,6 +101,10 @@ class Task::AutoRecruit < Task::Abstract
     return if (main_screen.queue.size >= 2)
 
     current = Model::Buildings.new(main_screen.buildings.map{|k,v| [k,v.level]}.to_h)
+
+    main_screen.queue.map do |queue_item|
+      current[queue_item.building]
+    end
 
     remaining = (config - current).remove_negative
 

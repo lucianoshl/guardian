@@ -88,7 +88,8 @@ class Village
 
   def self.pillage_candidates
     Rails.logger.info("Searching pillage_candidates: start")
-    threshold = User.current.player.points * 0.6
+    # threshold = User.current.player.points * 0.6
+    threshold = 1500
 
 
     Rails.logger.info("Reset ally and strong: start")

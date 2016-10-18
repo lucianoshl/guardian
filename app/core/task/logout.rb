@@ -7,6 +7,7 @@ class Task::Logout < Task::Abstract
       place = Screen::Place.new
       place.logout
     end
+    return nil
   end
 
 end

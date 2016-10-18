@@ -1,6 +1,16 @@
 RailsAdmin.config do |config|
 
-  config.included_models = [Village,Report,Troop,Config,Player,Partner,Job::Reserve]
+  config.included_models = [
+    Village,
+    Report,
+    Troop,
+    Model::Buildings,
+    Config,
+    Player,
+    Partner,
+    Job::Reserve,
+    Model::Village
+  ]
 
   report_enum =  {
     win: 'https://brs1.tribalwars.com.br/graphic/dots/green.png',
@@ -9,6 +19,10 @@ RailsAdmin.config do |config|
     spy_lost: 'https://brs1.tribalwars.com.br/graphic/dots/red_blue.png',
     lost: 'https://brs1.tribalwars.com.br/graphic/dots/red.png',
   } 
+
+  config.model Model::Buildings do
+    visible false
+  end
 
   config.model Job::Reserve do
 
@@ -38,9 +52,10 @@ RailsAdmin.config do |config|
   config.model Village do
 
     edit do
-      field :reserved_troops
       field :use_in_pillage
       field :in_blacklist
+      field :reserved_troops
+      field :model
     end
 
     list do
@@ -51,6 +66,7 @@ RailsAdmin.config do |config|
       end
       field :name
       field :points
+      field :model
       scopes(Village.scopes.keys - [:page])
     end
   end

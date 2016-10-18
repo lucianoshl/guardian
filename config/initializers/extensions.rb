@@ -78,6 +78,14 @@ class Mechanize
     end
 end
 
+module Mongoid::Document
+  def my_fields
+    result = fields
+    result.delete('_id')
+    result = result.map{|k,v| v.name }
+  end
+end
+
 class Mechanize::Form
   def fill map
     map.each do |key,value|

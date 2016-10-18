@@ -29,6 +29,7 @@ pt-BR:
         coordinate: Coordenada
         name: Nome
         points: Pontos
+        model: Modelo
     errors:
       messages:
         record_invalid: 'A validação falhou: %{errors}'

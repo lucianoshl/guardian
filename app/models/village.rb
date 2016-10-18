@@ -27,6 +27,14 @@ class Village
 
   accepts_nested_attributes_for :reserved_troops
   
+  has_one :model, class_name: Model::Village.to_s
+
+  def model_id
+    self.model.try :name
+  end
+  def model_id=(id)
+    self.model = Model::Village.find(id)
+  end
 
   belongs_to :player
 

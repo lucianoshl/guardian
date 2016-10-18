@@ -2,7 +2,7 @@ class Parser::Main < Parser::Basic
 
   def parse screen
     super
-    buildings_meta_json = JSON.parse(@page.body.scan(/BuildingMain.buildings = ({.+})/).first.first)
+    screen.buildings_meta_json = buildings_meta_json = JSON.parse(@page.body.scan(/BuildingMain.buildings = ({.+})/).first.first)
 
     screen.buildings_metadata = {}
 
@@ -33,15 +33,15 @@ class Parser::Main < Parser::Basic
       item
     end).sort{|a,b| a.completed_in <=> b.completed_in }
 
-    # buildings = {}
-    # information = JSON.parse(@page.body.scan(/BuildingMain.buildings = ({.*})/).first.first).each do |id,information|
-    #   buildings[id] = building = OpenStruct.new#(information)
-    #   build_element = @page.search("#main_buildlink_#{building.id}_#{building.level_next}")
-    #   building.build_possible = build_element.empty? ? false : build_element.attr('style').nil?
-    #   building.level = building.level.to_i
-    #   building.in_queue = queue.map(&:building).include?(id)
-    #   building.name = id
-    # end
+    screen.buildings = buildings = {}
+    information = JSON.parse(@page.body.scan(/BuildingMain.buildings = ({.*})/).first.first).each do |id,information|
+      buildings[id] = building = OpenStruct.new(information)
+      build_element = @page.search("#main_buildlink_#{building.id}_#{building.level_next}")
+      building.build_possible = build_element.empty? ? false : build_element.attr('style').nil?
+      building.level = building.level.to_i
+      building.in_queue = screen.queue.map(&:building).include?(id)
+      building.name = id
+    end
 
     # game_data = JSON.parse page.body.scan(/game_data = ({.*})/).first.first
 

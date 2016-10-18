@@ -12,7 +12,6 @@ class Parser::Train < Parser::Basic
       screen.total_units[unit] = total
     end
 
-
     screen.production_units = {}
     screen.release_time = {}
 

@@ -8,7 +8,7 @@ class Parser::Place < Parser::Basic
     @page.search('.unit_link').each do |unit_r|
       unit_r = unit_r.parent
       unit_qte = unit_r.search('a').last.text.extract_number
-      unit_name = unit_r.search('a').last.attr('href').scan(/unit_input_(.*?)'/).flatten.first
+      unit_name = unit_r.search('a').last.attr('data-unit')
       screen.units[unit_name.to_sym] = unit_qte
     end
 

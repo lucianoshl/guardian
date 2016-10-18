@@ -69,6 +69,7 @@ class Task::PlayerMonitor < Task::Abstract
     Rails.logger.info("Villages saved!")
 
     puts("PlayerMonitor end")
+    return nil
   end
 
   def register_point_modification village,item

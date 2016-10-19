@@ -61,7 +61,7 @@ RailsAdmin.config do |config|
     list do
       field :coordinate do
         formatted_value do
-          "#{bindings[:object].x} | #{bindings[:object].y}"
+          "#{bindings[:object].x}|#{bindings[:object].y}"
         end
       end
       field :name

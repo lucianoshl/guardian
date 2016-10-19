@@ -34,7 +34,6 @@ class Task::AutoRecruit < Task::Abstract
   end
 
   def recruit village
-    # return
     train_screen = Screen::Train.new(village: village.vid)
     units_to_train = calculate_units_to_train(train_screen,village)
     percent_completed = calculate_percent_completed_units(train_screen.complete_units.clone.to_h,village)
@@ -88,84 +87,7 @@ class Task::AutoRecruit < Task::Abstract
     if (!to_train.to_h.select{|k,v| v > 0}.empty?)
       train_screen.train(to_train)
     end
-    # train_time = self.class._performs_to
-    # train_until = Time.zone.now + train_time
-
-    # train_screen = Screen::Train.new(village: village.vid)
-
-    # half_storage = (train_screen.storage_size * 0.5).ceil
-
-    # limit_resources = Resource.new(wood: half_storage, stone: half_storage, iron: half_storage)
-
-    # complete_units = {}
-    # train_screen.production_units.values.map{|a| complete_units.merge!(a)}
-    # complete_units = Troop.new(train_screen.total_units) + Troop.new(complete_units)
-
-    # train_config = village.model.troops
-
-    # to_train = (train_config - complete_units).remove_negative
-
-    # target_buildings = train_screen.release_time.to_a.select{|a| a[1] < train_until }.map(&:first)
-
-    # to_train_in_time = Troop.new
-
-    # target_buildings.map do |building|
-    #   seconds_to_train = train_until - train_screen.release_time[building]
-    #   building_to_train = to_train.from_building(building)
-    #   building_to_train.to_h.map do |unit,qte|
-    #     next if (train_screen.train_info[unit].nil?)
-    #     train_seconds = train_screen.train_info[unit]["build_time"]
-    #     while (seconds_to_train > 0 && qte > 0) 
-    #       to_train_in_time[unit] += 1
-    #       seconds_to_train -= train_seconds
-    #       qte -= 1
-    #     end
-    #   end
-    # end
-
-    # binding.pry
-
-    # train_times = {}
-    # target_buildings.map {|a| train_times[a] = 0}
-
-    # if (!two_itens_in_build_queue?(village))
-    #   resources = train_screen.resources - limit_resources
-    # else
-    #   resources = train_screen.resources
-    # end
-
-    # return if (resources.has_negative?)
-
-    # real_train = Troop.new
-    # to_train_in_time = to_train_in_time.to_h
-
-    # loop do 
-    #   Rails.logger.info("Test recruit #{real_train.to_h}")
-    #   enter = false
-    #   to_train_in_time.map do |unit,qte|
-    
-    #     next if (train_screen.train_info[unit].nil?)
-
-    #     building,current_time = train_times.to_a.min {|a,b| a[1] <=> b[1]}
-    #     cost = train_screen.train_info[unit].to_resource
-
-    #     result = qte > 0 && resources.include?(cost)
-    #     # binding.pry if (result == false)
-    #     if (qte > 0 && Troop.from_building?(building,unit) && resources.include?(cost))
-    #       build_time = train_screen.train_info[unit]["build_time"]
-    #       to_train_in_time[unit] -= 1
-    #       real_train[unit] += 1
-    #       train_times[building] += build_time
-    #       resources -= cost
-    #       enter = true
-    #     end
-    #   end
-    #   break if (!enter)
-    # end
-
-    # binding.pry
-    # train_screen.train(real_train)
-    # return nil
+    return nil
   end
 
   def two_itens_in_build_queue?(village)
@@ -174,7 +96,6 @@ class Task::AutoRecruit < Task::Abstract
   end
 
   def build village
-    return
     main_screen = Screen::Main.new(id: village.vid)
     config = village.model.buildings
     return if (main_screen.queue.size >= 2)

@@ -24,13 +24,6 @@ class User
     user
   end
 
-  def self.current
-    username = ENV["TW_USER"] || "default"
-    Rails.cache.fetch("user_#{username}") do
-      User.where(name: username).first 
-    end
-  end
-
   def self.fake
     user = User.new
     user.name = I18n.transliterate(Mechanize.new.get("http://www.behindthename.com/random/random.php?number=2&gender=f&surname=&all=yes").search('.heavyhuge').text.strip).split(' ').join(' ')
@@ -38,6 +31,23 @@ class User
     user.email = "#{user.name.parameterize}@invitect-company.com"
     user.world = User.current.world
     user
+  end
+
+  def self.current
+    username = ENV["TW_USER"] || "default"
+    Rails.cache.fetch("user_#{username}") do
+      check_is_first_execution
+      User.where(name: username).first 
+    end
+  end
+
+  def self.check_is_first_execution
+    first_execution = User.where(name: ENV["TW_USER"]).count.zero?
+
+    if (first_execution)
+      binding.pry
+    end
+
   end
 
 end

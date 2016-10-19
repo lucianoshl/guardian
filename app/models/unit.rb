@@ -17,7 +17,8 @@ class Unit
 	end
 
 	def self.names
-		Unit.all.map(&:name).map(&:to_sym)
+		# Unit.all.map(&:name).map(&:to_sym)
+		[:spear, :sword, :axe, :spy, :light, :heavy, :ram, :catapult, :knight, :snob, :militia]
 	end
 
 

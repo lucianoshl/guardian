@@ -6,9 +6,7 @@ class Mobile::Base < Mobile::Abstract
 
 	end_point 'm/g'
 
-	Mobile::Client.client.add_cookies(MobileCookie.latest)
-
-	$sid = MobileCookie.latest.nil? ? nil : MobileCookie.latest.first.value.gsub('0%3A','')
+	# Mobile::Client.client.add_cookies(MobileCookie.latest)
 
 	def before_request args
 		if (!$sid.nil? && args.first != $sid)

@@ -227,6 +227,19 @@ class Troop
     return Troop.new(result)
   end
 
+  def self.get_building(unit)
+    unit = unit.to_s
+    locations = {
+      barracks: ['spear','sword','axe'],
+      stable: ['spy','light','heavy'],
+      garage: ['ram','catapult']
+    }
+
+    locations.map do |building,units|
+      return building if units.include?(unit)
+    end
+  end
+
   def self.from_building?(building,name)
     locations = {
       barracks: ['spear','sword','axe'],

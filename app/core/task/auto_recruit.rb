@@ -4,7 +4,6 @@ class Task::AutoRecruit < Task::Abstract
 
   def run
     dates = []
-
     Village.my.map do |village|
       if (!village.model.nil?)
         recruit(village)
@@ -15,9 +14,80 @@ class Task::AutoRecruit < Task::Abstract
     dates.flatten.compact.sort{|a,b| a <=> b}.first
   end
 
+  def calculate_units_to_train(train_screen,village)
+    to_train = (village.model.troops - train_screen.complete_units).remove_negative
+    return to_train
+  end
+
+  def calculate_percent_completed_units(current_units,village)
+    result = {}
+    village.model.troops.to_h.each do |unit,total|
+      result[unit] = total.to_f != 0 ? current_units[unit]/total.to_f : 1
+    end
+    return OpenStruct.new result
+  end
+
+  def compute_less_complete_unit(target_train,percent_completed)
+    units = target_train.to_h.select{|k,v| v>0 }.keys
+    percent_completed = percent_completed.to_h.select {|k,v| units.include?(k.to_s) }
+    unit = percent_completed.sort{|a,b| a[1] <=> b[1] }[0][0]
+  end
+
   def recruit village
-    return
-    binding.pry
+    # return
+    train_screen = Screen::Train.new(village: village.vid)
+    units_to_train = calculate_units_to_train(train_screen,village)
+    percent_completed = calculate_percent_completed_units(train_screen.complete_units.clone.to_h,village)
+
+    trail_util = Time.zone.now + 1.hour
+
+    to_train = Troop.new
+
+    stop = false
+
+    resources = train_screen.resources
+    current_units = train_screen.complete_units.clone
+    release_times = train_screen.release_time.clone
+
+    loop do 
+      release_times = release_times.select{|k,v| v <= Time.zone.now + 1.hour}
+      percent_completed = calculate_percent_completed_units(current_units.to_h,village)
+      target_units = percent_completed.to_h.select {|unit,percent| percent != 1}.keys
+      target_buildings = target_units.map{|unit| Troop.get_building(unit)}.uniq
+
+      enter = false
+      target_buildings.map do |building|
+        elements = release_times.select{|k,v| target_buildings.include?(k.to_sym)}.to_a.sort{|a,b| a[1] <=> b[1]}
+        if (elements.empty?)
+          next
+        end
+        next_release_building = elements[0][0]
+        
+        next if (next_release_building != building.to_s)
+
+        target_train = units_to_train.from_building building
+        less_complete_unit = compute_less_complete_unit(target_train,percent_completed)
+        cost = train_screen.train_info[less_complete_unit.to_s].to_resource
+        train_seconds = train_screen.train_info[less_complete_unit.to_s]["build_time"]
+
+        if (resources.include?(cost))
+          enter = true
+          to_train[less_complete_unit] += 1
+          current_units[less_complete_unit] += 1
+          release_times[building.to_s] += train_seconds
+        end
+
+      end
+
+
+      stop = true if (!enter)
+
+      break if stop
+    end
+    
+    if (!to_train.to_h.select{|k,v| v > 0}.empty?)
+      train_screen.train(to_train)
+    end
     # train_time = self.class._performs_to
     # train_until = Time.zone.now + train_time
 

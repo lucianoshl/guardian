@@ -4,10 +4,7 @@ class Mobile::Client
 
     @@global.user_agent = "Mozilla/5.0 (Linux; Android 4.4.4; SAMSUNG-SM-N900A Build/tt) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/33.0.0.0 Mobile Safari/537.36"
 
-    # @@global.set_proxy("localhost", 8081)
-    # @@global.agent.http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-    @@global.add_cookies(MobileCookie.latest)
+    @@started = false
 
 	def initialize
 		@client = @@global
@@ -33,6 +30,11 @@ class Mobile::Client
 	end
 
 	def self.client
+		if (!@@started )
+			@@started  = true
+			@@global.add_cookies(MobileCookie.latest)
+			$sid = MobileCookie.latest.nil? ? nil : MobileCookie.latest.first.value.gsub('0%3A','')
+		end
 		@@global
 	end
 	

@@ -13,4 +13,11 @@ class Screen::Train < Screen::Basic
   	result = client.post(url,parameters)
   end
 
+  def complete_units
+    complete_units = {}
+    production_units.values.map{|a| complete_units.merge!(a)}
+    complete_units = Troop.new(total_units) + Troop.new(complete_units)
+    return complete_units
+  end
+
 end

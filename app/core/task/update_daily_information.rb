@@ -7,6 +7,7 @@ class Task::UpdateDailyInformation < Task::Abstract
     # renew_village_reserve
     # generate_player_arround
     update_profile_photo
+    clean_information
   end
 
   def update_ally_partners
@@ -31,6 +32,17 @@ class Task::UpdateDailyInformation < Task::Abstract
 
   def generate_player_arround
     Utils::PlayerGenerator.new.run
+  end
+
+  def clean_information
+    Rails.logger.info("Cleaning points history: start")
+    villages = Village.all.to_a
+    villages.each_with_index do |village,i|
+      village.points_history = village.points_history.last(20)
+      village.save
+      Rails.logger.info("#{villages.size}/#{i}")
+    end
+    Rails.logger.info("Cleaning points history: start")
   end
 
 end

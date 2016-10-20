@@ -14,7 +14,7 @@ class Mobile::ReportList < Mobile::Base
 	def self.load_all
 		Rails.logger.debug("Loading all reports: start")
 		report_list = Mobile::ReportList.new('attack',0,0,2000).reports
-		report_list.map do |report_id|
+		report_list.pmap do |report_id|
 			report_screen = Mobile::ReportView.new(id: report_id)
 
 			raise Exception.new("Relatorio com problema #{report_id} #{report_screen.report.occurrence}") if (report_screen.report.occurrence > Time.zone.now)

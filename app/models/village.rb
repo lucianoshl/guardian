@@ -47,9 +47,9 @@ class Village
     self.in( id: monitor.map{|a| [a,a.points_history.last] }.select{|a| a[1]["date"] <= Time.zone.now - 3.day }.map{|a| a[0]}.map(&:id) )
   end
 
-  scope :snob_candidates -> do
-    Village.my.pluck(:vid)
-  end
+  # scope :snob_candidates -> do
+  #   Village.my.pluck(:vid)
+  # end
 
   index({ x: 1, y: 1 }, { unique: true })
   index({ vid: 1 }, { unique: true })

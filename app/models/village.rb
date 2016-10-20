@@ -26,8 +26,10 @@ class Village
   embeds_one :reserved_troops, class_name: Troop.to_s
 
   accepts_nested_attributes_for :reserved_troops
-  
+
   has_one :model, class_name: Model::Village.to_s
+  
+  accepts_nested_attributes_for :model
 
   def model_id
     self.model.try :name
@@ -43,6 +45,10 @@ class Village
   scope :monitor, -> { targets.in(state: Village.threat_status) }
   scope :inative_players, -> do 
     self.in( id: monitor.map{|a| [a,a.points_history.last] }.select{|a| a[1]["date"] <= Time.zone.now - 3.day }.map{|a| a[0]}.map(&:id) )
+  end
+
+  scope :snob_candidates -> do
+    Village.my.pluck(:vid)
   end
 
   index({ x: 1, y: 1 }, { unique: true })

@@ -58,6 +58,8 @@ class Task::Abstract
       result = self.run
     end
 
+    Rails.logger.info("Task returned #{result}")
+
     returned_date = [ActiveSupport::TimeWithZone,DateTime].include?(result.class)
     
     if (self.class._run_daily)

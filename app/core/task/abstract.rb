@@ -1,7 +1,7 @@
 class Task::Abstract
 
   class << self
-    attr_accessor :_performs_to,:_in_development,:_sleep,:_run_daily
+    attr_accessor :_performs_to,:_in_development,:_sleep,:_run_daily,:_queue
   end
 
   def self.run_daily hour

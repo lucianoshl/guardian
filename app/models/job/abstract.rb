@@ -1,12 +1,18 @@
 class Job::Abstract
 
+  class << self
+    attr_accessor :_queue
+  end
+
   include Mongoid::Document
   field :state, type: String, default: 'starting'
+  field :priority, type: String, default: 'normal'
 
   has_one :active_job, class_name: "Delayed::Backend::Mongoid::Job", :dependent => :destroy
 
-  def self.run_daily hour
-    self._run_daily = hour
+
+  def self.queue queue
+    self._queue = queue
   end
 
   def self.init_schedules

@@ -1,7 +1,9 @@
 class ApplicationController < ActionController::Base
 
-  before_filter do 
+  layout 'responsive'
 
+  before_filter do 
+    
 
     @report_enum =  {
       win: 'https://brs1.tribalwars.com.br/graphic/dots/green.png',

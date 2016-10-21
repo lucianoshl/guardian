@@ -14,17 +14,16 @@
  *= require_self
  */
 
-$nprogress-color: #ecf0f5;
 @import "nprogress";
 @import "nprogress-bootstrap";
-
 @import "bootstrap-sprockets";
 @import "bootstrap";
-@import "AdminLTE/AdminLTE";
-@import "AdminLTE/skins/skin-purple-light";
+@import "offcanvas";
+
 @import "theme";
 @import "village";
 
-// body {
-// 	padding-top: 50px;
-// }
+.sidebar-nav a ~ a {
+	padding-top: 10px;
+}
+

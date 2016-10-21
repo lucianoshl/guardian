@@ -22,10 +22,10 @@
           <td><%= job.created_at.strftime("%d/%m - %H:%M:%S") %></td> 
           <td class="text-center">
             <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne<%= i %>" aria-expanded="false" class="collapsed">
-              <i class="fa <%= job.last_error.nil? ? 'fa-check-circle text-success' : ' fa-times text-danger' %>"></i>
+            <span class="glyphicon glyphicon-<%= job.last_error.nil? ? 'ok' : 'remove' %>"></span>
             </a>
             <% if !job.locked_by.nil? %>
-            <i class="fa fa-lock"></i>
+            <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
             <% end %>
             <% if !job.last_error.nil? %>
             <div id="collapseOne<%= i %>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -34,7 +34,9 @@
             <% end %>
           </td>
           <td>
-            <a class="btn btn-success btn-ty" href="/task/run_now/<%= job.id %>"><i class="fa fa-play"></i></a>
+            <a class="btn btn-success btn-ty" href="/task/run_now/<%= job.id %>">
+              <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+            </a>
           </td>
         <% end %>
         </tr>

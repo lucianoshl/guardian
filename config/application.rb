@@ -16,6 +16,13 @@ Bundler.require(*Rails.groups)
 
 module Guardian
   class Application < Rails::Application
+
+    Delayed::Worker.queue_attributes = {
+      high: { priority: -10 },
+      normal: { priority: 0 },
+      low: { priority: 10 }
+    }
+
     config.i18n.available_locales = ['pt-BR','en']
     config.i18n.default_locale = 'pt-BR'
     config.time_zone = Time.zone = 'Brasilia'

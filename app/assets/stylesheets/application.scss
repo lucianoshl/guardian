@@ -14,9 +14,6 @@
  *= require_self
  */
 
-$font-size-base: 12px !default;
-$font-family-base: Verdana, Arial !default;
-
 @import "nprogress";
 @import "nprogress-bootstrap";
 @import "bootstrap-sprockets";
@@ -25,3 +22,7 @@ $font-family-base: Verdana, Arial !default;
 
 @import "theme";
 @import "village";
+
+.sidebar-nav a ~ a {
+	padding-top: 10px;
+}

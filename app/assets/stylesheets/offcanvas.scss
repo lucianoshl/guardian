@@ -133,9 +133,8 @@ body {
     }
 }
 
-
 .navbar-toggle{
-  float: left;
-  margin-right: 0px;
-  margin-left: 15px;
+  float: left !important;
+  margin-right: 0px !important; 
+  margin-left: 15px !important;
 }

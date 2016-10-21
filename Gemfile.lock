@@ -63,6 +63,7 @@ GEM
       rails (>= 3.1)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
+    chunky_png (1.3.7)
     coderay (1.1.1)
     coffee-rails (4.2.1)
       coffee-script (>= 2.2.0)
@@ -73,6 +74,22 @@ GEM
     coffee-script-source (1.10.0)
     color-generator (0.0.4)
     colorize (0.8.1)
+    compass (1.0.3)
+      chunky_png (~> 1.2)
+      compass-core (~> 1.0.2)
+      compass-import-once (~> 1.0.5)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9)
+      sass (>= 3.3.13, < 3.5)
+    compass-core (1.0.3)
+      multi_json (~> 1.0)
+      sass (>= 3.3.0, < 3.5)
+    compass-import-once (1.0.5)
+      sass (>= 3.2, < 3.5)
+    compass-rails (3.0.2)
+      compass (~> 1.0.0)
+      sass-rails (< 5.1)
+      sprockets (< 4.0)
     concurrent-ruby (1.0.2)
     daemons (1.2.3)
     dalli (2.7.6)
@@ -258,6 +275,9 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.16.0)
     rake (11.3.0)
+    rb-fsevent (0.9.7)
+    rb-inotify (0.9.7)
+      ffi (>= 0.5.0)
     rdoc (4.2.2)
       json (~> 1.4)
     ref (2.0.0)
@@ -350,6 +370,7 @@ DEPENDENCIES
   chartjs-ror
   color-generator
   colorize
+  compass-rails
   daemons
   dalli
   delayed_job_mongoid

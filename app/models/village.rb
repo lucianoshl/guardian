@@ -29,7 +29,7 @@ class Village
 
   has_one :model, class_name: Model::Village.to_s
   
-  accepts_nested_attributes_for :model
+  # accepts_nested_attributes_for :model
 
   def model_id
     self.model.try :name

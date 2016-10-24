@@ -23,6 +23,21 @@
 @import "theme";
 @import "village";
 
-.sidebar-nav a ~ a {
-	padding-top: 10px;
+#sidebar-wrapper {
+    // background: url('black-leather');
+    a { 
+        color: white !important;
+    }
+    font-weight: bold;
+}
+
+
+.unit-table {
+	th {
+		width: 38px;
+		text-align: right;
+	}
+	td {
+		text-align: right;
+	}
 }

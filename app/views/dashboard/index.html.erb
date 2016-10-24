@@ -1,0 +1,12 @@
+<ul class="list-group col-md-12">
+<% Village.my.map do |village| 
+
+	screen = Screen::Train.new(village: village.vid)
+
+%>
+	<li class="list-group-item col-md-12" >
+		<%= village.name %> <br/>
+		<%= render_troops_grid(screen.total_units,complete=true) %>
+	</li>
+<% end %>
+</ul>

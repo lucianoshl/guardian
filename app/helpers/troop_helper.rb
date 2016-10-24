@@ -17,21 +17,20 @@ module TroopHelper
     end).join.html_safe
   end
 
-  def render_troops_grid(troops,complete=true)
+  def render_troops_grid(troops,units)
     troops = troops.to_h
+    units = units.map(&:to_s)
 
-    if (!complete)
-      troops = (troops.select do |unit,qte|
-        qte != 0
-      end).to_h
-    end
+    troops = (troops.select do |unit,qte|
+      units.include?(unit)
+    end).to_h
 
     header = (troops.map do |unit,qte|
-      %{ <th class='col-md-1'><img src="https://dsbr.innogamescdn.com/8.48/29600/graphic/unit/unit_#{unit}.png"/></th> }
+      %{ <th><img src="https://dsbr.innogamescdn.com/8.48/29600/graphic/unit/unit_#{unit}.png"/></th> }
     end).join
 
     line = (troops.map do |unit,qte|
-      %{ <td class='col-md-1'>#{qte}</td> }
+      %{ <td>#{qte}</td> }
     end).join
 
     result = "<table class='unit-table'><tr>#{header}</tr><tr>#{line}</tr></table>".html_safe

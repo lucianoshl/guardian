@@ -12,11 +12,6 @@ class Parser::Train < Parser::Basic
       screen.total_units[unit] = total
     end
 
-    Unit.names.map do |name|
-      screen.current_units[name.to_s] ||= 0
-      screen.total_units[name.to_s] ||= 0
-    end
-
     screen.production_units = {}
     screen.release_time = {}
 

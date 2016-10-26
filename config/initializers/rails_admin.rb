@@ -9,6 +9,7 @@ RailsAdmin.config do |config|
     Player,
     Partner,
     Job::Reserve,
+    Job::SendAttack,
     Model::Village
   ]
 

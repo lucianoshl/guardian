@@ -50,6 +50,16 @@ RailsAdmin.config do |config|
 
   end
 
+  config.model Job::SendAttack do
+
+    edit do
+      field :coordinate
+      field :troop
+      field :event_time
+    end
+
+  end
+
   config.model Village do
 
     edit do

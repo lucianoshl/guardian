@@ -61,6 +61,12 @@ class Job::Abstract
   end
 
   after_save do
+    
+    if (!self.class._queue.nil? && self.priority != self.class._queue)
+      self.priority = self.class._queue
+      self.save
+    end
+
     if self.state.eql?('starting')
       self.run
     end

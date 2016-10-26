@@ -26,7 +26,6 @@ RailsAdmin.config do |config|
   end
 
   config.model Job::Reserve do
-
     edit do
       field :x
       field :y
@@ -58,6 +57,21 @@ RailsAdmin.config do |config|
       field :event_time
     end
 
+    list do
+      field :state
+      field :coordinate
+      field :event_time
+      field :scheduled do
+        formatted_value do
+          if (!bindings[:object].active_job.nil?)
+            run_at = bindings[:object].active_job.run_at
+            run_at.strftime("%d/%m - %H:%M:%S") if (!run_at.nil?)
+          else
+            '-'
+          end
+        end
+      end
+    end
   end
 
   config.model Village do

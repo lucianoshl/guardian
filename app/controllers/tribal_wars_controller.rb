@@ -30,6 +30,13 @@ class TribalWarsController < ApplicationController
   def convert_links (page)
     doc = Nokogiri::HTML(page.content)
     raw = doc.to_html
+    world = User.current.world
+    raw = raw.gsub(/\"\/js\//) do |str|
+      "\"https://#{world}.tribalwars.com.br/js/"
+    end
+
+    # binding.pry
+    
     return raw
   end
 

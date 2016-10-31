@@ -26,11 +26,11 @@ class Troop
   end
 
   def slow_unit
-    self.to_h.select{|unit,qte| qte > 0}.keys.map{|a| Unit.get(a) }.sort{|a,b| a.speed <=> b.speed }.first
+    self.to_h.select{|unit,qte| qte > 0}.keys.map{|a| Unit.get(a) }.sort{|a,b| a.speed <=> b.speed }.last
   end
 
   def travel_time origin,target
-    slow_unit.square_per_minutes * origin.distance(target)
+    (slow_unit.square_per_minutes * origin.distance(target)).minutes
   end
 
   def distribute amount

@@ -28,6 +28,8 @@ class Village
   accepts_nested_attributes_for :reserved_troops
 
   has_one :model, class_name: Model::Village.to_s
+
+  has_many :send_attack, class_name: Job::SendAttack.to_s, inverse_of: 'origin' 
   
   # accepts_nested_attributes_for :model
 

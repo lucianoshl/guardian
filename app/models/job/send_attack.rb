@@ -8,13 +8,26 @@ class Job::SendAttack < Job::Abstract
 	accepts_nested_attributes_for :troop
 
 	field :coordinate, type: String
+	
+	belongs_to :origin, class_name: Village.to_s
+
+
+	def calc_send_time
+		travel_time = troop.travel_time(origin,coordinate.to_coordinate)
+		event_time - travel_time
+	end
 
 	def execute
-		(1..10).to_a.map do 
-			Rails.logger.info("sleeping #{event_time} #{troop} #{coordinate} #{priority}")
-			sleep(1)
+		before_time = 30.seconds
+
+		send_time = calc_send_time
+
+		if ((send_time - before_time) <= Time.zone.now)
+			Screen::Place.new(village: origin.vid).send_attack(coordinate.to_coordinate,troop)
+			binding.pry
+		else
+			return send_time - before_time
 		end
-		return Time.zone.now + 1.minute
 	end
 
 end

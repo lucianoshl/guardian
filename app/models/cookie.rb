@@ -20,6 +20,7 @@ class Cookie
 
 
   def self.store_cookies cookies
+    Cookie.all.delete
     cookie = Cookie.new
     cookie.user = User.current
     cookie.content = cookies

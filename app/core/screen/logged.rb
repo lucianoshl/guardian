@@ -2,7 +2,7 @@ class Screen::Logged < Screen::Anonymous
 
   def self.client
     _client = Mechanize.my
-    _client.user_agent_alias = 'iPhone'
+    # _client.user_agent_alias = 'iPhone'
     _client.add_cookies(Cookie.latest)
   end
 

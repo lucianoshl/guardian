@@ -1,8 +1,11 @@
 class TribalWarsController < ApplicationController
 
-  def get
+  before_filter do 
     params.delete('controller')
     params.delete('action')
+  end
+
+  def get
     if (!params.empty?)
       elements = params.to_query
     else
@@ -14,8 +17,6 @@ class TribalWarsController < ApplicationController
   end
 
   def post
-    params.delete('controller')
-    params.delete('action')
     if (!params.empty?)
       elements = params.to_query
     else
@@ -28,16 +29,12 @@ class TribalWarsController < ApplicationController
 
   def convert_links (page)
     doc = Nokogiri::HTML(page.content)
-    doc.search('#storage').remove_attr('style')
-
-    # <a id="main_buildlink_main_cheap" href="/game.php?village=18297&amp;screen=main&amp;action=upgrade_building&amp;id=main&amp;type=main&amp;h=97ca8334&amp;cheap" data-building="main" data-cost="30" class="btn  btn-bcr ">-20%</a>
-
-
-    return doc.to_html
+    raw = doc.to_html
+    return raw
   end
 
   def client
-    Mobile::Client.client
+    Client::Logged.new
   end
 
 end

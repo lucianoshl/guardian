@@ -3,7 +3,7 @@ class Utils::SurfClient
   def initialize
     @client = Mechanize.new
     @client.agent.http.retry_change_requests = true
-    @client.user_agent_alias = 'iPhone'
+    # @client.user_agent_alias = 'iPhone'
     @client.open_timeout = @client.read_timeout = 20
     @bad_proxy = []
   end

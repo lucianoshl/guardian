@@ -4,6 +4,10 @@ Rails.application.routes.draw do
 
   get 'config/index'
 
+
+  get 'game.php' => 'tribal_wars#get'
+  post 'game.php' => 'tribal_wars#post'
+
   get 'report/read_all'
   get 'village/:vid/last_report' => 'village#last_report'
   get 'village/:id/reset' => 'village#reset'

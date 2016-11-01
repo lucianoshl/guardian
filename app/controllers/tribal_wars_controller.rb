@@ -1,33 +1,36 @@
 class TribalWarsController < ApplicationController
 
   before_filter do 
-    params.delete('controller')
-    params.delete('action')
+    params.delete('controller') if params[:controller] == "tribal_wars"
+    params.delete('action') if params[:action] == "get" || params[:action] == "post"
   end
 
   def get
-    if (!params.empty?)
-      elements = params.to_query
-    else
-      elements = 'screen=place'
-    end
-    default_url = "/game.php?#{elements}"
+    target_url = request.fullpath == '/game.php' ? '/game.php?screen=overview_villages' : request.fullpath
+
     base = "https://#{User.current.world}.tribalwars.com.br"
-    render :text => convert_links(client.get(base + default_url))
+
+    render :text => convert_links(client.get(base + target_url)) 
   end
 
   def post
-    if (!params.empty?)
-      elements = params.to_query
-    else
-      elements = 'screen=place'
-    end
-    default_url = "/game.php?#{elements}"
+    target_url = request.fullpath == '/game.php' ? '/game.php?screen=overview_villages' : request.fullpath
+
     base = "https://#{User.current.world}.tribalwars.com.br"
-    render :text => convert_links(client.post(base + default_url,request.request_parameters))
+
+    render :text => convert_links(client.post(base + target_url,request.request_parameters))
+  end
+
+  def get_parameters
+    _get_parameters = (params.keys - request.request_parameters.keys)
+    _get_parameters = params.select{|k,v| _get_parameters.include?(k)}
+    return _get_parameters
   end
 
   def convert_links (page)
+    if (page.title.nil?)
+      return page.content
+    end
     doc = Nokogiri::HTML(page.content)
     raw = doc.to_html
     world = User.current.world
@@ -35,8 +38,6 @@ class TribalWarsController < ApplicationController
       "\"https://#{world}.tribalwars.com.br/js/"
     end
 
-    # binding.pry
-    
     return raw
   end
 

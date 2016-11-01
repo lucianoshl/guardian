@@ -6,7 +6,17 @@ class Screen::Main < Screen::Basic
 
   def build(name)
   	base = "https://#{User.current.world}.tribalwars.com.br"
-  	build_link = base + buildings_meta_json[name]['build_link'].gsub('&amp;','&')
+
+  	raw_build_link = buildings_meta_json[name]['build_link']
+
+  	if (raw_build_link.nil?)
+  		Rails.logger.error("Não foi encontrado build_link para o edificio #{name} #{buildings_meta_json}")
+  		raise Exception.new("Não foi encontrado build_link para o edificio #{name}")
+  	end
+
+
+
+  	build_link = base + raw_build_link.gsub('&amp;','&')
   	parse(client.get(build_link))
   	last_building = queue.last
   	return last_building.completed_in

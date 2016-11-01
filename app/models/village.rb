@@ -27,18 +27,9 @@ class Village
 
   accepts_nested_attributes_for :reserved_troops
 
-  has_one :model, class_name: Model::Village.to_s
+  field :model_id, type: BSON::ObjectId
 
   has_many :send_attack, class_name: Job::SendAttack.to_s, inverse_of: 'origin' 
-  
-  # accepts_nested_attributes_for :model
-
-  def model_id
-    self.model.try :name
-  end
-  def model_id=(id)
-    self.model = Model::Village.find(id)
-  end
 
   belongs_to :player
 
@@ -48,10 +39,6 @@ class Village
   scope :inative_players, -> do 
     self.in( id: monitor.map{|a| [a,a.points_history.last] }.select{|a| a[1]["date"] <= Time.zone.now - 3.day }.map{|a| a[0]}.map(&:id) )
   end
-
-  # scope :snob_candidates -> do
-  #   Village.my.pluck(:vid)
-  # end
 
   index({ x: 1, y: 1 }, { unique: true })
   index({ vid: 1 }, { unique: true })
@@ -132,10 +119,6 @@ class Village
     Village.all.map(&:clean_state)
   end
 
-  # def inative_players
-  #   monitor.map{|a| [a,a.points_history.last] }.select{|a| a[1]["date"] <= Time.zone.now - 3.day }.map{|a| a[0]}
-  # end
-
   def increase_limited_by_partner
     self.limit_partner = 0 if (self.limit_partner.nil?)
     self.limit_partner += 1
@@ -147,7 +130,6 @@ class Village
     self.limit_partner = 0
     self.save
   end
-
 
   def is_threat?
     Village.threat_status.include?(self.state)
@@ -166,6 +148,16 @@ class Village
 
   def self.chart_type
     return 'pie'
+  end
+
+  def model_id_enum
+    Model::Village.all.map {|model| [model.name,model.id] }
+  end
+
+  def model
+    return nil if (self.model_id.nil?)
+
+    Model::Village.where(id: self.model_id).first
   end
 
 end

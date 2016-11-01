@@ -80,7 +80,7 @@ RailsAdmin.config do |config|
       field :use_in_pillage
       field :in_blacklist
       field :reserved_troops
-      field :model
+      field :model_id
     end
 
     list do
@@ -91,7 +91,7 @@ RailsAdmin.config do |config|
       end
       field :name
       field :points
-      field :model
+      field :model_id
       scopes(Village.scopes.keys - [:page])
     end
   end

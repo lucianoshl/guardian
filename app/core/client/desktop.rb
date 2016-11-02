@@ -13,12 +13,13 @@ class Client::Desktop
 		Client::Desktop.client
 	end
 
-	def get(uri)
-		client.get(uri)
+	def get(uri,headers={})
+		# binding.pry
+		client.get(uri,[],nil,headers)
 	end
 
-	def post(uri,parameters)
-		client.post(uri,parameters)
+	def post(uri,parameters,headers={})
+		client.post(uri,parameters,headers)
 	end
 
 	def do_login(user = User.current)

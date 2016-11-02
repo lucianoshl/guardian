@@ -5,8 +5,12 @@ Rails.application.routes.draw do
   get 'config/index'
 
 
-  get 'game.php' => 'tribal_wars#get'
-  post 'game.php' => 'tribal_wars#post'
+  get 'game.php' => 'tribal_wars#proxy'
+  post 'game.php' => 'tribal_wars#proxy'
+  get 'map.php' => 'tribal_wars#proxy'
+  post 'map.php' => 'tribal_wars#proxy'
+  get 'page.php' => 'tribal_wars#proxy'
+  post 'page.php' => 'tribal_wars#proxy'
 
   get 'report/read_all'
   get 'village/:vid/last_report' => 'village#last_report'

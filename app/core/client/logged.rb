@@ -14,25 +14,25 @@ class Client::Logged
 
 	end
 
-	def get(uri)
+	def get(uri,headers={})
 		check_cookies
-		page = @inner_client.get(uri)
+		page = @inner_client.get(uri,headers)
 		if (!@inner_client.is_logged?(page))
 			cookies = @inner_client.do_login
 			Cookie.store_cookies(cookies)
-			page = @inner_client.get(uri)
+			page = @inner_client.get(uri,headers)
 			raise Exception.new("Erro na logica de re-login") if (!@inner_client.is_logged?(page))
 		end
 		return page
 	end
 
-	def post(uri,parameters)
+	def post(uri,parameters,headers={})
 		check_cookies
-		page = @inner_client.post(uri,parameters)
+		page = @inner_client.post(uri,parameters,headers)
 		if (!@inner_client.is_logged?(page))
 			cookies = @inner_client.do_login
 			Cookie.store_cookies(cookies)
-			page = @inner_client.post(uri,parameters)
+			page = @inner_client.post(uri,parameters,headers)
 			raise Exception.new("Erro na logica de re-login") if (!@inner_client.is_logged?(page))
 		end
 		return page

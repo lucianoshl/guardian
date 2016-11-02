@@ -5,20 +5,34 @@ class TribalWarsController < ApplicationController
     params.delete('action') if params[:action] == "get" || params[:action] == "post"
   end
 
-  def get
+  def proxy
     target_url = request.fullpath == '/game.php' ? '/game.php?screen=overview_villages' : request.fullpath
 
     base = "https://#{User.current.world}.tribalwars.com.br"
 
-    render :text => convert_links(client.get(base + target_url)) 
-  end
+    headers = request.headers.to_h.select {|k,v| k.include?('HTTP_')}
+    headers = (headers.map do |k,v|
+      [k.gsub('HTTP_','').titleize.gsub(' ','-'),v]
+    end).to_h
 
-  def post
-    target_url = request.fullpath == '/game.php' ? '/game.php?screen=overview_villages' : request.fullpath
+    headers.delete('Host')
+    headers.delete('Referer')
+    headers.delete('Cookie')
 
-    base = "https://#{User.current.world}.tribalwars.com.br"
+    method = request.method.downcase
+    uri = base + target_url
+    if (request.request_parameters.size > 0)
+      page = client.send(method,uri,request.request_parameters,headers)
+    else
+      page = client.send(method,uri,headers)
+    end
 
-    render :text => convert_links(client.post(base + target_url,request.request_parameters))
+    if (page.class == Mechanize::Image) 
+      send_data page, type: page.response["content-type"], disposition: 'inline'
+    else
+      render :text => convert_links(page) 
+    end
+
   end
 
   def get_parameters
@@ -28,7 +42,7 @@ class TribalWarsController < ApplicationController
   end
 
   def convert_links (page)
-    if (page.title.nil?)
+    if (page.class == Mechanize::File || page.title.nil?)
       return page.content
     end
     doc = Nokogiri::HTML(page.content)

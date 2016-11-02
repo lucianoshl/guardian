@@ -95,8 +95,20 @@ class Task::AutoRecruit < Task::Abstract
     main_screen.queue.size >= 1
   end
 
+  def build_priorities(current,main_screen)
+    if (main_screen.farm_alert)
+      current.attributes.map do |k,v|
+        if (k.to_sym != :farm)
+          current[k] = 0
+        end
+      end
+      return current
+    end
+  end
+
   def build village
     main_screen = Screen::Main.new(id: village.vid)
+
     config = village.model.buildings
     return if (main_screen.queue.size >= 1)
 
@@ -106,7 +118,7 @@ class Task::AutoRecruit < Task::Abstract
       current[queue_item.building]
     end
 
-    remaining = (config - current).remove_negative
+    remaining = build_priorities((config - current).remove_negative,main_screen)
 
     to_build = (remaining.attributes.select{|k,v| v > 0 }.map do |k,v|
       next if main_screen.buildings_metadata[k].nil?

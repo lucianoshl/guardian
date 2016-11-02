@@ -48,9 +48,18 @@ class TribalWarsController < ApplicationController
     doc = Nokogiri::HTML(page.content)
     raw = doc.to_html
     world = User.current.world
+
     raw = raw.gsub(/\"\/js\//) do |str|
       "\"https://#{world}.tribalwars.com.br/js/"
     end
+
+    raw = raw.gsub(/\"graphic/) do |str|
+      "\"https://#{world}.tribalwars.com.br/graphic"
+    end
+
+    
+
+
 
     return raw
   end

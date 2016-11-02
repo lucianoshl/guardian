@@ -23,6 +23,10 @@ class Parser::Basic < Parser::Abstract
 
     screen.incomings = json['player']['incomings'].to_i
 
+    current_population,limit_population = @page.search("#pop_current_label").first.parent.text.split('/').map(&:to_i)
+
+    screen.farm_alert = current_population/limit_population.to_f > 0.85
+
   end
 
 end

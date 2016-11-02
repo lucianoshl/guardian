@@ -5,6 +5,18 @@ class TribalWarsController < ApplicationController
     params.delete('action') if params[:action] == "get" || params[:action] == "post"
   end
 
+  def page
+    require 'open-uri'
+    base = "https://#{User.current.world}.tribalwars.com.br"
+    uri = base + request.fullpath
+    download = open(uri)
+    page = Tempfile.new('page')
+    IO.copy_stream(download, page.path)
+    # binding.pry
+
+    send_file page.path, type: download.meta["content-type"], disposition: 'inline'
+  end
+
   def proxy
     target_url = request.fullpath == '/game.php' ? '/game.php?screen=overview_villages' : request.fullpath
 
@@ -28,6 +40,7 @@ class TribalWarsController < ApplicationController
     end
 
     if (page.class == Mechanize::Image) 
+      binding.pry
       send_data page, type: page.response["content-type"], disposition: 'inline'
     else
       render :text => convert_links(page) 
@@ -57,9 +70,9 @@ class TribalWarsController < ApplicationController
       "\"https://#{world}.tribalwars.com.br/graphic"
     end
 
-    
-
-
+    raw = raw.gsub(/\"\/graphic/) do |str|
+      "\"https://#{world}.tribalwars.com.br/graphic"
+    end
 
     return raw
   end

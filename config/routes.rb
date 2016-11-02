@@ -9,8 +9,8 @@ Rails.application.routes.draw do
   post 'game.php' => 'tribal_wars#proxy'
   get 'map.php' => 'tribal_wars#proxy'
   post 'map.php' => 'tribal_wars#proxy'
-  get 'page.php' => 'tribal_wars#proxy'
-  post 'page.php' => 'tribal_wars#proxy'
+  get 'page.php' => 'tribal_wars#page'
+  post 'page.php' => 'tribal_wars#page'
 
   get 'report/read_all'
   get 'village/:vid/last_report' => 'village#last_report'

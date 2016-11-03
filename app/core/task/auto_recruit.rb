@@ -104,6 +104,7 @@ class Task::AutoRecruit < Task::Abstract
       end
       return current
     end
+    return current
   end
 
   def build village

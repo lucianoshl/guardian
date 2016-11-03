@@ -151,7 +151,8 @@ class Village
   end
 
   def model_id_enum
-    Model::Village.all.map {|model| [model.name,model.id] }
+    result = Model::Village.all.map {|model| [model.name,model.id] }
+    result.shift(["Nenhum",nil])
   end
 
   def model

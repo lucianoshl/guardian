@@ -1,0 +1,2 @@
+module Decorator
+end

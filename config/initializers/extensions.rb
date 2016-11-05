@@ -109,6 +109,11 @@ class Nokogiri::XML::Element
     end
     result
   end
+
+  def replace_html=(html)
+    # self.content = html
+    self.parent.add_child(html)
+  end
 end
 
 class Array

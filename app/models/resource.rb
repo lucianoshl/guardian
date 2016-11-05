@@ -69,6 +69,29 @@ class Resource
     wood < 0 || stone < 0 || iron < 0
   end
 
+  def has_positive?
+    wood >= 0 || stone >= 0 || iron >= 0
+  end
+
+  def to_html
+      %{
+        <div>
+          <span class="nowrap">
+            <span class="icon header wood"></span>
+            <span class="value">#{wood}</span>
+          </span>
+          <span class="nowrap">
+            <span class="icon header stone"></span>
+            <span class="value">#{stone}</span>
+          </span>
+          <span class="nowrap">
+            <span class="icon header iron"></span>
+            <span class="value">#{iron}<span>
+          </span>
+        </div>
+      }
+  end
+
 end
 
 
@@ -79,6 +102,16 @@ class Hash
     result.wood = hash["wood"]
     result.stone = hash["stone"]
     result.iron = hash["iron"]
+    return result
+  end
+end
+
+class Array
+  def to_resource
+    result = Resource.new
+    result.wood = self[0]
+    result.stone = self[1]
+    result.iron = self[2]
     return result
   end
 end

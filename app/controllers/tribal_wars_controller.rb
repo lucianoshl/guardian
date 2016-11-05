@@ -60,12 +60,20 @@ class TribalWarsController < ApplicationController
     end
     doc = Nokogiri::HTML(page.content)
 
+    decorator_name = 'Decorator::'+page.uri.to_s.scan(/screen=(.+)/).first.first.camelize
+    begin
+      decorator = decorator_name.constantize.new
+    rescue
+    end
+
     Village.my.all.to_a.map do |village|
       doc.search("a:contains('#{village.x}|#{village.y}')").each do |element|
       # doc.search("a:contains('#{village.name}')").each do |element|
         element.content = element.content.gsub(village.name,village.label || village.model.name)
       end
     end
+
+    decorator.html(doc) if (decorator.respond_to?("html"))
 
     raw = doc.to_html
     world = User.current.world
@@ -81,6 +89,8 @@ class TribalWarsController < ApplicationController
     raw = raw.gsub(/\"\/graphic/) do |str|
       "\"https://#{world}.tribalwars.com.br/graphic"
     end
+
+    raw = decorator.raw(raw) || raw if (decorator.respond_to?("raw"))
 
     return raw
   end

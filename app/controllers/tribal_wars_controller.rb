@@ -67,9 +67,10 @@ class TribalWarsController < ApplicationController
     end
 
     Village.my.all.to_a.map do |village|
-      doc.search("a:contains('#{village.x}|#{village.y}')").each do |element|
-      # doc.search("a:contains('#{village.name}')").each do |element|
-        element.content = element.content.gsub(village.name,village.label || village.model.name)
+      doc.search("a:contains('#{village.name}')").each do |element|
+        if (element.attr('href').include?(village.vid.to_s))
+          element.content = element.content.gsub(village.name,village.label || village.model.name)
+        end
       end
     end
 

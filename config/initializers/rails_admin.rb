@@ -77,6 +77,7 @@ RailsAdmin.config do |config|
   config.model Village do
 
     edit do
+      field :label
       field :use_in_pillage
       field :in_blacklist
       field :reserved_troops
@@ -89,6 +90,7 @@ RailsAdmin.config do |config|
           "#{bindings[:object].x}|#{bindings[:object].y}"
         end
       end
+      field :label
       field :name
       field :points
       field :model_id

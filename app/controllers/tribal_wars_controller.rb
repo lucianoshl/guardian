@@ -59,6 +59,13 @@ class TribalWarsController < ApplicationController
       return page.content
     end
     doc = Nokogiri::HTML(page.content)
+
+    Village.my.all.to_a.map do |village|
+      doc.search("a:contains('#{village.name}')").each do |element|
+        element.content = element.content.gsub(village.name,village.label || village.model.name)
+      end
+    end
+
     raw = doc.to_html
     world = User.current.world
 

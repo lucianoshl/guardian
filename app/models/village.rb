@@ -18,8 +18,9 @@ class Village
   field :is_sorcerer, type: Boolean
 
   field :in_blacklist, type: Boolean
-
   field :use_in_pillage, type: Boolean, default: true
+  field :model_id, type: BSON::ObjectId
+  field :label, type: String
 
   has_many :reports , inverse_of: 'target' 
 
@@ -27,7 +28,6 @@ class Village
 
   accepts_nested_attributes_for :reserved_troops
 
-  field :model_id, type: BSON::ObjectId
 
   has_many :send_attack, class_name: Job::SendAttack.to_s, inverse_of: 'origin' 
 

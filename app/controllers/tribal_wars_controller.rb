@@ -61,7 +61,8 @@ class TribalWarsController < ApplicationController
     doc = Nokogiri::HTML(page.content)
 
     Village.my.all.to_a.map do |village|
-      doc.search("a:contains('#{village.name}')").each do |element|
+      doc.search("a:contains('#{village.x}|#{village.y}')").each do |element|
+      # doc.search("a:contains('#{village.name}')").each do |element|
         element.content = element.content.gsub(village.name,village.label || village.model.name)
       end
     end

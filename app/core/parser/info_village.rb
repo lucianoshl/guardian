@@ -1,6 +1,3 @@
-class InexistentVillage < Exception
-end
-
 class Parser::InfoVillage < Parser::Abstract
 
   def parse(screen)

@@ -189,3 +189,7 @@ class Hash
       return result
     end
 end
+
+
+class InexistentVillage < Exception
+end

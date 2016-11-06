@@ -29,7 +29,6 @@ class Village
 
   accepts_nested_attributes_for :reserved_troops
 
-
   has_many :send_attack, class_name: Job::SendAttack.to_s, inverse_of: 'origin' 
 
   belongs_to :player

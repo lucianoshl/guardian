@@ -6,6 +6,8 @@ class Model::Village
   embeds_one :buildings, class_name: Model::Buildings.to_s
 
   accepts_nested_attributes_for :troops
-  accepts_nested_attributes_for :buildings
+  accepts_nested_attributes_for :buildings 
+
+  embedded_in :village
 
 end

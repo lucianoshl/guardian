@@ -18,6 +18,9 @@ class Model::Buildings
   field :hide, type: Integer, default: 0
   field :wall, type: Integer, default: 0
 
+  embedded_in :village, class_name: Model::Village.to_s
+
+
   def -(other)
     result = self.clone
     my_fields.map do |name|

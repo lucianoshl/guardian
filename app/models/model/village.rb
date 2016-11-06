@@ -8,6 +8,4 @@ class Model::Village
   accepts_nested_attributes_for :troops
   accepts_nested_attributes_for :buildings 
 
-  embedded_in :village
-
 end

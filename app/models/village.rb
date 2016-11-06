@@ -161,17 +161,17 @@ class Village
   end
 
   def significant_name
-    if (village.model.nil?)
-      return village.label || "SEM MODELO"
+    if (self.model.nil?)
+      return self.label || "SEM MODELO"
     end
 
-    name = village.model.name
+    result = self.model.name
 
-    if (!village.label.nil?)
-      name = village.label + '-' + name
+    if (!self.label.nil?)
+      result = self.label + '-' + result
     end
     
-    element.content = element.content.gsub(village.name,name)
+    return result
   end
 
 end

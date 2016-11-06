@@ -75,8 +75,8 @@ class TribalWarsController < ApplicationController
           if (!village.label.nil?)
             name = village.label + '-' + name
           else
-
-          element.content = element.content.gsub(village.name,name)
+            element.content = element.content.gsub(village.name,name)
+          end
         end
       end
     end

@@ -19,6 +19,7 @@ class Village
 
   field :in_blacklist, type: Boolean
   field :use_in_pillage, type: Boolean, default: true
+  field :disable_auto_recruit, type: Boolean, default: false
   field :model_id, type: BSON::ObjectId
   field :label, type: String
 

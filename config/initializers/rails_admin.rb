@@ -82,6 +82,7 @@ RailsAdmin.config do |config|
       field :in_blacklist
       field :reserved_troops
       field :model_id
+      field :disable_auto_recruit
     end
 
     list do
@@ -94,6 +95,7 @@ RailsAdmin.config do |config|
       field :name
       field :points
       field :model_id
+      field :disable_auto_recruit
       scopes(Village.scopes.keys - [:page])
     end
   end

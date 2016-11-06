@@ -160,4 +160,18 @@ class Village
     Model::Village.where(id: self.model_id).first
   end
 
+  def significant_name
+    if (village.model.nil?)
+      return village.label || "SEM MODELO"
+    end
+
+    name = village.model.name
+
+    if (!village.label.nil?)
+      name = village.label + '-' + name
+    end
+    
+    element.content = element.content.gsub(village.name,name)
+  end
+
 end

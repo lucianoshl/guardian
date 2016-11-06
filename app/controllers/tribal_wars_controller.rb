@@ -70,12 +70,13 @@ class TribalWarsController < ApplicationController
       doc.search("a:contains('#{village.name}')").each do |element|
         if (element.attr('href').include?(village.vid.to_s))
 
-          name = village.model.name
+          # name = village.model.name
 
-          if (!village.label.nil?)
-            name = village.label + '-' + name
-          end
-          element.content = element.content.gsub(village.name,name)
+          # if (!village.label.nil?)
+          #   name = village.label + '-' + name
+          # end
+          # element.content = element.content.gsub(village.name,name)
+          element.content = element.content.gsub(village.name,village.significant_name)
         end
       end
     end

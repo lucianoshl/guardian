@@ -36,7 +36,7 @@ class Mobile::ReportView < Mobile::Base
 			page = Screen::InfoVillage.new(id: target_id)
 			report.target = page.village.db_merge
 		end
-		report.origin = Village.find_by(vid: page.search('#attack_info_att .village_anchor').attr('data-id').value)
+		report.origin = Village.where(vid: page.search('#attack_info_att .village_anchor').attr('data-id').value).first
 
 		report.occurrence = page.search('.report_table > tr > td').text.parse_datetime
 

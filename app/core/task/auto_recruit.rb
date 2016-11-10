@@ -6,8 +6,8 @@ class Task::AutoRecruit < Task::Abstract
     dates = []
     Village.my.map do |village|
       if (!village.model.nil? && village.disable_auto_recruit != true)
-        # recruit(village)
-        # dates << build(village)
+        recruit(village)
+        dates << build(village)
         coins(village)
       end
     end
@@ -17,7 +17,9 @@ class Task::AutoRecruit < Task::Abstract
 
   def coins(village)
     snob_screen = Screen::Snob.new(village: village.vid)
-    binding.pry
+    if (snob_screen.possible_coins > 0)
+      snob_screen.do_coin(snob_screen.possible_coins)
+    end
   end
 
   def calculate_units_to_train(train_screen,village)

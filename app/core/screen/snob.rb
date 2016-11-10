@@ -1,11 +1,12 @@
 class Screen::Snob < Screen::Basic
 
-  attr_accessor :possible_coins
+  attr_accessor :possible_coins,:coin_form
 
   url screen: 'snob'
 
-  def self.load_all
-    binding.pry
+  def do_coin(amount)
+  	self.coin_form['count'] = amount
+  	parse(self.coin_form.submit)
   end
 
 end

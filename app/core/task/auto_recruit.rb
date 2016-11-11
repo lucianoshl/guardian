@@ -6,6 +6,7 @@ class Task::AutoRecruit < Task::Abstract
     dates = []
     Village.my.map do |village|
       if (!village.model.nil? && village.disable_auto_recruit != true)
+        
         recruit(village)
         dates << build(village)
         coins(village)
@@ -140,6 +141,8 @@ class Task::AutoRecruit < Task::Abstract
       item.remaining_resources_if_build = (main_screen.resources - item.cost).total
       item 
     end).compact
+
+    to_build = to_build.select {|a| !(main_screen.resources - a.cost).has_negative? }
 
     target = to_build.sort{|b,a| a.remaining_resources_if_build <=> b.remaining_resources_if_build }.first
 

@@ -29,7 +29,7 @@ module Guardian
 
     Mongoid.logger.level = Logger::INFO
 
-    if (['dev','test'].include?(Rails.env))
+    if (['development','test'].include?(Rails.env)) 
         Thread.new do 
             FileWatcher.new(Dir.glob("#{Rails.root}/**/*.rb")).watch do |f| 
                 load(f)

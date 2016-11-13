@@ -11,6 +11,11 @@ class Job::SendAttack < Job::Abstract
 	
 	belongs_to :origin, class_name: Village.to_s
 
+	validate :check_in_time
+
+	def check_in_time
+		binding.pry
+	end
 
 	def calc_send_time
 		travel_time = troop.travel_time(origin,coordinate.to_coordinate)
@@ -18,13 +23,20 @@ class Job::SendAttack < Job::Abstract
 	end
 
 	def execute
-		before_time = 30.seconds
+		before_time = 5.seconds
 
 		send_time = calc_send_time
 
+		puts "Enviar ataque em #{send_time}"
+		form = Screen::Place.new(village: origin.vid).send_command_form(coordinate.to_coordinate,troop,'attack')
+
 		if ((send_time - before_time) <= Time.zone.now)
-			Screen::Place.new(village: origin.vid).send_attack(coordinate.to_coordinate,troop)
-			binding.pry
+			puts "Enviar ataque em #{send_time} agora são #{Time.zone.now}"
+			while !(send_time <= Time.zone.now)
+				puts "waiting chegar em #{send_time} agora são #{Time.zone.now}"
+				sleep(0.1)
+			end
+			form.submit(form.buttons.first)
 		else
 			return send_time - before_time
 		end

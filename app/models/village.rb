@@ -36,8 +36,44 @@ class Village
   scope :my, -> { where(player: User.current.player) }
   scope :targets, -> { not_in(player: [User.current.player]) }
   scope :monitor, -> { targets.in(state: Village.threat_status) }
+
   scope :inative_players, -> do 
     self.in( id: monitor.map{|a| [a,a.points_history.last] }.select{|a| a[1]["date"] <= Time.zone.now - 3.day }.map{|a| a[0]}.map(&:id) )
+  end
+
+  scope :with_snob, -> do
+    self.in( id: Village.my.select {|v| Screen::Snob.new(village: v.vid).total_snob > 0}.map(&:id) )
+  end
+
+  scope :snob_targets, -> do
+    snobs = self.with_snob.to_a
+    targets = self.monitor.to_a 
+
+    # distances = snobs.map do |my_v|
+    #   c_dist = targets.map do |target|
+    #     {
+    #       target: target,
+    #       distance: target.distance(my_v)
+    #     }
+    #   end
+    #   binding.pry
+    # end
+
+    combinations = targets.map do |target|
+      dists = (snobs.map do |my_v|
+        {
+          my_v: my_v,
+          distance: my_v.distance(target)
+        }
+      end).select do |element|
+        element[:distance] > 10
+      end
+      dists.firt
+    end
+
+    binding.pry
+
+
   end
 
   index({ x: 1, y: 1 }, { unique: true })

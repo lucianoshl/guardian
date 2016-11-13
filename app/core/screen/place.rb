@@ -59,6 +59,20 @@ class Screen::Place < Screen::Basic
 
   def send_command(target,troops,type)
 
+    confirm_form = send_command_form(target,troops,type)
+    page = confirm_form.submit(confirm_form.buttons.first)
+
+    parse(page)
+
+    possible_commands = self.commands.select do |command|
+            !command.returning && !command.target.nil? && 
+       command.target.x == target.x && command.target.y == target.y
+    end
+
+    (possible_commands.sort { |a, b| a.occurence <=> b.occurence }).last
+  end
+
+  def send_command_form(target,troops,type)
     partner_time = Partner.is_attacking?(target)
 
     if (!partner_time.nil?)
@@ -68,7 +82,7 @@ class Screen::Place < Screen::Basic
 
     my_ally = User.current.player.ally
 
-    if (!my_ally.nil?)
+    if (!my_ally.nil? && !target.vid.nil?) 
       village_info = Screen::InfoVillage.new(id: target.vid)
       if (!village_info.village.player_id.nil?)
         player_info = Screen::InfoPlayer.new(id: village_info.village.player_id)
@@ -98,15 +112,6 @@ class Screen::Place < Screen::Basic
     check_attack_error(confirm_page)
 
     confirm_form = confirm_page.form
-    
-    parse(confirm_form.submit(confirm_form.buttons.first))
-
-    possible_commands = self.commands.select do |command|
-            !command.returning && !command.target.nil? && 
-       command.target.x == target.x && command.target.y == target.y
-    end
-
-    (possible_commands.sort { |a, b| a.occurence <=> b.occurence }).last
   end
 
   def check_attack_error confirm_page

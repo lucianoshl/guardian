@@ -1,6 +1,6 @@
 class Screen::Snob < Screen::Basic
 
-  attr_accessor :possible_coins,:coin_form
+  attr_accessor :possible_coins,:coin_form,:total_snob
 
   url screen: 'snob'
 

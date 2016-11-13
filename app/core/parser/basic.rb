@@ -26,6 +26,8 @@ class Parser::Basic < Parser::Abstract
     current_population,limit_population = @page.search("#pop_current_label").first.parent.text.split('/').map(&:to_i)
 
     screen.farm_alert = current_population/limit_population.to_f > 0.85
+    
+    screen.storage_alert = screen.resources.attributes.values.select{|a| a.class == Fixnum}.max/screen.storage_size.to_f > 0.85
 
   end
 

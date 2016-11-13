@@ -6,6 +6,7 @@ class Task::AutoRecruit < Task::Abstract
     dates = []
     Village.my.map do |village|
       if (!village.model.nil? && village.disable_auto_recruit != true)
+        
         recruit(village)
         dates << build(village)
         coins(village)
@@ -73,6 +74,9 @@ class Task::AutoRecruit < Task::Abstract
         next if (next_release_building != building.to_s)
 
         target_train = units_to_train.from_building building
+
+        next if (target_train.total.zero?)
+
         less_complete_unit = compute_less_complete_unit(target_train,percent_completed)
         cost = train_screen.train_info[less_complete_unit.to_s].to_resource
         train_seconds = train_screen.train_info[less_complete_unit.to_s]["build_time"]
@@ -104,14 +108,27 @@ class Task::AutoRecruit < Task::Abstract
   end
 
   def build_priorities(current,main_screen)
+
+    # binding.pry if (main_screen.storage_alert)
+
     if (main_screen.farm_alert)
       current.attributes.map do |k,v|
         if (k.to_sym != :farm)
           current[k] = 0
         end
       end
-      return current
     end
+
+    # if (main_screen.storage_alert)
+    #   current.attributes.map do |k,v|
+    #     if (k.to_sym != :storage)
+    #       current[k] = 0
+    #     end
+    #   end
+    # end
+
+    # binding.pry if (main_screen.storage_alert)
+
     return current
   end
 
@@ -141,7 +158,11 @@ class Task::AutoRecruit < Task::Abstract
       item 
     end).compact
 
+
+    to_build = to_build.select {|a| !(main_screen.resources - a.cost).has_negative? }
+
     target = to_build.sort{|b,a| a.remaining_resources_if_build <=> b.remaining_resources_if_build }.first
+
 
     return if !main_screen.resources.include?(target.cost)
 

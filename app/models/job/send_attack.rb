@@ -8,17 +8,20 @@ class Job::SendAttack < Job::Abstract
 	accepts_nested_attributes_for :troop
 
 	field :coordinate, type: String
-	
-	belongs_to :origin, class_name: Village.to_s
+
+	field :origin, type: String
 
 	validate :check_in_time
 
 	def check_in_time
-		binding.pry
+		send_time = calc_send_time
+		if (send_time < Time.zone.now + 10.seconds)
+			errors.add(origin,"Não da tempo do ataque chegar")
+		end
 	end
 
 	def calc_send_time
-		travel_time = troop.travel_time(origin,coordinate.to_coordinate)
+		travel_time = troop.travel_time(Village.where(origin.to_coordinate.to_h).first,coordinate.to_coordinate)
 		event_time - travel_time
 	end
 
@@ -28,7 +31,7 @@ class Job::SendAttack < Job::Abstract
 		send_time = calc_send_time
 
 		puts "Enviar ataque em #{send_time}"
-		form = Screen::Place.new(village: origin.vid).send_command_form(coordinate.to_coordinate,troop,'attack')
+		form = Screen::Place.new(village: Village.where(origin.to_coordinate.to_h).first.vid).send_command_form(coordinate.to_coordinate,troop,'attack')
 
 		if ((send_time - before_time) <= Time.zone.now)
 			puts "Enviar ataque em #{send_time} agora são #{Time.zone.now}"
@@ -40,6 +43,11 @@ class Job::SendAttack < Job::Abstract
 		else
 			return send_time - before_time
 		end
+	end
+
+	def origin_enum
+		villages = Village.my.all
+		villages.map {|a| "#{a.x}|#{a.y}"}
 	end
 
 end

@@ -17,7 +17,9 @@ class Job::SendAttack < Job::Abstract
 		send_time = calc_send_time
 		if (send_time < Time.zone.now + 10.seconds)
 			errors.add(origin,"Não da tempo do ataque chegar")
+			return true
 		end
+		return false
 	end
 
 	def calc_send_time
@@ -26,6 +28,8 @@ class Job::SendAttack < Job::Abstract
 	end
 
 	def execute
+		# return remove_job if 
+
 		before_time = 5.seconds
 
 		send_time = calc_send_time

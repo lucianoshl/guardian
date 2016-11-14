@@ -62,7 +62,7 @@ class Job::Abstract
 
   after_save do
     
-    if (!self.class._queue.nil? && self.priority != self.class._queue)
+    if (!self.class._queue.nil? && self.priority != self.class._queue.to_s)
       self.priority = self.class._queue
       self.save
     end

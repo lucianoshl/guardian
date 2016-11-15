@@ -164,7 +164,7 @@ class Task::AutoRecruit < Task::Abstract
     target = to_build.sort{|b,a| a.remaining_resources_if_build <=> b.remaining_resources_if_build }.first
 
 
-    return if !main_screen.resources.include?(target.cost)
+    return if target.nil? || !main_screen.resources.include?(target.cost)
 
     build_time = main_screen.build(target.name)
 

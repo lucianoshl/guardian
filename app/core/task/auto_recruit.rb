@@ -24,6 +24,10 @@ class Task::AutoRecruit < Task::Abstract
   end
 
   def calculate_units_to_train(train_screen,village)
+    if (village.model.troops.nil?)
+      return Troop.new
+    end
+
     to_train = (village.model.troops - train_screen.complete_units).remove_negative
     return to_train
   end

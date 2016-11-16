@@ -72,12 +72,14 @@ class Screen::Place < Screen::Basic
     (possible_commands.sort { |a, b| a.occurence <=> b.occurence }).last
   end
 
-  def send_command_form(target,troops,type)
-    partner_time = Partner.is_attacking?(target)
+  def send_command_form(target,troops,type,ignore_partner=false)
+    if (!ignore_partner)
+      partner_time = Partner.is_attacking?(target)
 
-    if (!partner_time.nil?)
-      target.increase_limited_by_partner
-      raise PartnerAttackingException.new(partner_time)
+      if (!partner_time.nil?)
+        target.increase_limited_by_partner
+        raise PartnerAttackingException.new(partner_time)
+      end
     end
 
     my_ally = User.current.player.ally

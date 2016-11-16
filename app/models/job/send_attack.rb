@@ -35,7 +35,7 @@ class Job::SendAttack < Job::Abstract
 		send_time = calc_send_time
 
 		puts "Enviar ataque em #{send_time}"
-		form = Screen::Place.new(village: Village.where(origin.to_coordinate.to_h).first.vid).send_command_form(coordinate.to_coordinate,troop,'attack')
+		form = Screen::Place.new(village: Village.where(origin.to_coordinate.to_h).first.vid).send_command_form(coordinate.to_coordinate,troop,'attack',true)
 
 		if ((send_time - before_time) <= Time.zone.now)
 			puts "Enviar ataque em #{send_time} agora são #{Time.zone.now}"

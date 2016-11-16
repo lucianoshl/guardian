@@ -49,17 +49,17 @@ class Screen::Place < Screen::Basic
 
   url screen: 'place'  
 
-  def send_attack target,troops
-    return send_command(target,troops,'attack')
+  def send_attack target,troops,ignore_partner=false
+    return send_command(target,troops,'attack',ignore_partner)
   end
 
   def send_support target,troops
     return send_command(target,troops,'support')
   end
 
-  def send_command(target,troops,type)
+  def send_command(target,troops,type,ignore_partner=false)
 
-    confirm_form = send_command_form(target,troops,type)
+    confirm_form = send_command_form(target,troops,type,ignore_partner)
     page = confirm_form.submit(confirm_form.buttons.first)
 
     parse(page)
@@ -112,7 +112,6 @@ class Screen::Place < Screen::Basic
 
     confirm_page = form.submit(button)
     check_attack_error(confirm_page)
-
     confirm_form = confirm_page.form
   end
 

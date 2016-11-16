@@ -29,6 +29,10 @@ class Troop
     self.to_h.select{|unit,qte| qte > 0}.keys.map{|a| Unit.get(a) }.sort{|a,b| a.speed <=> b.speed }.last
   end
 
+  def fastest_unit
+    self.to_h.select{|unit,qte| qte > 0}.keys.map{|a| Unit.get(a) }.sort{|b,a| a.speed <=> b.speed }.last
+  end
+
   def travel_time origin,target
     (slow_unit.square_per_minutes * origin.distance(target)).minutes
   end

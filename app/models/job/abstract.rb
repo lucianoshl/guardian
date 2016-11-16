@@ -24,8 +24,8 @@ class Job::Abstract
   end
 
   def schedule_job(date = nil)
-      self.active_job = self.delay.run if date.nil?
-      self.active_job = self.delay(run_at: date).run if !date.nil?
+      self.active_job = self.delay(queue: self.priority).run if date.nil?
+      self.active_job = self.delay(run_at: date,queue: self.priority).run if !date.nil?
       self.save
   end
 

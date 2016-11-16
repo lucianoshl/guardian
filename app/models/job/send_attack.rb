@@ -52,7 +52,7 @@ class Job::SendAttack < Job::Abstract
 
 	def origin_enum
 		villages = Village.my.all
-		villages.map {|a| "#{a.x}|#{a.y}"}
+		villages.map {|a| ["#{a.significant_name} #{a.x}|#{a.y}","#{a.x}|#{a.y}"]}
 	end
 
 end

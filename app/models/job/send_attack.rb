@@ -44,6 +44,7 @@ class Job::SendAttack < Job::Abstract
 				sleep(0.1)
 			end
 			form.submit(form.buttons.first)
+			return remove_job
 		else
 			return send_time - before_time
 		end

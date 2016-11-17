@@ -7,7 +7,7 @@ class Decorator::Global
 		# clone_menu.search('td').remove
 
 		# page.search('a[href*=overview_villages]').first.parent.add_child(clone_menu)
-		Village.my.reverse.map do |village|
+		Village.my.map do |village|
 			clone_menu.search('.bottom').first.before(create_menu(page,village,request))
 		end
 

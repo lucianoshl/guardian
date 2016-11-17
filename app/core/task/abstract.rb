@@ -52,7 +52,7 @@ class Task::Abstract
     enable = Config.sleep_mode.enabled(true)
     
     if ((init..endd).cover?(Time.zone.now) && self.class._sleep != false && enable)
-      self.class.new.delay(run_at: endd).execute
+      self.class.new.delay(run_at: endd ,queue: 'normal_priority').execute
       return
     else
       result = self.run
@@ -63,11 +63,11 @@ class Task::Abstract
     returned_date = [ActiveSupport::TimeWithZone,DateTime].include?(result.class)
     
     if (self.class._run_daily)
-      self.class.new.delay(run_at: Time.zone.now.beginning_of_day + 1.day + self.class._run_daily.hours).execute
+      self.class.new.delay(run_at: Time.zone.now.beginning_of_day + 1.day + self.class._run_daily.hours ,queue: 'normal_priority').execute
     elsif (self.class._performs_to && !returned_date)
-      self.class.new.delay(run_at: Time.zone.now + self.class._performs_to).execute
+      self.class.new.delay(run_at: Time.zone.now + self.class._performs_to ,queue: 'normal_priority').execute
     elsif ([ActiveSupport::TimeWithZone,DateTime].include?(result.class)) 
-      self.class.new.delay(run_at: result).execute 
+      self.class.new.delay(run_at: result ,queue: 'normal_priority').execute 
     else
       raise Exception.new("Invalid job state #{self.class}")
     end

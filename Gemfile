@@ -43,6 +43,7 @@ group :production do
   gem 'daemons'
   gem 'rails_real_favicon'
   gem 'heroku-deflater'
+  gem 'foreman'
 end
 
 group :development, :test do

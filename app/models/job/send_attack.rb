@@ -25,7 +25,11 @@ class Job::SendAttack < Job::Abstract
 	end
 
 	def calc_send_time
-		travel_time = troop.travel_time(Village.where(origin.to_coordinate.to_h).first,coordinate.to_coordinate)
+		aux = troop.clone
+		aux.my_fields.map do |field|
+			aux[field] = 1 if (aux[field] != 0)
+		end
+		travel_time = aux.travel_time(Village.where(origin.to_coordinate.to_h).first,coordinate.to_coordinate)
 		event_time - travel_time
 	end
 

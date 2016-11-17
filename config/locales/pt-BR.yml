@@ -242,6 +242,6 @@ pt-BR:
     am: ''
     formats:
       default: "%a, %d de %B de %Y, %H:%M:%S %z"
-      long: "%d de %B de %Y, %H:%M"
+      long: "%d de %B de %Y, %H:%M:%S"
       short: "%d de %B, %H:%M"
     pm: ''

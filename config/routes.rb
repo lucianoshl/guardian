@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'map.php' => 'tribal_wars#proxy'
   post 'map.php' => 'tribal_wars#proxy'
   get 'page.php' => 'tribal_wars#page'
+  get 'graphic/:name' => 'tribal_wars#page' 
   post 'page.php' => 'tribal_wars#page'
 
   get 'report/read_all'

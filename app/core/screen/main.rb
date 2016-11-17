@@ -14,8 +14,6 @@ class Screen::Main < Screen::Basic
   		raise Exception.new("Não foi encontrado build_link para o edificio #{name}")
   	end
 
-
-
   	build_link = base + raw_build_link.gsub('&amp;','&')
   	parse(client.get(build_link))
   	last_building = queue.last

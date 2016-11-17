@@ -83,6 +83,8 @@ class TribalWarsController < ApplicationController
 
     decorator.html(doc) if (decorator.respond_to?("html"))
 
+    Decorator::Global.new.html(doc,request)
+
     raw = doc.to_html
     world = User.current.world
 
@@ -101,6 +103,10 @@ class TribalWarsController < ApplicationController
     raw = decorator.raw(raw) || raw if (decorator.respond_to?("raw"))
 
     return raw
+  end
+
+  def image
+    binding.pry
   end
 
   def client

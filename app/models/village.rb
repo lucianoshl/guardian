@@ -33,7 +33,7 @@ class Village
 
   belongs_to :player
 
-  scope :my, -> { where(player: User.current.player) }
+  scope :my, -> { where(player: User.current.player).asc(:label) }
   scope :targets, -> { not_in(player: [User.current.player]) }
   scope :monitor, -> { targets.in(state: Village.threat_status) }
 

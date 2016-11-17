@@ -17,6 +17,7 @@ Bundler.require(*Rails.groups)
 module Guardian
   class Application < Rails::Application
 
+    Delayed::Worker.default_queue_name = "normal_priority"
     Delayed::Worker.queue_attributes = { 
       high_priority: { priority: -10 },
       normal_priority: { priority: 0 },

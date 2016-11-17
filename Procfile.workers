@@ -1,2 +1,2 @@
-worker_1: QUEUE=* rake jobs:work
+worker_1: QUEUE=normal_priority rake jobs:work
 worker_2: QUEUE=high_priority rake jobs:work

@@ -6,7 +6,7 @@ class Job::Abstract
 
   include Mongoid::Document
   field :state, type: String, default: 'starting'
-  field :priority, type: String, default: 'normal'
+  field :priority, type: String, default: 'normal_priority'
 
   has_one :active_job, class_name: "Delayed::Backend::Mongoid::Job", :dependent => :destroy
 

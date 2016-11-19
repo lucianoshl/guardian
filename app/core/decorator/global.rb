@@ -1,19 +1,21 @@
 class Decorator::Global
 
 	def html(page,request)
-		clone_menu = page.search('.menu_column').first.clone
-		clone_menu.search('.menu-column-item').map(&:parent).map(&:remove)
-		# clone_menu_item = clone_menu.search('td').first
-		# clone_menu.search('td').remove
+		if (!page.search('.menu_column').first.nil?)
+			clone_menu = page.search('.menu_column').first.clone
+			clone_menu.search('.menu-column-item').map(&:parent).map(&:remove)
+			# clone_menu_item = clone_menu.search('td').first
+			# clone_menu.search('td').remove
 
-		# page.search('a[href*=overview_villages]').first.parent.add_child(clone_menu)
-		Village.my.map do |village|
-			clone_menu.search('.bottom').first.before(create_menu(page,village,request))
+			# page.search('a[href*=overview_villages]').first.parent.add_child(clone_menu)
+			Village.my.map do |village|
+				clone_menu.search('.bottom').first.before(create_menu(page,village,request))
+			end
+
+			# binding.pry
+			page.search('a[href*=overview_villages]').first.parent.add_child(clone_menu)
+			# page.search('.menu_column').first.remove
 		end
-
-		# binding.pry
-		page.search('a[href*=overview_villages]').first.parent.add_child(clone_menu)
-		# page.search('.menu_column').first.remove
 		return page
 	end
 

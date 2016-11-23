@@ -6,14 +6,15 @@ class Task::AutoRecruit < Task::Abstract
     dates = []
     Village.my.map do |village|
       if (!village.model.nil? && village.disable_auto_recruit != true)
-        begin
+        # begin
           recruit(village)
           dates << build(village)
           coins(village)
-        rescue Exception => e
-          Rails.logger.error e.message
-          Rails.logger.error e.backtrace.join("\n")
-        end
+        # rescue Exception => e
+          # binding.pry
+          # Rails.logger.error e.message
+          # Rails.logger.error e.backtrace.join("\n")
+        # end
       end
     end
 
@@ -22,8 +23,8 @@ class Task::AutoRecruit < Task::Abstract
 
   def coins(village)
     snob_screen = Screen::Snob.new(village: village.vid)
-    if (snob_screen.possible_coins > 0)
-      snob_screen.do_coin(snob_screen.possible_coins)
+    if (snob_screen.enabled && snob_screen.possible_coins > 0)
+       snob_screen.do_coin(snob_screen.possible_coins)
     end
   end
 

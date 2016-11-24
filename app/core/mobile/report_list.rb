@@ -14,10 +14,10 @@ class Mobile::ReportList < Mobile::Base
 	def self.load_all
 		Rails.logger.info("Loading all reports: start")
 
-		loop do
+		# loop do
 			report_list = Mobile::ReportList.new('attack',0,0,2000).reports
 			Rails.logger.info("Loading all reports: request with #{report_list.size} reports")
-			break if (report_list.empty?)
+			# break if (report_list.empty?)
 			report_list.pmap do |report_id|
 				report_screen = Mobile::ReportView.new(id: report_id)
 
@@ -33,7 +33,7 @@ class Mobile::ReportList < Mobile::Base
 
 				erase(report_id) if !not_erase
 			end	
-		end
+		# end
 		Rails.logger.info("Loading all reports: end")
 	end
 

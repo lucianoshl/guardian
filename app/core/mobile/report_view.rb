@@ -53,8 +53,10 @@ class Mobile::ReportView < Mobile::Base
 				end
 			end
 
-			report.target_troops = parse_report_troops(page.search("#attack_info_def tr:eq(3) tr")[1]) 
-			report.target_troops_losses = parse_report_troops(page.search("#attack_info_def tr:eq(3) tr")[2])
+			content = page.search("#attack_info_def tr:eq(3) tr")[1]
+			report.target_troops = parse_report_troops(content_1) if (!content.nil?)
+			content = page.search("#attack_info_def tr:eq(3) tr")[2]
+			report.target_troops_losses = parse_report_troops(content) if (!content.nil?)
 			if (page.search('#attack_spy_away').size > 0)
 				report.target_troops_away = parse_report_troops(page.search('#attack_spy_away'))
 			end

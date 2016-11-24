@@ -8,7 +8,7 @@
 
 %>
 	<li class="list-group-item" >
-		<h5><%= village.x %>|<%= village.y %> <%= village.label %><h5>
+		<h5><%= village.x %>|<%= village.y %> <%= village.significant_name %><h5>
 		<%= render_troops_grid(screen.current_units,units) %> <br/>
 		<%= render_troops_grid(screen.complete_units,units) %>
 	</li>

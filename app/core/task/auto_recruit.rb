@@ -117,28 +117,17 @@ class Task::AutoRecruit < Task::Abstract
   end
 
   def build_priorities(current,main_screen)
+    result = current.clone
 
-    # binding.pry if (main_screen.storage_alert)
-
-    if (main_screen.farm_alert)
-      current.attributes.map do |k,v|
-        if (k.to_sym != :farm)
-          current[k] = 0
-        end
+    if (main_screen.farm_alert || main_screen.storage_alert)
+      result.attributes.map do |k,v|
+        result[k] = 0
       end
+      result['farm'] = current['farm'] if (main_screen.farm_alert)
+      result['storage'] = current['storage'] if (main_screen.storage_alert)
     end
 
-    # if (main_screen.storage_alert)
-    #   current.attributes.map do |k,v|
-    #     if (k.to_sym != :storage)
-    #       current[k] = 0
-    #     end
-    #   end
-    # end
-
-    # binding.pry if (main_screen.storage_alert)
-
-    return current
+    return result
   end
 
   def build village

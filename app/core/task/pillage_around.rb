@@ -12,6 +12,9 @@ class Task::PillageAround < Task::Abstract
 
   def run
     Screen::Place.reset
+
+    Mobile::ReportList.load_all
+
     candidates = Village.pillage_candidates.any_of({:next_event => nil}, {:next_event.lte => Time.zone.now}).asc(:next_event)
 
     @my_villages = Village.my.to_a
@@ -26,7 +29,7 @@ class Task::PillageAround < Task::Abstract
 
     candidates = candidates.sort{|a,b| a[2] <=> b[2]}
 
-    Mobile::ReportList.load_all
+    
     
     candidates.each do |target,closer_villages|
       @target = target

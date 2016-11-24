@@ -12,24 +12,29 @@ class Mobile::ReportList < Mobile::Base
 	end
 
 	def self.load_all
-		Rails.logger.debug("Loading all reports: start")
-		report_list = Mobile::ReportList.new('attack',0,0,2000).reports
-		report_list.pmap do |report_id|
-			report_screen = Mobile::ReportView.new(id: report_id)
+		Rails.logger.info("Loading all reports: start")
 
-			raise Exception.new("Relatorio com problema #{report_id} #{report_screen.report.occurrence}") if (report_screen.report.occurrence > Time.zone.now)
+		loop do
+			report_list = Mobile::ReportList.new('attack',0,0,2000).reports
+			Rails.logger.info("Loading all reports: request with #{report_list.size} reports")
+			break if (report_list.empty?)
+			report_list.pmap do |report_id|
+				report_screen = Mobile::ReportView.new(id: report_id)
 
-			saved = Report.where(rid: report_id).count > 0
+				raise Exception.new("Relatorio com problema #{report_id} #{report_screen.report.occurrence}") if (report_screen.report.occurrence > Time.zone.now)
 
-			raise "Error reading report=#{report_id} Errors = #{report_screen.report.errors.inspect}" if (!saved && !report_screen.report.save)
+				saved = Report.where(rid: report_id).count > 0
 
-			my_attack_troops = Troop.new(report_screen.report.origin_troops)
+				raise "Error reading report=#{report_id} Errors = #{report_screen.report.errors.inspect}" if (!saved && !report_screen.report.save)
 
-			not_erase = my_attack_troops.snob > 0 || my_attack_troops.population >= 1000
+				my_attack_troops = Troop.new(report_screen.report.origin_troops)
 
-			erase(report_id) if !not_erase
+				not_erase = my_attack_troops.snob > 0 || my_attack_troops.population >= 1000
+
+				erase(report_id) if !not_erase
+			end	
 		end
-		Rails.logger.debug("Loading all reports: end")
+		Rails.logger.info("Loading all reports: end")
 	end
 
 end

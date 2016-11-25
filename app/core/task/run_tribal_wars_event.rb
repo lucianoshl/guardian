@@ -1,8 +1,8 @@
 class Task::RunTribalWarsEvent < Task::Abstract
 
   def run
-    event = get_current_event
-    binding.pry
+    # event = get_current_event
+    # binding.pry
     # screen = Screen::AllyContracts.new
     # binding.pry
     # screen = Screen::EventAssault.new
@@ -19,7 +19,7 @@ class Task::RunTribalWarsEvent < Task::Abstract
     # else
     #     return screen.next_free_mercenary
     # end
-    # return Time.zone.now + 1.day
+    return Time.zone.now + 1.day
   end
 
 

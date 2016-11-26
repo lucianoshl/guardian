@@ -87,16 +87,20 @@ class Task::AutoRecruit < Task::Abstract
         next if (target_train.total.zero?)
 
         less_complete_unit = compute_less_complete_unit(target_train,percent_completed)
-        cost = train_screen.train_info[less_complete_unit.to_s].to_resource
-        train_seconds = train_screen.train_info[less_complete_unit.to_s]["build_time"]
+        cost_info = train_screen.train_info[less_complete_unit.to_s]
+        if (!cost_info.nil?)
+          cost = cost_info.to_resource
+          train_seconds = train_screen.train_info[less_complete_unit.to_s]["build_time"]
 
-        if (resources.include?(cost))
-          enter = true
-          to_train[less_complete_unit] += 1
-          current_units[less_complete_unit] += 1
-          release_times[building.to_s] += train_seconds
+          if (resources.include?(cost))
+            enter = true
+            to_train[less_complete_unit] += 1
+            current_units[less_complete_unit] += 1
+            release_times[building.to_s] += train_seconds
+          end
+        else
+          # do research
         end
-
       end
 
 

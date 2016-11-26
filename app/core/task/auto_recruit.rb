@@ -6,15 +6,15 @@ class Task::AutoRecruit < Task::Abstract
     dates = []
     Village.my.map do |village|
       if (!village.model.nil? && village.disable_auto_recruit != true)
-        begin
+        # begin
           recruit(village)
           dates << build(village)
           coins(village)
-        rescue Exception => e
+        # rescue Exception => e
           # binding.pry
-          Rails.logger.error e.message
-          Rails.logger.error e.backtrace.join("\n")
-        end
+          # Rails.logger.error e.message
+          # Rails.logger.error e.backtrace.join("\n")
+        # end
       end
     end
 

@@ -120,8 +120,16 @@ class Task::AutoRecruit < Task::Abstract
     main_screen.queue.size >= 1
   end
 
-  def build_priorities(current,main_screen)
+  def build_priorities(current,main_screen,config)
     result = current.clone
+
+    if (main_screen.buildings["wall"].level < config.wall) 
+      result.attributes.map do |k,v|
+        result[k] = 0
+      end
+      result['wall'] = current['wall']
+    end
+
 
     if (main_screen.farm_alert || main_screen.storage_alert)
       result.attributes.map do |k,v|
@@ -146,7 +154,7 @@ class Task::AutoRecruit < Task::Abstract
       current[queue_item.building]
     end
 
-    remaining = build_priorities((config - current).remove_negative,main_screen)
+    remaining = build_priorities((config - current).remove_negative,main_screen,config)
 
     to_build = (remaining.attributes.select{|k,v| v > 0 }.map do |k,v|
       next if main_screen.buildings_metadata[k].nil?

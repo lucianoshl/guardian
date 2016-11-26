@@ -115,21 +115,13 @@ class Task::AutoRecruit < Task::Abstract
     return nil
   end
 
-  def two_itens_in_build_queue?(village)
-    main_screen = Screen::Main.new(id: village.vid)
-    main_screen.queue.size >= 1
-  end
+  # def two_itens_in_build_queue?(village)
+  #   main_screen = Screen::Main.new(id: village.vid)
+  #   main_screen.queue.size >= 1
+  # end
 
   def build_priorities(current,main_screen,config)
     result = current.clone
-
-    if (main_screen.buildings["wall"].level < config.wall) 
-      result.attributes.map do |k,v|
-        result[k] = 0
-      end
-      result['wall'] = current['wall']
-    end
-
 
     if (main_screen.farm_alert || main_screen.storage_alert)
       result.attributes.map do |k,v|
@@ -146,7 +138,7 @@ class Task::AutoRecruit < Task::Abstract
     main_screen = Screen::Main.new(id: village.vid)
 
     config = village.model.buildings
-    return if (main_screen.queue.size >= 1)
+    return if (main_screen.queue.size >= 2)
 
     current = Model::Buildings.new(main_screen.buildings.map{|k,v| [k,v.level]}.to_h)
 
@@ -171,7 +163,15 @@ class Task::AutoRecruit < Task::Abstract
 
     to_build = to_build.select {|a| !(main_screen.resources - a.cost).has_negative? }
 
-    target = to_build.sort{|b,a| a.remaining_resources_if_build <=> b.remaining_resources_if_build }.first
+    sorted = to_build.sort{|b,a| a.remaining_resources_if_build <=> b.remaining_resources_if_build }
+
+    wall_item = sorted.select{|a| a.name == "wall"}
+
+    if (wall_item.size > 0)
+      sorted = wall_item
+    end
+
+    target = sorted.first
 
 
     return if target.nil? || !main_screen.resources.include?(target.cost)

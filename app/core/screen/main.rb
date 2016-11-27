@@ -16,7 +16,7 @@ class Screen::Main < Screen::Basic
 
   	build_link = base + raw_build_link.gsub('&amp;','&')
   	parse(client.get(build_link))
-  	last_building = queue.last
+  	last_building = queue.first
   	return last_building.completed_in
   end
 

@@ -18,11 +18,12 @@ class Task::AutoRecruit < Task::Abstract
       end
     end
 
-    list = dates.flatten.compact.sort{|b,a| a <=> b}
+    list = dates.flatten.compact.sort{|a,b| a <=> b}
 
     Rails.logger.info("date_list=#{list}")
 
-    list.first
+    next_hour = Time.zone.now + 1.hour
+    return list.first if list.first <= (next_hour)
   end
 
   def coins(village)

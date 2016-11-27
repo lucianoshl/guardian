@@ -75,7 +75,7 @@ class Task::Abstract
       Rails.logger.info("TEST:2")
       self.class.new.delay(run_at: Time.zone.now + self.class._performs_to ,queue: 'normal_priority').execute
     elsif ([ActiveSupport::TimeWithZone,DateTime].include?(result.class)) 
-      Rails.logger.info("TEST:3")
+      Rails.logger.info("TEST:3 #{result}")
       self.class.new.delay(run_at: result ,queue: 'normal_priority').execute 
     else
       raise Exception.new("Invalid job state #{self.class}")

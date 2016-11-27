@@ -26,10 +26,11 @@ class Parser::Main < Parser::Basic
       building.iron = (value["iron"]/(building.iron_factor ** (level_next - 1))).round
     end
 
-    screen.queue = (@page.search('.queueItem').map do |line|
+    screen.queue = (@page.search('.queueItem').map do |line| 
       item = OpenStruct.new
       item.building = line.search('img').attr('src').value.scan(/\/([a-z]+)\d*.png/).first.first
-      item.completed_in = line.search('div')[3].text.strip.split(' - ').last.to_datetime
+      binding.pry
+      item.completed_in = line.search('div')[3].text.strip.split(' - ').last.parse_datetime
       item
     end).sort{|a,b| a.completed_in <=> b.completed_in }
 

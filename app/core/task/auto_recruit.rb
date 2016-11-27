@@ -18,7 +18,7 @@ class Task::AutoRecruit < Task::Abstract
       end
     end
 
-    list = dates.flatten.compact.sort{|a,b| a <=> b}
+    list = dates.flatten.compact.sort{|b,a| a <=> b}
 
     Rails.logger.info("date_list=#{list}")
 

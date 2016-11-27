@@ -1,6 +1,6 @@
 class Task::AutoRecruit < Task::Abstract
 
-  performs_to 1.hour
+  # performs_to 1.hour
 
   def run
     dates = []
@@ -23,7 +23,7 @@ class Task::AutoRecruit < Task::Abstract
     Rails.logger.info("date_list=#{list}")
 
     next_hour = Time.zone.now + 1.hour
-    return list.first if list.first <= (next_hour)
+    list.first <= (next_hour) ? list.first : next_hour
   end
 
   def coins(village)

@@ -61,12 +61,21 @@ class Task::Abstract
     Rails.logger.info("Task returned #{result}")
 
     returned_date = [ActiveSupport::TimeWithZone,DateTime].include?(result.class)
+
+    Rails.logger.info("Returned date #{result.class}")
     
+    # Rails.logger.info("run_daily: #{self.class._run_daily}")
+    # Rails.logger.info("_performs_to && !returned_date: #{self.class._performs_to} && #{!returned_date}")
+    # Rails.logger.info("run_daily: #{self.class._run_daily}")
+
     if (self.class._run_daily)
+      Rails.logger.info("TEST:1")
       self.class.new.delay(run_at: Time.zone.now.beginning_of_day + 1.day + self.class._run_daily.hours ,queue: 'normal_priority').execute
     elsif (self.class._performs_to && !returned_date)
+      Rails.logger.info("TEST:2")
       self.class.new.delay(run_at: Time.zone.now + self.class._performs_to ,queue: 'normal_priority').execute
     elsif ([ActiveSupport::TimeWithZone,DateTime].include?(result.class)) 
+      Rails.logger.info("TEST:3")
       self.class.new.delay(run_at: result ,queue: 'normal_priority').execute 
     else
       raise Exception.new("Invalid job state #{self.class}")

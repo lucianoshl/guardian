@@ -18,7 +18,11 @@ class Task::AutoRecruit < Task::Abstract
       end
     end
 
-    dates.flatten.compact.sort{|a,b| a <=> b}.first
+    list = dates.flatten.compact.sort{|a,b| a <=> b}
+
+    Rails.logger.info("date_list=#{list}")
+
+    list.first
   end
 
   def coins(village)

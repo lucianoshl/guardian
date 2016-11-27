@@ -142,7 +142,7 @@ class Task::AutoRecruit < Task::Abstract
     main_screen = Screen::Main.new(id: village.vid)
 
     config = village.model.buildings
-    return if (main_screen.queue.size >= 2)
+    return main_screen.queue.last.completed_in if (main_screen.queue.size >= 2)
 
     current = Model::Buildings.new(main_screen.buildings.map{|k,v| [k,v.level]}.to_h)
 

@@ -23,7 +23,7 @@ class Task::AutoRecruit < Task::Abstract
 
   def coins(village)
     snob_screen = Screen::Snob.new(village: village.vid)
-    if (snob_screen.enabled && snob_screen.possible_coins > 0 && snob_screen.possible_snobs < 5)
+    if (snob_screen.enabled && snob_screen.possible_coins > 0 && snob_screen.possible_snobs < 10)
        snob_screen.do_coin(snob_screen.possible_coins)
     end
   end

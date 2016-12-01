@@ -13,10 +13,10 @@ RSpec.describe Report, type: :model do
     Mobile::ReportList.load_all
   end
 
-  # it "load_report" do
-  #   Mobile::ReportList.new('attack',0,0,2000).reports
-  #   report_s = Mobile::ReportView.new(id: 3566482)
-  # end
+  it "load_report" do
+    Mobile::ReportList.new('attack',0,0,1).reports
+    report_s = Mobile::ReportView.new(id: 57390028)
+  end
 
 
 end

@@ -57,6 +57,14 @@ class Troop
     Unit.names.map{|unit| self[unit]* Unit.get(unit).attack }.inject(&:+) || 0
   end
 
+  def general_defense
+    20 + (Unit.names.map{|unit| self[unit]* Unit.get(unit).general_defense }.inject(&:+) || 0)
+  end
+
+  def cavalry_defense
+    Unit.names.map{|unit| self[unit]* Unit.get(unit).cavalry_defense }.inject(&:+) || 0
+  end
+
   def win?(moral,wall,night_bonus)
     parameters = {}
     parameters[:luck] = '-25'

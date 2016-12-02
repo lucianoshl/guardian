@@ -11,7 +11,6 @@ class Task::AutoRecruit < Task::Abstract
           dates << build(village)
           coins(village)
         # rescue Exception => e
-          # binding.pry
           # Rails.logger.error e.message
           # Rails.logger.error e.backtrace.join("\n")
         # end
@@ -128,9 +127,11 @@ class Task::AutoRecruit < Task::Abstract
   def build_priorities(current,main_screen,config)
     result = current.clone
 
-    real_storage_alert = main_screen.buildings["storage"].level != 30 && main_screen.storage_alert
+    storage_info = main_screen.buildings["storage"]
+    real_storage_alert = storage_info.level != 30 && main_screen.storage_alert && !storage_info.in_queue
 
-    real_farm_alert = main_screen.buildings["farm"].level != 30 && main_screen.farm_alert
+    farm_info = main_screen.buildings["farm"]
+    real_farm_alert = farm_info.level != 30 && main_screen.farm_alert && !farm_info.in_queue
 
     if (real_farm_alert || real_storage_alert)
       result.attributes.map do |k,v|
@@ -143,6 +144,14 @@ class Task::AutoRecruit < Task::Abstract
     return result
   end
 
+  def remove_without_population(current,main_screen)
+    current.my_fields.map do |building|
+      if (current[building] > 0 && main_screen.buildings[building].pop > main_screen.free_population)
+        current[building] = 0
+      end
+    end
+  end
+
   def build village
     main_screen = Screen::Main.new(village: village.vid)
 
@@ -151,11 +160,14 @@ class Task::AutoRecruit < Task::Abstract
 
     current = Model::Buildings.new(main_screen.buildings.map{|k,v| [k,v.level]}.to_h)
 
+    # remove queue
     main_screen.queue.map do |queue_item|
-      current[queue_item.building]
+      current[queue_item.building] += 1
     end
 
-    remaining = build_priorities((config - current).remove_negative,main_screen,config)
+    remaining = (config - current).remove_negative
+    remaining = remove_without_population(remaining,main_screen)
+    remaining = build_priorities(remaining,main_screen,config)
 
     to_build = (remaining.attributes.select{|k,v| v > 0 }.map do |k,v|
       next if main_screen.buildings_metadata[k].nil?
@@ -180,7 +192,6 @@ class Task::AutoRecruit < Task::Abstract
     end
 
     target = sorted.first
-
 
     return if target.nil? || !main_screen.resources.include?(target.cost)
 

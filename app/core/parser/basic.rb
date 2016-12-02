@@ -23,9 +23,11 @@ class Parser::Basic < Parser::Abstract
 
     screen.incomings = json['player']['incomings'].to_i
 
-    current_population,limit_population = @page.search("#pop_current_label").first.parent.text.split('/').map(&:to_i)
+    screen.current_population,limit_population = @page.search("#pop_current_label").first.parent.text.split('/').map(&:to_i)
 
-    screen.farm_alert = current_population/limit_population.to_f > 0.85
+    screen.free_population = limit_population - screen.current_population
+
+    screen.farm_alert = screen.current_population/limit_population.to_f > 0.85
     
     screen.storage_alert = screen.resources.attributes.values.select{|a| a.class == Fixnum}.max/screen.storage_size.to_f > 0.85
 

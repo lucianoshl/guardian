@@ -41,6 +41,7 @@ group :production do
   gem 'rails_12factor'
   gem 'unicorn'
   gem 'daemons'
+  gem 'mongo_store'
   gem 'rails_real_favicon'
   gem 'heroku-deflater'
   gem 'foreman'

@@ -8,7 +8,7 @@ class User
 
   has_many :cookies, class_name: Cookie.to_s
 
-  has_one :player
+  has_one :player 
 
   def self.save_user
     username = ENV["TW_USER"]

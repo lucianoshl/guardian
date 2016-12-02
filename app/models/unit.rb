@@ -5,6 +5,8 @@ class Unit
 	field :label, type: String
 	field :carry, type: Integer
 	field :attack, type: Integer 
+	field :general_defense, type: Integer 
+	field :cavalry_defense, type: Integer 
 	field :population, type: Integer 
 	field :speed, type: Float
 

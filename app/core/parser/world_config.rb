@@ -24,6 +24,8 @@ class Parser::WorldConfig < Parser::Abstract
         unit.label = line.search('img').first.attr('title')
         unit.carry = line.search('td')[carry_position+5].text.strip.to_i
         unit.attack = line.search('td')[attack_position+5].text.strip.to_i
+        unit.general_defense = line.search('td')[attack_position+6].text.strip.to_i
+        unit.cavalry_defense = line.search('td')[attack_position+7].text.strip.to_i
         unit.speed = line.search('td')[speed_position+5].text.strip.to_i
         unit
       end

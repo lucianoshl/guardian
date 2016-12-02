@@ -53,6 +53,10 @@ class Troop
     return Troop.new(result)
   end
 
+  def attack_force
+    Unit.names.map{|unit| self[unit]* Unit.get(unit).attack }.inject(&:+) || 0
+  end
+
   def win?(moral,wall,night_bonus)
     parameters = {}
     parameters[:luck] = '-25'

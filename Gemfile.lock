@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/lucianoshl/mongoid_store.git
-  revision: 52e4e9cd458da1e8bdb6021b15ed86a6dff95e20
+  revision: 17053a38482c6ab41f4457a96a488041cd6c8c3c
   specs:
     mongoid_store (0.1.2)
       activesupport (> 3.0)

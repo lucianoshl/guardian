@@ -30,8 +30,9 @@ class Task::PillageAround < Task::Abstract
     candidates = candidates.sort{|a,b| a[2] <=> b[2]}
 
     
-    
+    index = 0
     candidates.each do |target,closer_villages|
+      index += 1
       @target = target
       @origin_candidates = closer_villages
 
@@ -45,6 +46,7 @@ class Task::PillageAround < Task::Abstract
 
       begin
         info("-----------------------------------------------------------------------")
+        info("#{candidates.size}/#{index}")
         info("Running state #{current_state} for #{@target} (#{@target.name}) using #{@origin.nil? ? "FAR AWAY!!" : @origin.name}")
         info("@origin=#{@origin.nil? ? "nil" : @origin.name}")
         info("@candidates=#{@origin_candidates.map(&:name)}")

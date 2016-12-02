@@ -15,7 +15,7 @@ RSpec.describe Report, type: :model do
 
   it "load_report" do
     Mobile::ReportList.new('attack',0,0,1).reports
-    report_s = Mobile::ReportView.new(id: 57390028)
+    report_s = Mobile::ReportView.new(id: 57345553)
   end
 
 

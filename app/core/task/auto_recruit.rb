@@ -128,19 +128,23 @@ class Task::AutoRecruit < Task::Abstract
   def build_priorities(current,main_screen,config)
     result = current.clone
 
-    if (main_screen.farm_alert || main_screen.storage_alert)
+    real_storage_alert = main_screen.buildings["storage"].level != 30 && main_screen.storage_alert
+
+    real_farm_alert = main_screen.buildings["farm"].level != 30 && main_screen.farm_alert
+
+    if (real_farm_alert || real_storage_alert)
       result.attributes.map do |k,v|
         result[k] = 0
       end
-      result['farm'] = current['farm'] if (main_screen.farm_alert)
-      result['storage'] = current['storage'] if (main_screen.storage_alert)
+      result['farm'] = current['farm'] if (real_farm_alert)
+      result['storage'] = current['storage'] if (real_storage_alert)
     end
 
     return result
   end
 
   def build village
-    main_screen = Screen::Main.new(id: village.vid)
+    main_screen = Screen::Main.new(village: village.vid)
 
     config = village.model.buildings
     return main_screen.queue.last.completed_in if (main_screen.queue.size >= 2)
@@ -164,7 +168,6 @@ class Task::AutoRecruit < Task::Abstract
       item.remaining_resources_if_build = (main_screen.resources - item.cost).total
       item 
     end).compact
-
 
     to_build = to_build.select {|a| !(main_screen.resources - a.cost).has_negative? }
 

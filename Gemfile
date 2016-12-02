@@ -43,7 +43,7 @@ group :production do
   gem 'daemons'
   gem 'mongoid_store', github: 'socialreferral/mongoid_store'
   gem 'rails_real_favicon'
-  gem 'heroku-deflater'
+  gem 'heroku-deflater' 
   gem 'foreman'
 end
 

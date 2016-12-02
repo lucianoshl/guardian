@@ -41,7 +41,7 @@ group :production do
   gem 'rails_12factor'
   gem 'unicorn'
   gem 'daemons'
-  gem 'mongoid_store', git: 'https://github.com/socialreferral/mongoid_store.git'
+  gem 'mongoid_store', git: 'https://github.com/lucianoshl/mongoid_store.git'
   gem 'rails_real_favicon'
   gem 'heroku-deflater' 
   gem 'foreman'

@@ -145,11 +145,14 @@ class Task::AutoRecruit < Task::Abstract
   end
 
   def remove_without_population(current,main_screen)
-    current.my_fields.map do |building|
-      if (current[building] > 0 && main_screen.buildings[building].pop > main_screen.free_population)
-        current[building] = 0
+    result = current.clone
+    result.my_fields.map do |building|
+      building_meta = main_screen.buildings[building]
+      if (!building_meta.nil? && result[building] > 0 && building_meta.pop > main_screen.free_population)
+        result[building] = 0
       end
     end
+    return result
   end
 
   def build village

@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/lucianoshl/mongoid_store.git
+  remote: https://github.com/socialreferral/mongoid_store.git
   revision: 0e5b690f4ccbe995cbd6d1696e9cdbcf08dbc087
   specs:
     mongoid_store (0.1.2)
@@ -7,7 +7,7 @@ GIT
       mongoid (> 3.0)
 
 GIT
-  remote: git://github.com/turbolinks/turbolinks-classic.git
+  remote: https://github.com/turbolinks/turbolinks-classic.git
   revision: 37a7c296232d20a61bd1946f600da7f2009189db
   specs:
     turbolinks (3.0.0)
@@ -407,4 +407,4 @@ RUBY VERSION
    ruby 2.3.0p0
 
 BUNDLED WITH
-   1.12.5
+   1.13.6

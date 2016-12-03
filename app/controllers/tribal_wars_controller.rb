@@ -60,8 +60,9 @@ class TribalWarsController < ApplicationController
     end
     doc = Nokogiri::HTML(page.content)
 
-    decorator_name = 'Decorator::'+page.uri.to_s.scan(/screen=(.+)/).first.first.camelize
+    decorator_name = 'Decorator::'+page.uri.to_s.scan(/screen=(\w+)/).first.first.camelize
     begin
+      Rails.logger.info("Decorator name : #{decorator_name}")
       decorator = decorator_name.constantize.new
     rescue
     end

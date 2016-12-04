@@ -140,8 +140,8 @@ class Task::AutoRecruit < Task::Abstract
       result.attributes.map do |k,v|
         result[k] = 0
       end
-      result['farm'] = current['farm'] if (real_farm_alert)
-      result['storage'] = current['storage'] if (real_storage_alert)
+      result['farm'] = 1 if (real_farm_alert)
+      result['storage'] = 1 if (real_storage_alert)
     end
 
     return result

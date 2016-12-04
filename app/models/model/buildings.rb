@@ -18,7 +18,7 @@ class Model::Buildings
   field :hide, type: Integer, default: 0
   field :wall, type: Integer, default: 0
 
-  embedded_in :village, class_name: Model::Village.to_s
+  embedded_in :village, class_name: Model::Village.to_s, inverse_of: 'buildings'
 
 
   def -(other)
@@ -27,6 +27,14 @@ class Model::Buildings
       result[name] -= other[name]
     end
     return result
+  end
+
+  def total
+    result = 0
+    my_fields.map do |name|
+      result += self[name]
+    end
+    result
   end
 
   def remove_negative

@@ -27,8 +27,11 @@ class Task::AutoRecruit < Task::Abstract
 
   def coins(village)
     snob_screen = Screen::Snob.new(village: village.vid)
-    if (snob_screen.enabled && snob_screen.possible_coins > 0 && snob_screen.possible_snobs < 10)
-       snob_screen.do_coin(snob_screen.possible_coins)
+    if (snob_screen.enabled && snob_screen.possible_coins > 0 && (snob_screen.possible_snobs < 10 || snob_screen.storage_alert))
+
+        coins = snob_screen.storage_alert ? (snob_screen.possible_coins/2).floor.to_i : snob_screen.possible_coins
+
+        snob_screen.do_coin(coins)
     end
   end
 
@@ -155,10 +158,24 @@ class Task::AutoRecruit < Task::Abstract
     return result
   end
 
+  def current_build_config(main_screen,model)
+    current = Model::Buildings.new(main_screen.buildings.map{|k,v| [k,v.level]}.to_h)
+    config = nil
+
+    priorities = model.priorities.clone.push(model.buildings)
+
+    priorities.map do |config_item|
+      config = config_item
+      break if (config_item - current).remove_negative.total > 0
+    end
+
+    return config
+  end
+
   def build village
     main_screen = Screen::Main.new(village: village.vid)
 
-    config = village.model.buildings
+    config = current_build_config(main_screen,village.model)
     return main_screen.queue.last.completed_in if (main_screen.queue.size >= 2)
 
     current = Model::Buildings.new(main_screen.buildings.map{|k,v| [k,v.level]}.to_h)

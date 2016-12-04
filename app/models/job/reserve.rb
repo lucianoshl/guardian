@@ -1,5 +1,7 @@
 class Job::Reserve < Job::Abstract
 
+	queue :high_priority
+
 	field :x, type: Integer
 	field :y, type: Integer
 

@@ -5,7 +5,7 @@ class Decorator::InfoVillage
 
     insert_tw_stats(page,village_id)
 
-    reports = Report.where(target_id: Village.where(vid: village_id).first.id).limit(10).desc(:occurrence).to_a
+    # reports = Report.where(target_id: Village.where(vid: village_id).first.id).limit(10).desc(:occurrence).to_a
 
     
 

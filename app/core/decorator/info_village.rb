@@ -1,15 +1,13 @@
 class Decorator::InfoVillage
 
   def html(page)
-    village_id = page.search('a[href*=target]').first.attr('href').scan(/target=(\d+)/).first.first.extract_number
+    link_element = page.search('a[href*=target]').first
+    existing_player = !link_element.nil?
 
-    insert_tw_stats(page,village_id)
-
-    # reports = Report.where(target_id: Village.where(vid: village_id).first.id).limit(10).desc(:occurrence).to_a
-
-    
-
-    # binding.pry
+    if (existing_player)
+      village_id = link_element.attr('href').scan(/target=(\d+)/).first.first.extract_number
+      insert_tw_stats(page,village_id)
+    end
 
     return page
   end

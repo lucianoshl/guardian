@@ -155,9 +155,9 @@ class Task::PillageAround < Task::Abstract
 
 
     if ((!last_report.resources.nil? && last_report.resources.total < resource_min))
-      total_resources = resource_min
-      troops = get_place(@origin).free_units.distribute(resource_min)
-      # return move_to_waiting_resources(@target)
+      # total_resources = resource_min
+      # troops = get_place(@origin).free_units.distribute(resource_min)
+      return move_to_waiting_resources(@target)
     end
 
     if (troops.total.zero?)
@@ -274,7 +274,8 @@ class Task::PillageAround < Task::Abstract
 
   def move_to_waiting_strong_troops(troops_to_wait)
     info("now moving to " + __method__.to_s.gsub('move_to_','').black.on_white)
-    return next_event(next_returning)
+    # return next_event(next_returning)
+    return next_event(Time.zone.now + 3.hours)
   end
 
   def move_to_waiting_troops(troops_to_wait)

@@ -36,7 +36,11 @@ class Mobile::ReportView < Mobile::Base
 			page = Screen::InfoVillage.new(id: target_id)
 			report.target = page.village.db_merge
 		end
-		report.origin = Village.where(vid: page.search('#attack_info_att .village_anchor').attr('data-id').value).first
+		begin
+			report.origin = Village.where(vid: page.search('#attack_info_att .village_anchor').attr('data-id').value).first
+		rescue e
+			raise Exception.new("Erro ao parsear o report #{page.uri}")
+		end
 
 		report.occurrence = page.search('.report_table > tr > td').text.parse_datetime
 

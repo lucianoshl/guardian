@@ -33,9 +33,10 @@ class Mobile::ReportView < Mobile::Base
 		begin
 			report.target = Village.find_by(vid: target_id)
 		rescue Mongoid::Errors::DocumentNotFound => e
-			page = Screen::InfoVillage.new(id: target_id)
-			report.target = page.village.db_merge
+			pp = Screen::InfoVillage.new(id: target_id)
+			report.target = pp.village.db_merge
 		end
+		
 		begin
 			report.origin = Village.where(vid: page.search('#attack_info_att .village_anchor').attr('data-id').value).first
 		rescue => e

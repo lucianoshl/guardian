@@ -38,7 +38,7 @@ class Mobile::ReportView < Mobile::Base
 		end
 		begin
 			report.origin = Village.where(vid: page.search('#attack_info_att .village_anchor').attr('data-id').value).first
-		rescue e
+		rescue => e
 			raise Exception.new("Erro ao parsear o report #{page.uri}")
 		end
 

@@ -5,9 +5,9 @@ class Task::AutoRecruit < Task::Abstract
   def run
     dates = []
     Village.my.map do |village|
-      if (!village.model.nil? && village.disable_auto_recruit != true)
+      if (!village.model.nil?)
         # begin
-          recruit(village)
+          recruit(village) if (village.disable_auto_recruit != true)
           dates << build(village)
           coins(village)
         # rescue Exception => e

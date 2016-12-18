@@ -16,12 +16,12 @@ class Task::AutoRecruit < Task::Abstract
         # end
       end
     end
-
+ 
     list = dates.flatten.compact.sort{|a,b| a <=> b}
 
     Rails.logger.info("date_list=#{list}")
 
-    next_hour = Time.zone.now + 1.hour
+    next_hour = Time.zone.now + self.class._performs_to
     return list.first if list.first <= (next_hour)
   end
 
@@ -63,7 +63,7 @@ class Task::AutoRecruit < Task::Abstract
     units_to_train = calculate_units_to_train(train_screen,village)
     percent_completed = calculate_percent_completed_units(train_screen.complete_units.clone.to_h,village)
 
-    trail_util = Time.zone.now + 1.hour
+    trail_util = Time.zone.now + self.class._performs_to + 10.minutes
 
     to_train = Troop.new
 
@@ -74,7 +74,7 @@ class Task::AutoRecruit < Task::Abstract
     release_times = train_screen.release_time.clone
 
     loop do 
-      release_times = release_times.select{|k,v| v <= Time.zone.now + 1.hour}
+      release_times = release_times.select{|k,v| v <= Time.zone.now + self.class._performs_to}
       percent_completed = calculate_percent_completed_units(current_units.to_h,village)
       target_units = percent_completed.to_h.select {|unit,percent| percent != 1}.keys
       target_buildings = target_units.map{|unit| Troop.get_building(unit)}.uniq

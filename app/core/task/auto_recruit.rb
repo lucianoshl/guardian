@@ -1,29 +1,4 @@
-class Task::AutoRecruit < Task::Abstract
-
-  performs_to 1.hour
-
-  def run
-    dates = []
-    Village.my.map do |village|
-      if (!village.model.nil?)
-        # begin
-          recruit(village) if (village.disable_auto_recruit != true)
-          dates << build(village)
-          coins(village)
-        # rescue Exception => e
-          # Rails.logger.error e.message
-          # Rails.logger.error e.backtrace.join("\n")
-        # end
-      end
-    end
- 
-    list = dates.flatten.compact.sort{|a,b| a <=> b}
-
-    Rails.logger.info("date_list=#{list}")
-
-    next_hour = Time.zone.now + self.class._performs_to
-    return list.first if list.first <= (next_hour)
-  end
+module Coiner
 
   def coins(village)
     snob_screen = Screen::Snob.new(village: village.vid)
@@ -35,28 +10,119 @@ class Task::AutoRecruit < Task::Abstract
     end
   end
 
-  def calculate_units_to_train(train_screen,village)
-    if (village.model.troops.nil?)
-      return Troop.new
+end
+
+module Builder
+
+  def build village
+    main_screen = Screen::Main.new(village: village.vid)
+
+    config = current_build_config(main_screen,village.model)
+    return main_screen.queue.last.completed_in if (main_screen.queue.size >= 2)
+
+    current = Model::Buildings.new(main_screen.buildings.map{|k,v| [k,v.level]}.to_h)
+
+    # remove queue
+    main_screen.queue.map do |queue_item|
+      current[queue_item.building] += 1
     end
 
-    to_train = (village.model.troops - train_screen.complete_units).remove_negative
-    return to_train
-  end
+    remaining = (config - current).remove_negative
+    remaining = remove_without_population(remaining,main_screen)
+    remaining = build_priorities(remaining,main_screen,config)
 
-  def calculate_percent_completed_units(current_units,village)
-    result = {}
-    village.model.troops.to_h.each do |unit,total|
-      result[unit] = total.to_f != 0 ? current_units[unit]/total.to_f : 1
+    to_build = (remaining.attributes.select{|k,v| v > 0 }.map do |k,v|
+      next if main_screen.buildings_metadata[k].nil?
+
+      item = OpenStruct.new
+      item.name = k
+      item.current_level = current[k]
+      item.next_level = item.current_level + 1
+      item.cost = main_screen.buildings_metadata[k].cost(item.next_level)
+      item.remaining_resources_if_build = (main_screen.resources - item.cost).total
+      item 
+    end).compact
+
+    to_build = to_build.select {|a| !(main_screen.resources - a.cost).has_negative? }
+
+    sorted = to_build.sort{|b,a| a.remaining_resources_if_build <=> b.remaining_resources_if_build }
+
+    wall_item = sorted.select{|a| a.name == "wall"}
+
+    if (wall_item.size > 0)
+      sorted = wall_item
     end
-    return OpenStruct.new result
+
+    target = sorted.first
+
+    return if target.nil? || !main_screen.resources.include?(target.cost)
+
+    build_time = main_screen.build(target.name)
+
+    if (main_screen.queue.size < 2)
+      next_execute = Time.zone.now
+    else
+      next_execute = build_time
+    end
+
+    if (next_execute <= (Time.zone.now + self.class._performs_to))
+      return next_execute
+    end
+
+    return nil
+
   end
 
-  def compute_less_complete_unit(target_train,percent_completed)
-    units = target_train.to_h.select{|k,v| v>0 }.keys
-    percent_completed = percent_completed.to_h.select {|k,v| units.include?(k.to_s) }
-    unit = percent_completed.sort{|a,b| a[1] <=> b[1] }[0][0]
+
+  def build_priorities(current,main_screen,config)
+    result = current.clone
+
+    storage_info = main_screen.buildings["storage"]
+    real_storage_alert = storage_info.level != 30 && main_screen.storage_alert && !storage_info.in_queue
+
+    farm_info = main_screen.buildings["farm"]
+    real_farm_alert = farm_info.level != 30 && main_screen.farm_alert && !farm_info.in_queue
+
+    if (real_farm_alert || real_storage_alert)
+      result.attributes.map do |k,v|
+        result[k] = 0
+      end
+      result['farm'] = 1 if (real_farm_alert)
+      result['storage'] = 1 if (real_storage_alert)
+    end
+
+    return result
   end
+
+  def remove_without_population(current,main_screen)
+    result = current.clone
+    result.my_fields.map do |building|
+      building_meta = main_screen.buildings[building]
+      if (!building_meta.nil? && result[building] > 0 && building_meta.pop > main_screen.free_population)
+        result[building] = 0
+      end
+    end
+    return result
+  end
+
+  def current_build_config(main_screen,model)
+    current = Model::Buildings.new(main_screen.buildings.map{|k,v| [k,v.level]}.to_h)
+    config = nil
+
+    priorities = model.priorities.clone.push(model.buildings)
+
+    priorities.map do |config_item|
+      config = config_item
+      break if (config_item - current).remove_negative.total > 0
+    end
+
+    return config
+  end
+
+end
+
+module Recruiter
+
 
   def recruit village
     train_screen = Screen::Train.new(village: village.vid)
@@ -122,113 +188,62 @@ class Task::AutoRecruit < Task::Abstract
     return nil
   end
 
-  # def two_itens_in_build_queue?(village)
-  #   main_screen = Screen::Main.new(id: village.vid)
-  #   main_screen.queue.size >= 1
-  # end
+  def calculate_units_to_train(train_screen,village)
+    if (village.model.troops.nil?)
+      return Troop.new
+    end
 
-  def build_priorities(current,main_screen,config)
-    result = current.clone
+    to_train = (village.model.troops - train_screen.complete_units).remove_negative
+    return to_train
+  end
 
-    storage_info = main_screen.buildings["storage"]
-    real_storage_alert = storage_info.level != 30 && main_screen.storage_alert && !storage_info.in_queue
+  def calculate_percent_completed_units(current_units,village)
+    result = {}
+    village.model.troops.to_h.each do |unit,total|
+      result[unit] = total.to_f != 0 ? current_units[unit]/total.to_f : 1
+    end
+    return OpenStruct.new result
+  end
 
-    farm_info = main_screen.buildings["farm"]
-    real_farm_alert = farm_info.level != 30 && main_screen.farm_alert && !farm_info.in_queue
+  def compute_less_complete_unit(target_train,percent_completed)
+    units = target_train.to_h.select{|k,v| v>0 }.keys
+    percent_completed = percent_completed.to_h.select {|k,v| units.include?(k.to_s) }
+    unit = percent_completed.sort{|a,b| a[1] <=> b[1] }[0][0]
+  end
 
-    if (real_farm_alert || real_storage_alert)
-      result.attributes.map do |k,v|
-        result[k] = 0
+end
+
+
+
+class Task::AutoRecruit < Task::Abstract
+
+  include Coiner
+  include Recruiter
+  include Builder
+
+  performs_to 1.hour
+
+  def run
+    dates = []
+    Village.my.map do |village|
+      if (!village.model.nil?)
+        # begin
+          recruit(village) if (village.disable_auto_recruit != true)
+          dates << build(village)
+          coins(village)
+        # rescue Exception => e
+          # Rails.logger.error e.message
+          # Rails.logger.error e.backtrace.join("\n")
+        # end
       end
-      result['farm'] = 1 if (real_farm_alert)
-      result['storage'] = 1 if (real_storage_alert)
     end
+ 
+    list = dates.flatten.compact.sort{|a,b| a <=> b}
 
-    return result
-  end
+    Rails.logger.info("date_list=#{list}")
 
-  def remove_without_population(current,main_screen)
-    result = current.clone
-    result.my_fields.map do |building|
-      building_meta = main_screen.buildings[building]
-      if (!building_meta.nil? && result[building] > 0 && building_meta.pop > main_screen.free_population)
-        result[building] = 0
-      end
-    end
-    return result
-  end
-
-  def current_build_config(main_screen,model)
-    current = Model::Buildings.new(main_screen.buildings.map{|k,v| [k,v.level]}.to_h)
-    config = nil
-
-    priorities = model.priorities.clone.push(model.buildings)
-
-    priorities.map do |config_item|
-      config = config_item
-      break if (config_item - current).remove_negative.total > 0
-    end
-
-    return config
-  end
-
-  def build village
-    main_screen = Screen::Main.new(village: village.vid)
-
-    config = current_build_config(main_screen,village.model)
-    return main_screen.queue.last.completed_in if (main_screen.queue.size >= 2)
-
-    current = Model::Buildings.new(main_screen.buildings.map{|k,v| [k,v.level]}.to_h)
-
-    # remove queue
-    main_screen.queue.map do |queue_item|
-      current[queue_item.building] += 1
-    end
-
-    remaining = (config - current).remove_negative
-    remaining = remove_without_population(remaining,main_screen)
-    remaining = build_priorities(remaining,main_screen,config)
-
-    to_build = (remaining.attributes.select{|k,v| v > 0 }.map do |k,v|
-      next if main_screen.buildings_metadata[k].nil?
-
-      item = OpenStruct.new
-      item.name = k
-      item.current_level = current[k]
-      item.next_level = item.current_level + 1
-      item.cost = main_screen.buildings_metadata[k].cost(item.next_level)
-      item.remaining_resources_if_build = (main_screen.resources - item.cost).total
-      item 
-    end).compact
-
-    to_build = to_build.select {|a| !(main_screen.resources - a.cost).has_negative? }
-
-    sorted = to_build.sort{|b,a| a.remaining_resources_if_build <=> b.remaining_resources_if_build }
-
-    wall_item = sorted.select{|a| a.name == "wall"}
-
-    if (wall_item.size > 0)
-      sorted = wall_item
-    end
-
-    target = sorted.first
-
-    return if target.nil? || !main_screen.resources.include?(target.cost)
-
-    build_time = main_screen.build(target.name)
-
-    if (main_screen.queue.size < 2)
-      next_execute = Time.zone.now
-    else
-      next_execute = build_time
-    end
-
-    if (next_execute <= (Time.zone.now + self.class._performs_to))
-      return next_execute
-    end
-
-    return nil
-
+    next_hour = Time.zone.now + self.class._performs_to
+    return list.first if list.first <= (next_hour)
   end
 
 end

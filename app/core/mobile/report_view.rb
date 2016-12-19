@@ -28,13 +28,16 @@ class Mobile::ReportView < Mobile::Base
  
 		report.status = enum[color.to_sym] || "error"
 
-		target_id = page.search('#attack_info_def .village_anchor').attr('data-id').value
+		target_element = page.search('#attack_info_def .village_anchor')
+		if (!target_element.empty?)
+			target_id = target_element.attr('data-id').value
 
-		begin
-			report.target = Village.find_by(vid: target_id)
-		rescue Mongoid::Errors::DocumentNotFound => e
-			pp = Screen::InfoVillage.new(id: target_id)
-			report.target = pp.village.db_merge
+			begin
+				report.target = Village.find_by(vid: target_id)
+			rescue Mongoid::Errors::DocumentNotFound => e
+				pp = Screen::InfoVillage.new(id: target_id)
+				report.target = pp.village.db_merge
+			end
 		end
 		
 		begin

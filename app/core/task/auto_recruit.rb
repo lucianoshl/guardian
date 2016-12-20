@@ -231,7 +231,6 @@ module Transporter
     end
 
     original_storage_use = Marshal.load(Marshal.dump(storage_use.clone)) # deep clone
-
     loop do
       exchange = false
 
@@ -321,13 +320,13 @@ class Task::AutoRecruit < Task::Abstract
 
   def run
     dates = []
-    # Village.my.map do |village|
-    #   if (!village.model.nil?)
-    #       recruit(village) if (village.disable_auto_recruit != true)
-    #       dates << build(village)
-    #       coins(village)
-    #   end
-    # end
+    Village.my.map do |village|
+      if (!village.model.nil?)
+          recruit(village) if (village.disable_auto_recruit != true)
+          dates << build(village)
+          coins(village)
+      end
+    end
 
     distribute_resources
  

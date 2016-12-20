@@ -240,8 +240,8 @@ module Transporter
 
         resources_target = storage_use[min_target]
         resources_origin = storage_use[max_target]
-        Rails.logger.info("target id #{min_target} with #{storage_use[min_target][resource]}")
-        Rails.logger.info("target id #{max_target} with #{storage_use[max_target][resource]}")
+        # Rails.logger.info("target id #{min_target} with #{storage_use[min_target][resource]}")
+        # Rails.logger.info("target id #{max_target} with #{storage_use[max_target][resource]}")
 
         resources_target.incoming ||= {}
         resources_target.outcoming ||= {}
@@ -251,7 +251,7 @@ module Transporter
 
 
         difference = (resources_target[resource] - resources_origin[resource]).abs
-        Rails.logger.info("difference #{difference} #{difference > 0.01}")
+        # Rails.logger.info("difference #{difference} #{difference > 0.01}")
 
         if ( difference > 0.01 &&
           resources_origin[resource] - resources_origin.storage_unit > 0 &&
@@ -270,9 +270,9 @@ module Transporter
           resources_origin.outcoming[min_target][resource] += 1
 
 
-          Rails.logger.info("Remove from #{max_target} to #{min_target}")
-          Rails.logger.info("now target id #{min_target} with #{storage_use[min_target][resource]}")
-          Rails.logger.info("now target id #{max_target} with #{storage_use[max_target][resource]}")
+          # Rails.logger.info("Remove from #{max_target} to #{min_target}")
+          # Rails.logger.info("now target id #{min_target} with #{storage_use[min_target][resource]}")
+          # Rails.logger.info("now target id #{max_target} with #{storage_use[max_target][resource]}")
 
           puts "exchange"
           exchange = true
@@ -328,7 +328,7 @@ class Task::AutoRecruit < Task::Abstract
       end
     end
 
-    distribute_resources
+    # distribute_resources
  
     list = dates.flatten.compact.sort{|a,b| a <=> b}
 

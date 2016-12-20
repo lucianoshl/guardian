@@ -49,6 +49,14 @@ class Resource
     return result
   end
 
+  def /(other)
+    result = OpenStruct.new self.clone.to_h
+    result.wood /= other
+    result.stone /= other
+    result.iron /= other
+    return result
+  end
+
   def +(other)
     result = self.clone
     result.wood += other.wood
@@ -63,6 +71,10 @@ class Resource
     result.stone -= other.stone
     result.iron -= other.iron
     return result
+  end
+
+  def to_h
+    { wood: wood, stone: stone, iron: iron }
   end
 
   def has_negative?

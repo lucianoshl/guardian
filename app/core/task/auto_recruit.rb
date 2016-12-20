@@ -213,6 +213,101 @@ module Recruiter
 
 end
 
+module Transporter
+
+  def distribute_resources
+
+    all_markets = Village.my.map {|v| Screen::Market.new(village: v.vid) }
+
+    markets = (all_markets.map {|a| [a.village.vid,a]}).to_h
+
+    return if (all_markets.size < 2)
+
+    storage_use = {}
+
+    all_markets.map do |market|
+      storage_use[market.village.vid] = (market.resources + market.trader.incomming)/market.storage_size.to_f
+      storage_use[market.village.vid].storage_unit = 1000/market.storage_size.to_f
+    end
+
+    original_storage_use = Marshal.load(Marshal.dump(storage_use.clone)) # deep clone
+
+    loop do
+      exchange = false
+
+      ['wood','stone','iron'].map do |resource|
+        puts "iterate"
+        min_target, max_target = get_min_max(storage_use,resource)
+
+        resources_target = storage_use[min_target]
+        resources_origin = storage_use[max_target]
+        Rails.logger.info("target id #{min_target} with #{storage_use[min_target][resource]}")
+        Rails.logger.info("target id #{max_target} with #{storage_use[max_target][resource]}")
+
+        resources_target.incoming ||= {}
+        resources_target.outcoming ||= {}
+
+        resources_origin.incoming ||= {}
+        resources_origin.outcoming ||= {}
+
+
+        difference = (resources_target[resource] - resources_origin[resource]).abs
+        Rails.logger.info("difference #{difference} #{difference > 0.01}")
+
+        if ( difference > 0.01 &&
+          resources_origin[resource] - resources_origin.storage_unit > 0 &&
+          resources_target[resource] + resources_target.storage_unit < 1 )
+
+          resources_target[resource] += resources_target.storage_unit
+
+          resources_target.incoming[max_target] ||= {}
+          resources_target.incoming[max_target][resource] ||= 0
+          resources_target.incoming[max_target][resource] += 1
+
+          resources_origin[resource] -= resources_origin.storage_unit
+
+          resources_origin.outcoming[min_target] ||= {}
+          resources_origin.outcoming[min_target][resource] ||= 0
+          resources_origin.outcoming[min_target][resource] += 1
+
+
+          Rails.logger.info("Remove from #{max_target} to #{min_target}")
+          Rails.logger.info("now target id #{min_target} with #{storage_use[min_target][resource]}")
+          Rails.logger.info("now target id #{max_target} with #{storage_use[max_target][resource]}")
+
+          puts "exchange"
+          exchange = true
+        end
+
+      end
+
+      break if (!exchange)
+    end
+
+    markets.map do |vid,market|
+      storage_use[vid].outcoming.map do |vid_target,resources|
+        market.send_resource(markets[vid_target].village,Resource.new(resources)*1000)
+      end
+    end
+
+
+  end
+
+  def get_min_max(storage_use,resource)
+    result = []
+
+    result[0] = storage_use.min do |a,b|
+      a[1][resource] <=> b[1][resource]
+    end
+
+    result[1] = storage_use.max do |a,b|
+      a[1][resource] <=> b[1][resource]
+    end
+
+    result.map{|a| a.first}
+  end
+end
+
 
 
 class Task::AutoRecruit < Task::Abstract
@@ -220,23 +315,21 @@ class Task::AutoRecruit < Task::Abstract
   include Coiner
   include Recruiter
   include Builder
+  include Transporter
 
   performs_to 1.hour
 
   def run
     dates = []
-    Village.my.map do |village|
-      if (!village.model.nil?)
-        # begin
-          recruit(village) if (village.disable_auto_recruit != true)
-          dates << build(village)
-          coins(village)
-        # rescue Exception => e
-          # Rails.logger.error e.message
-          # Rails.logger.error e.backtrace.join("\n")
-        # end
-      end
-    end
+    # Village.my.map do |village|
+    #   if (!village.model.nil?)
+    #       recruit(village) if (village.disable_auto_recruit != true)
+    #       dates << build(village)
+    #       coins(village)
+    #   end
+    # end
+
+    distribute_resources
  
     list = dates.flatten.compact.sort{|a,b| a <=> b}
 

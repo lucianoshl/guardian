@@ -54,6 +54,7 @@ RailsAdmin.config do |config|
     edit do
       field :coordinate
       field :origin
+      field :origin
       field :troop
       field :event_time
     end
@@ -61,6 +62,11 @@ RailsAdmin.config do |config|
     list do
       field :state
       field :coordinate
+      field :origin do
+        formatted_value do
+          "#{bindings[:object].origin.x}|#{bindings[:object].origin.y}"
+        end
+      end
       field :event_time
       field :scheduled do
         formatted_value do

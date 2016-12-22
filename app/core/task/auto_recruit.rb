@@ -230,12 +230,17 @@ module Transporter
       storage_use[market.village.vid].storage_unit = 1000/market.storage_size.to_f
     end
 
+    max_storage_unit = storage_use.values.map(&:storage_unit).max
+
     original_storage_use = Marshal.load(Marshal.dump(storage_use.clone)) # deep clone
+    runnings_limit = 2000
+    runnings = 0
     loop do
       exchange = false
 
       ['wood','stone','iron'].map do |resource|
         puts "iterate"
+        runnings += 1
         min_target, max_target = get_min_max(storage_use,resource)
 
         resources_target = storage_use[min_target]
@@ -251,9 +256,8 @@ module Transporter
 
 
         difference = (resources_target[resource] - resources_origin[resource]).abs
-        # Rails.logger.info("difference #{difference} #{difference > 0.01}")
 
-        if ( difference > 0.01 &&
+        if ( difference > max_storage_unit &&
           resources_origin[resource] - resources_origin.storage_unit > 0 &&
           resources_target[resource] + resources_target.storage_unit < 1 )
 
@@ -278,11 +282,14 @@ module Transporter
           exchange = true
         end
 
+
+
       end
 
+      break if (runnings >= runnings_limit)
       break if (!exchange)
     end
-
+    
     markets.map do |vid,market|
       storage_use[vid].outcoming.map do |vid_target,resources|
         market.send_resource(markets[vid_target].village,Resource.new(resources)*1000)
@@ -328,14 +335,14 @@ class Task::AutoRecruit < Task::Abstract
       end
     end
 
-    # distribute_resources
+    distribute_resources
  
     list = dates.flatten.compact.sort{|a,b| a <=> b}
 
     Rails.logger.info("date_list=#{list}")
 
     next_hour = Time.zone.now + self.class._performs_to
-    return list.first if list.first <= (next_hour)
+    !list.first.nil? && list.first <= (next_hour) ? list.first : next_hour
   end
 
 end

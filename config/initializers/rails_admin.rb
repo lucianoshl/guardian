@@ -54,7 +54,6 @@ RailsAdmin.config do |config|
     edit do
       field :coordinate
       field :origin
-      field :origin
       field :troop
       field :event_time
     end

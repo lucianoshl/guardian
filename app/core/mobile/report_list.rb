@@ -27,9 +27,11 @@ class Mobile::ReportList < Mobile::Base
 				raise "Error reading report=#{report_id} Errors = #{report_screen.report.errors.inspect}" if (!saved && !report_screen.report.save)
 
 				my_attack_troops = Troop.new(report_screen.report.origin_troops)
+				my_looses = Troop.new(report_screen.report.origin_troops_losses)
 				target_troops = Troop.new(report_screen.report.target_troops)
 
-				not_erase = my_attack_troops.snob > 0 || my_attack_troops.spy > 50 || target_troops.total > 0
+				not_erase = my_attack_troops.snob > 0 || my_attack_troops.population >= 5000 || my_attack_troops.spy > 50 || target_troops.total > 0
+				my_looses.population > 500 || my_attack_troops.population == my_looses.population
 
 				erase(report_id) if !not_erase
 			end	

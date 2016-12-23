@@ -11,7 +11,6 @@ class Task::PillageAround < Task::Abstract
   end
 
   def run
-    return Time.zone.now + 10.minutes
     Screen::Place.reset
 
     Mobile::ReportList.load_all

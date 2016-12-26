@@ -8,33 +8,34 @@ class Object
   end
   def parse_datetime
       result = nil
-      if self.include?('hoje')
-          formated = gsub(/hoje ../, Date.today.to_s)
-          result = Time.zone.parse(formated)
-      elsif self.include?('amanhã') then
-          tomorrow = Date.today + 1.day
-          formated = gsub(/amanhã ../, tomorrow.to_s)
-          result =    Time.zone.parse(formated)
-      elsif self.include?('em') then
-          date = scan(/em (\d+)\.(\d+)\./).flatten.concat([Time.now.year]).join('/').to_date
-          hour = scan(/\d+\:\d+/).flatten.first
-          result = Time.zone.parse("#{date} #{hour}")
-          raise Exception.new("result < Time.now") if result < Time.now
-          result =    result
-      elsif scan(/... \d{1,2}, \d{4}/).size > 0 then
-          raw = self.gsub('Set','Sep').gsub('Out','Oct').gsub('Dez','Dec')
-          result = DateTime.strptime(raw,"%b %d, %Y %H:%M:%S")
-          result = result.to_datetime.change(offset: Time.zone.now.strftime("%z"))
+      begin
+        if self.include?('hoje')
+            formated = gsub(/hoje ../, Date.today.to_s)
+            result = Time.zone.parse(formated)
+        elsif self.include?('amanhã') then
+            tomorrow = Date.today + 1.day
+            formated = gsub(/amanhã ../, tomorrow.to_s)
+            result =    Time.zone.parse(formated)
+        elsif self.include?('em') then
+            date = scan(/em (\d+)\.(\d+)\./).flatten.concat([Time.now.year]).join('/').to_date
+            hour = scan(/\d+\:\d+/).flatten.first
+            result = Time.zone.parse("#{date} #{hour}")
+            raise Exception.new("result < Time.now") if result < Time.now
+            result =    result
+        elsif scan(/... \d{1,2}, \d{4}/).size > 0 then
+            raw = self.gsub('Set','Sep').gsub('Out','Oct').gsub('Dez','Dec')
+            result = DateTime.strptime(raw,"%b %d, %Y %H:%M:%S")
+            result = result.to_datetime.change(offset: Time.zone.now.strftime("%z"))
 
-      elsif scan(/\d+\.\d+\. .. \d+\:\d+/).size > 0 then  # ["22.09. às 13:45"]
-          date,hour = self.split('. às ')
-          date = date.split('.').concat([Time.now.year]).join('/').to_date
-          result = Time.zone.parse("#{date} #{hour}")
-      # elsif scan(/\w{3} \d+, \d+:\d+/).size > 0
-      #     binding.pry
-      #     result = self.to_datetime.in_time_zone
-      else
-          raise Exception.new("unsupported parse_datetime date") 
+        elsif scan(/\d+\.\d+\. .. \d+\:\d+/).size > 0 then  # ["22.09. às 13:45"]
+            date,hour = self.split('. às ')
+            date = date.split('.').concat([Time.now.year]).join('/').to_date
+            result = Time.zone.parse("#{date} #{hour}")2
+        else
+            raise Exception.new("unsupported parse_datetime date") 
+        end
+      rescue Exception => e
+        raise Exception.new("Error parsing date #{self} #{e} #{e.message}")
       end
       result
   end

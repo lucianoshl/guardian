@@ -30,7 +30,7 @@ class Object
         elsif scan(/\d+\.\d+\. .. \d+\:\d+/).size > 0 then  # ["22.09. às 13:45"]
             date,hour = self.split('. às ')
             date = date.split('.').concat([Time.now.year]).join('/').to_date
-            result = Time.zone.parse("#{date} #{hour}")2
+            result = Time.zone.parse("#{date} #{hour}")
         else
             raise Exception.new("unsupported parse_datetime date") 
         end

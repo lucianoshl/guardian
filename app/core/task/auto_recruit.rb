@@ -291,8 +291,10 @@ module Transporter
     end
     
     markets.map do |vid,market|
-      storage_use[vid].outcoming.map do |vid_target,resources|
-        market.send_resource(markets[vid_target].village,Resource.new(resources)*1000)
+      if (!storage_use[vid].outcoming.nil?)
+        storage_use[vid].outcoming.map do |vid_target,resources|
+          market.send_resource(markets[vid_target].village,Resource.new(resources)*1000)
+        end
       end
     end
 

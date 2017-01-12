@@ -9,6 +9,8 @@ class Parser::InfoPlayer < Parser::Abstract
     if (!@page.search('a[href*=info_ally]').empty?)
     	screen.ally_id = @page.search('a[href*=info_ally]').attr('href').value.extract_number
     end
+
+    screen.villages = @page.search('#villages_list .village_anchor').map{|a| a.attr('data-id').to_i }
   end
 
 end

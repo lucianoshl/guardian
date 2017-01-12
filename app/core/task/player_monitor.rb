@@ -7,7 +7,19 @@ class Task::PlayerMonitor < Task::Abstract
   def run(itens=nil)
     Rails.logger.info("PlayerMonitor start")
 
-    my_villages = itens || Village.my.all.to_a
+    my_villages = itens
+
+    player = User.first.player
+    if (!player.nil?)
+      player_screen = Screen::InfoPlayer.new(id: player.pid)
+
+      my_villages = player_screen.villages.map do |id| 
+        Screen::InfoVillage.new(id: id).village
+      end
+    else 
+      my_villages = Village.my.all.to_a
+    end
+
     distance = Config.pillager.distance(10) 
     targets = Screen::Map.neighborhood(my_villages,distance).villages.flatten.uniq
 

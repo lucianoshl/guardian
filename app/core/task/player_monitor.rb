@@ -4,62 +4,67 @@ class Task::PlayerMonitor < Task::Abstract
   
   sleep? false 
 
-  def run(itens=nil)
-    Rails.logger.info("PlayerMonitor start")
+  def save_my_villages
+    player_screen = Screen::InfoPlayer.new(id: User.first.player.pid)
 
-    my_villages = itens
-
-    player = User.first.player
-    if (!player.nil?)
-      player_screen = Screen::InfoPlayer.new(id: player.pid)
-
-      my_villages = player_screen.villages.map do |id| 
-        Screen::InfoVillage.new(id: id).village
-      end
-    else 
-      my_villages = Village.my.all.to_a
+    my_villages = player_screen.villages.map do |id| 
+      Screen::InfoVillage.new(id: id).village
     end
 
-    distance = Config.pillager.distance(10) 
+    merge(my_villages)
+    
+    return Village.my.all
+  end
+
+  def merge(villages)
+      saved = Village.in(vid: villages.map(&:vid)).to_a.map{|v| [v.vid,v] }.to_h
+
+      villages.map do |village|
+        merge_one(village,saved[village.vid]).save
+      end
+  end
+
+  def merge_one(extracted,saved)
+    village = saved || Village.new
+    village.vid = extracted.vid
+    village.x = extracted.x
+    village.y = extracted.y
+    village.name = extracted.name
+    village.points = extracted.points 
+    village.player = @players[extracted.player_id]
+    return village
+  end
+
+  def run
+    Rails.logger.info("PlayerMonitor start")
+
+    @allies = [] # cache after
+    @players = Player.all.to_a.map { |p| [p.pid,p] }.to_h
+
+    my_villages = save_my_villages
+
+    distance = Config.pillager.distance(10)  
     targets = Screen::Map.neighborhood(my_villages,distance).villages.flatten.uniq
 
     saved = Village.in(vid: targets.map(&:vid)).to_a.map{|v| [v.vid,v] }.to_h
 
     Rails.logger.info("Saving allies and players start")
-    allies = save_allies(targets)
-    players = save_players(targets,allies)
+    @allies = save_allies(targets)
+    save_players(targets)
+    @players = Player.all.to_a.map { |p| [p.pid,p] }.to_h
     Rails.logger.info("Saving allies and players end")
 
-    pair = targets.map do |target|
-      distances = my_villages.map do |village|
-        {target: target, origin: village, distance: village.distance(target)}
-      end
-      distances.sort{|a,b| a[:distance]<=>b[:distance]}.first
-    end
-
-    targets = pair.sort{|a,b| a[:distance]<=>b[:distance]}.map {|a| a[:target]}
-
-    Village.not_in(vid: targets.map(&:vid)).delete_all
-
     Rails.logger.info("Merging new information with saved villages start")
-    targets = (targets.pmap do |item|
-      village = saved[item.vid] || Village.new
-      database_village = village.clone
-      village.vid = item.vid
-      village.x = item.x
-      village.y = item.y
-      village.name = item.name
-      village.points_history ||= []
-      if (village.points_history.map{|a| a[:points] }.last != item.points)
-        register_point_modification(village,item)
+    # targets_to_save = (targets.map do |item|
+    targets_to_save = (Parallel.map(targets, { progress: "Merging", in_threads: 3 }) do |item|
+
+      village = merge_one(item,saved[item.vid])
+      database_village = nil
+      if (!saved[item.vid].nil?)
+        database_village = saved[item.vid].clone.attributes.clone
+        database_village.delete('next_event')
+        database_village.delete('_id')
       end
-      village.points = item.points
-      village.is_barbarian = item.player_id.nil?
-      village.player = item.player.nil? ? nil : players[item.player.pid]
-      
-      database_village = database_village.attributes.clone
-      database_village.delete('next_event')
-      database_village.delete('_id')
 
       village_attr = village.attributes.clone
       village_attr.delete('next_event')
@@ -72,10 +77,10 @@ class Task::PlayerMonitor < Task::Abstract
       end
     end).compact
     Rails.logger.info("Merging new information with saved villages end")
-
-    Rails.logger.info("Saving #{targets.size} villages")
-    targets.each_with_index.to_a.pmap do |target,i|
-      puts "#{i+1}/#{targets.size}"
+    
+    Rails.logger.info("Saving #{targets_to_save.size} villages")
+    targets_to_save.each_with_index.to_a.pmap do |target,i|
+      puts "#{i+1}/#{targets_to_save.size}"
       target.save
     end
     Rails.logger.info("Villages saved!")
@@ -89,21 +94,18 @@ class Task::PlayerMonitor < Task::Abstract
     village.points_history << { date: Time.zone.now, points: item.points, difference: difference }
   end
 
-  def save_players targets,allies
+  def save_players targets
     all = targets.map(&:player).compact.uniq{|a| a.pid }
 
-    saved = Player.in(pid: all.map(&:pid)).to_a.map{|v| [v.pid,v] }.to_h
-
     players = all.pmap do |item|
-      player = saved[item.pid] || Player.new
+      player = @players[item.pid] || Player.new
       player.pid = item.pid
       player.name = item.name
       player.points = item.points
-      player.ally = item.ally.nil? ? nil : allies[item.ally.aid]
+      player.ally = item.ally.nil? ? nil : @allies[item.ally.aid]
       player
     end
     players.pmap(&:save)
-    players.map{|p| [p.pid,p] }.to_h
   end
 
   def save_allies targets

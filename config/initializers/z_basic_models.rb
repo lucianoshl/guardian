@@ -15,12 +15,12 @@ if (first_execution)
 
 		x,y = player_info_page.body.scan(/\d{3}\|\d{3}/).first.split("|").map(&:to_i)
 
-
-		Task::PlayerMonitor.new.run([Village.new(x: x, y: y)])
-	  	Task::UpdateDailyInformation.new.update_ally_partners
 		
 		user.player = Player.find_by(name: user.name)
 		user.save
+		
+		Task::PlayerMonitor.new.run
+	  	Task::UpdateDailyInformation.new.update_ally_partners
 	end
 
 	Screen::WorldConfig.new.units.map(&:save) if (Unit.count.zero?)

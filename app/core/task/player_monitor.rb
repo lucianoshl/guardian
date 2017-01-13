@@ -31,7 +31,8 @@ class Task::PlayerMonitor < Task::Abstract
     village.y = extracted.y
     village.name = extracted.name
     village.points = extracted.points 
-    village.player = @players[extracted.player_id]
+    player_id = extracted.player_id || (extracted.player.nil? ? nil : extracted.player.pid)
+    village.player = @players[player_id]
     return village
   end
 
@@ -58,16 +59,19 @@ class Task::PlayerMonitor < Task::Abstract
     # targets_to_save = (targets.map do |item|
     targets_to_save = (Parallel.map(targets, { progress: "Merging", in_threads: 3 }) do |item|
 
+      
       village = merge_one(item,saved[item.vid])
       database_village = nil
       if (!saved[item.vid].nil?)
         database_village = saved[item.vid].clone.attributes.clone
         database_village.delete('next_event')
+        database_village.delete('model_id')
         database_village.delete('_id')
       end
 
       village_attr = village.attributes.clone
       village_attr.delete('next_event')
+      village_attr.delete('model_id')
       village_attr.delete('_id') 
 
       if (village_attr == database_village)
@@ -77,7 +81,7 @@ class Task::PlayerMonitor < Task::Abstract
       end
     end).compact
     Rails.logger.info("Merging new information with saved villages end")
-    
+
     Rails.logger.info("Saving #{targets_to_save.size} villages")
     targets_to_save.each_with_index.to_a.pmap do |target,i|
       puts "#{i+1}/#{targets_to_save.size}"

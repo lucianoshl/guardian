@@ -56,6 +56,7 @@ class Task::PillageAround < Task::Abstract
         next
       rescue Exception => e
         Rails.logger.error("Error in village #{target.to_s}".white.on_red)
+        next
       end
 
       info("Finish Running for #{@target}")

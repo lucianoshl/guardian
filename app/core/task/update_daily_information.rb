@@ -7,7 +7,7 @@ class Task::UpdateDailyInformation < Task::Abstract
     # renew_village_reserve
     # generate_player_arround
     update_profile_photo
-    clean_information
+    # clean_information
   end
 
   def update_ally_partners

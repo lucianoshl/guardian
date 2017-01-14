@@ -54,10 +54,10 @@ class Task::PillageAround < Task::Abstract
       rescue DeletedPlayerException => e
         target.delete
         next
-      rescue Exception =>
+      rescue Exception => e
         Rails.logger.error("Error in village #{target.to_s}".white.on_red)
       end
-      
+
       info("Finish Running for #{@target}")
       raise Exception.new("state not returned _next_event or state") if (_next_event.nil? || state.nil?)
 

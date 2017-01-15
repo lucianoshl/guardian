@@ -1,6 +1,9 @@
 class Decorator::Global
 
 	def html(page,request)
+    @my_villages = Village.my_cache.sort do |a,b|
+      a.significant_name <=> b.significant_name
+    end
 
 		create_menu(page,request)
 		create_arrows(page,request)
@@ -8,7 +11,6 @@ class Decorator::Global
 	end
 
 	def create_menu(page,request)
-
 		current_village_id = (request.url.scan(/village=(\d+)/).flatten.first || @my_villages.first.vid).to_i
 
 		html = %{
@@ -94,9 +96,6 @@ class Decorator::Global
 	end
 
 	def create_arrows(page,request)
-		@my_villages = Village.my_cache.sort do |a,b|
-			a.significant_name <=> b.significant_name
-		end
 
 		current_village_id = (request.url.scan(/village=(\d+)/).flatten.first || @my_villages.first.vid).to_i
 

@@ -67,7 +67,7 @@ class TribalWarsController < ApplicationController
     rescue
     end
 
-    Village.my.all.to_a.map do |village|
+    Village.my_cache.map do |village|
       doc.search("a:contains('#{village.name}')").each do |element|
         if (element.attr('href').include?(village.vid.to_s))
 

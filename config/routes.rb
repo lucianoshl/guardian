@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   get 'cookie/latest'
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  root 'task#index'
+  # root 'transclude#request'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

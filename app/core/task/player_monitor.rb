@@ -38,6 +38,7 @@ class Task::PlayerMonitor < Task::Abstract
 
   def run
     Rails.logger.info("PlayerMonitor start")
+    Rails.cache.delete('Village.my')
 
     @allies = [] # cache after
     @players = Player.all.to_a.map { |p| [p.pid,p] }.to_h

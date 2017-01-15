@@ -198,13 +198,15 @@ class Village
 
   def significant_name
     if (self.model.nil?)
-      return self.label || "SEM MODELO"
+      # return self.label || "SEM MODELO"
+      return "SEM MODELO"
     end
 
     result = self.model.name
 
     if (!self.label.nil?)
-      result = self.label + '-' + result
+      # result = self.label + '-' + result
+      result = result
     end
     
     return result + '-' + vid.to_s

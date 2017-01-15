@@ -2,6 +2,98 @@ class Decorator::Global
 
 	def html(page,request)
 
+		create_menu(page,request)
+		create_arrows(page,request)
+		return page
+	end
+
+	def create_menu(page,request)
+
+		current_village_id = (request.url.scan(/village=(\d+)/).flatten.first || @my_villages.first.vid).to_i
+
+		html = %{
+<tr>
+  <td colspan="6">
+    <table id="quickbar_inner" style="border-collapse: collapse;" width="100%">
+      <tbody>
+        <tr class="topborder">
+          <td class="left"> </td>
+          <td class="main"> </td>
+          <td class="right"> </td>
+        </tr>
+        <tr>
+          <td class="left"> </td>
+          <td id="quickbar_contents" class="main">
+            <ul class="menu quickbar">
+              <li class="quickbar_item" data-hotkey="1">
+                <span>
+                  <a class="quickbar_link" href="/game.php?village=#{current_village_id}&screen=main">
+                    <img class="quickbar_image" src="https://dsbr.innogamescdn.com/8.67/31781/graphic//buildings/main.png">Edifício principal
+                  </a>
+                </span>
+              </li>
+              <li class="quickbar_item" data-hotkey="2">
+                <span>
+                  <a class="quickbar_link" href="/game.php?village=#{current_village_id}&screen=train">
+                    <img class="quickbar_image" src="https://dsbr.innogamescdn.com/8.67/31781/graphic//buildings/barracks.png">Recrutar
+                  </a>
+                </span>
+              </li>
+              <li class="quickbar_item" data-hotkey="3">
+                <span>
+                  <a class="quickbar_link" href="/game.php?village=#{current_village_id}&screen=snob">
+                    <img class="quickbar_image" src="https://dsbr.innogamescdn.com/8.67/31781/graphic//buildings/snob.png">Academia
+                  </a>
+                </span>
+              </li>
+              <li class="quickbar_item" data-hotkey="4">
+                <span>
+                  <a class="quickbar_link" href="/game.php?village=#{current_village_id}&screen=smith">
+                    <img class="quickbar_image" src="https://dsbr.innogamescdn.com/8.67/31781/graphic//buildings/smith.png">Ferreiro
+                  </a>
+                </span>
+              </li>
+              
+              <li class="quickbar_item" data-hotkey="5">
+                <span>
+                  <a class="quickbar_link" href="/game.php?village=#{current_village_id}&screen=place">
+                    <img class="quickbar_image" src="https://dsbr.innogamescdn.com/8.67/31781/graphic//buildings/place.png">Praça de reunião
+                  </a>
+                </span>
+              </li>
+              
+              <li class="quickbar_item" data-hotkey="6">
+                <span>
+                  <a class="quickbar_link" href="/game.php?village=#{current_village_id}&screen=market">
+                    <img class="quickbar_image" src="https://dsbr.innogamescdn.com/8.67/31781/graphic//buildings/market.png">Mercado
+                  </a>
+                </span>
+              </li>
+            </ul>
+          </td>
+          <td class="right"> </td>
+        </tr>
+        <tr class="bottomborder">
+          <td class="left"> </td>
+          <td class="main"> </td>
+          <td class="right"> </td>
+        </tr>
+        <tr>
+          <td class="shadow" colspan="3">
+            <div class="leftshadow"> </div>
+            <div class="rightshadow"> </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </td>
+</tr>
+		}
+
+		page.search('#menu_row2').first.parents(6).add_previous_sibling(html)
+	end
+
+	def create_arrows(page,request)
 		@my_villages = Village.my_cache.sort do |a,b|
 			a.significant_name <=> b.significant_name
 		end
@@ -38,36 +130,14 @@ class Decorator::Global
 
 		page.search('#menu_row2_village').first.add_previous_sibling(left)
 		page.search('#menu_row2_village').first.add_previous_sibling(right)
-
-
-
-						
-		# if (!page.search('.menu_column').first.nil?)
-		# 	clone_menu = page.search('.menu_column').first.clone
-		# 	clone_menu.search('.menu-column-item').map(&:parent).map(&:remove)
-		# 	# clone_menu_item = clone_menu.search('td').first
-		# 	# clone_menu.search('td').remove
-
-		# 	# page.search('a[href*=overview_villages]').first.parent.add_child(clone_menu)
-		# 	.map do |village|
-		# 		clone_menu.search('.bottom').first.before(create_menu(page,village,request))
-		# 	end
-
-		# 	# binding.pry
-		# 	page.search('a[href*=overview_villages]').first.parent.add_child(clone_menu)
-		# 	# page.search('.menu_column').first.remove
-		# end
-
-
-
-		return page
 	end
 
-	def create_menu(page,village,request)
-		menu = page.search('.menu_column tr').first.clone
-		menu.search('a').first.content = village.significant_name
-		menu.search('a').first.attributes['href'].value = request.original_url.gsub(/village=\d+/,"village=#{village.vid}")
-		menu
-	end
+	# def create_menu(page,village,request)
+	# 	menu = page.search('.menu_column tr').first.clone
+	# 	menu.search('a').first.content = village.significant_name
+	# 	menu.search('a').first.attributes['href'].value = request.original_url.gsub(/village=\d+/,"village=#{village.vid}")
+	# 	menu
+	# end
+
 
 end

@@ -1,12 +1,13 @@
 class Decorator::Global
 
 	def html(page,request)
-    @my_villages = Village.my_cache.sort do |a,b|
-      a.significant_name <=> b.significant_name
+    if (!page.search('.menu_column').first.nil?)
+      @my_villages = Village.my_cache.sort do |a,b|
+        a.significant_name <=> b.significant_name
+      end
+  		create_menu(page,request)
+  		create_arrows(page,request)
     end
-
-		create_menu(page,request)
-		create_arrows(page,request)
 		return page
 	end
 

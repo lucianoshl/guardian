@@ -27,10 +27,8 @@ module Builder
       current[queue_item.building] += 1
     end
 
-    pop = Population.from_config(village.model)
-    binding.pry
-
-
+    # pop = Population.from_config(village.model)
+    # binding.pry
 
     remaining = (config - current).remove_negative
     remaining = remove_without_population(remaining,main_screen)

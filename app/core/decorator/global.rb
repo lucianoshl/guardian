@@ -105,7 +105,10 @@ class Decorator::Global
 		index = @my_villages.index(current_village)
 
 		left = @my_villages[index-1]
-		right = @my_villages[index+1] 
+		right = @my_villages[index+1]
+    if (index+1 >= @my_villages.size)
+      right = @my_villages[0]
+    end
 
 		left = %{
 			<td class="box-item icon-box separate arrowCell">

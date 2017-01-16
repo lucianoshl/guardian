@@ -104,6 +104,11 @@ class Decorator::Global
 
 		index = @my_villages.index(current_village)
 
+    if (index.nil?)
+      index = 0
+    end
+
+
 		left = @my_villages[index-1]
 		right = @my_villages[index+1]
     if (index+1 >= @my_villages.size)

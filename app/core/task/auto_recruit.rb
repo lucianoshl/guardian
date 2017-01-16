@@ -301,7 +301,7 @@ module Transporter
     lower_villages = storage_levels.select {|village,level| level < 30}
 
     lower_villages.keys.map do |village_id|
-      target = 0.8
+      target = 0.6
       storage_use_transport[village_id].wood -= target - storage_use_transport[village_id].wood
       storage_use_transport[village_id].stone -= target - storage_use_transport[village_id].wood
       storage_use_transport[village_id].stone -= target - storage_use_transport[village_id].wood

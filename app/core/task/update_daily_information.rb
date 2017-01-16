@@ -4,10 +4,15 @@ class Task::UpdateDailyInformation < Task::Abstract
 
   def run
     update_ally_partners
+    # rename_villages
     # renew_village_reserve
     # generate_player_arround
     update_profile_photo
     # clean_information
+  end
+
+  def rename_villages
+    binding.pry
   end
 
   def update_ally_partners

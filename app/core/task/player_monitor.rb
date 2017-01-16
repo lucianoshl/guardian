@@ -8,6 +8,7 @@ class Task::PlayerMonitor < Task::Abstract
     player_screen = Screen::InfoPlayer.new(id: User.first.player.pid)
 
     my_villages = player_screen.villages.map do |id| 
+      sleep(0.2)
       Screen::InfoVillage.new(id: id).village
     end
 

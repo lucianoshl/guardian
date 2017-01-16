@@ -77,7 +77,12 @@ class TribalWarsController < ApplicationController
           #   name = village.label + '-' + name
           # end
           # element.content = element.content.gsub(village.name,name)
-          element.content = element.content.gsub(village.name,village.significant_name)
+          text_target = (element.search('span').children.select do |item|
+            item.to_s.include?(village.name)
+          end).first
+          if (!text_target.nil?)
+            text_target.content = text_target.content.gsub(village.name,village.significant_name)
+          end
         end
       end
     end

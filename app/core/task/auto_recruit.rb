@@ -239,6 +239,16 @@ module Transporter
       storage_use[market.village.vid].storage_unit = 1000/market.storage_size.to_f
     end
 
+    storage_levels = all_markets.map{|a| [a.village.vid,a.building_levels['storage'].to_i] }.to_h
+    lower_villages = storage_levels.select {|village,level| level < 30}
+
+    lower_villages.keys.map do |village_id|
+      storage_use[village_id].wood -= 0.9
+      storage_use[village_id].stone -= 0.9
+      storage_use[village_id].stone -= 0.9
+    end
+
+
     max_storage_unit = storage_use.values.map(&:storage_unit).max
 
     original_storage_use = Marshal.load(Marshal.dump(storage_use.clone)) # deep clone
@@ -254,15 +264,12 @@ module Transporter
 
         resources_target = storage_use[min_target]
         resources_origin = storage_use[max_target]
-        # Rails.logger.info("target id #{min_target} with #{storage_use[min_target][resource]}")
-        # Rails.logger.info("target id #{max_target} with #{storage_use[max_target][resource]}")
 
         resources_target.incoming ||= {}
         resources_target.outcoming ||= {}
 
         resources_origin.incoming ||= {}
         resources_origin.outcoming ||= {}
-
 
         difference = (resources_target[resource] - resources_origin[resource]).abs
 
@@ -282,23 +289,15 @@ module Transporter
           resources_origin.outcoming[min_target][resource] ||= 0
           resources_origin.outcoming[min_target][resource] += 1
 
-
-          # Rails.logger.info("Remove from #{max_target} to #{min_target}")
-          # Rails.logger.info("now target id #{min_target} with #{storage_use[min_target][resource]}")
-          # Rails.logger.info("now target id #{max_target} with #{storage_use[max_target][resource]}")
-
-          puts "exchange"
           exchange = true
         end
-
-
 
       end
 
       break if (runnings >= runnings_limit)
       break if (!exchange)
     end
-    
+
     markets.map do |vid,market|
       if (!storage_use[vid].outcoming.nil?)
         storage_use[vid].outcoming.map do |vid_target,resources|
@@ -306,7 +305,6 @@ module Transporter
         end
       end
     end
-
 
   end
 

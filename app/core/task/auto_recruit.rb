@@ -243,15 +243,17 @@ module Transporter
     lower_villages = storage_levels.select {|village,level| level < 30}
 
     lower_villages.keys.map do |village_id|
-      storage_use[village_id].wood -= 0.9
-      storage_use[village_id].stone -= 0.9
-      storage_use[village_id].stone -= 0.9
+      storage_use[village_id].wood -= 0.5
+      storage_use[village_id].stone -= 0.5
+      storage_use[village_id].stone -= 0.5
     end
 
 
     max_storage_unit = storage_use.values.map(&:storage_unit).max
 
     original_storage_use = Marshal.load(Marshal.dump(storage_use.clone)) # deep clone
+
+
     runnings_limit = 2000
     runnings = 0
     loop do

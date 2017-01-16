@@ -10,6 +10,11 @@ class Parser::ReportList < Parser::Basic
 
     end).compact
     
+    if (!@page.search('.evt-confirm').empty?)
+    	screen.erase_all_url = @page.search('.evt-confirm').attr('href').text
+    end
+    
+
   end
 
 end

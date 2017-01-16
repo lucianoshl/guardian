@@ -218,7 +218,13 @@ end
 
 module Transporter
 
+  def clean_reports
+    Screen::ReportList.new(mode: 'trade').clear_all
+  end
+
   def distribute_resources
+
+    clean_reports
 
     all_markets = Village.my.map {|v| Screen::Market.new(village: v.vid) }
 

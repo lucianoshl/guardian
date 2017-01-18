@@ -38,14 +38,37 @@ class TribalWarsController < ApplicationController
     else
       page = client.send(method,uri,headers)
     end
+    
+
+    if page.uri.to_s.include?('map.php')
+      json = JSON.parse(page.body)
+
+      json = convert_map_json(json)
+
+      render :text => json.to_json
+      return
+    end
 
     if (page.class == Mechanize::Image) 
-      binding.pry
       send_data page, type: page.response["content-type"], disposition: 'inline'
     else
       render :text => convert_links(page) 
     end
 
+  end
+
+  def convert_map_json(json)
+    village_map = Village.my_cache.map {|a| [a.vid,a]}.to_h
+    json.each_with_index do |item,index|
+      item["data"]["villages"].each_with_index do |item2,index2|
+        item2.map do |k,item3|
+          if (village_map.keys.include?(item3.first.to_i))
+            json[index]["data"]["villages"][index2][k][2] = village_map[item3.first.to_i].significant_name
+          end
+        end
+      end
+    end
+    return json
   end
 
   def get_parameters
@@ -67,22 +90,19 @@ class TribalWarsController < ApplicationController
     rescue
     end
 
-    Village.my_cache.map do |village|
-      doc.search("a:contains('#{village.name}')").each do |element|
-        if (element.attr('href').include?(village.vid.to_s))
+    Village.my_cache.pmap do |village|
+      title = doc.search('title').first
+      if (!title.content.scan("#{village.name} (#{village.x}|#{village.y})").empty?)
+        title.content = title.content.gsub(village.name,village.significant_name)
+      end
 
-          # name = village.model.name
+      doc.search("a[href*='#{village.vid}']").map do |element|
+        wrapper = element.search("*:contains('#{village.name}')").first
 
-          # if (!village.label.nil?)
-          #   name = village.label + '-' + name
-          # end
-          # element.content = element.content.gsub(village.name,name)
-          text_target = (element.search('span').children.select do |item|
-            item.to_s.include?(village.name)
-          end).first
-          if (!text_target.nil?)
-            text_target.content = text_target.content.gsub(village.name,village.significant_name)
-          end
+        if (!wrapper.nil?)
+          wrapper.content = wrapper.content.gsub(village.name,village.significant_name)
+        elsif (element.text.include?(village.name))
+          element.content = element.content.gsub(village.name,village.significant_name)
         end
       end
     end

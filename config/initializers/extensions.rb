@@ -119,8 +119,9 @@ end
 
 class Array
   def pmap
-    parameter = ENV["PMAP_THREADS"].nil? ? 1 : ENV["PMAP_THREADS"].to_i
-    Parallel.map(self, in_processes: parameter || 1){ |i| yield(i) }
+    # parameter = ENV["PMAP_THREADS"].nil? ? 1 : ENV["PMAP_THREADS"].to_i
+    parameter = 3
+    Parallel.map(self, in_threads: parameter || 1){ |i| yield(i) }
   end
 
   def pselect

@@ -1,0 +1,30 @@
+<table class="vis modemenu">
+	<tbody><tr>
+		<td class="selected" style="min-width: 80px">
+			<a href="<%= generate_url(screen: 'overview_villages', troops: 'troops') %>">Tropas </a>
+		</td>
+		<td style="min-width: 80px">
+			<a href="/game.php?village=16205&amp;screen=main&amp;mode=destroy">Demolição</a>
+		</td>
+	</tr>
+</tbody></table>
+<table id="production_table" class="vis overview_table" width="100%">
+	<tbody><tr>
+		<th>Aldeia</th>
+	</tr>
+	<% Village.my.sort{|a,b| a.significant_name <=> b.significant_name }.map do |village| %>
+	<tr class="nowrap <%= @vid == village.vid ? 'selected' : '' %> row_b">
+		<td>
+			<span class="quickedit-vn" data-id="16205">
+				<span class="quickedit-content">
+					<a href="/game.php?village=16205&amp;screen=overview">
+						<span class="quickedit-label" data-text="AppleRed">
+						<%= village.significant_name %>                </span>
+					</a>
+					<a class="rename-icon" href="#" title="Renomear"></a>
+				</span>
+			</span>
+		</td>
+	</tr>
+	<% end %>
+</tbody></table>

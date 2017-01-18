@@ -4,6 +4,10 @@ Rails.application.routes.draw do
 
   get 'config/index'
 
+  get 'game.php' => 'overview_villages#troops',
+    :constraints => lambda { |request| 
+      request.params[:mode] == "troops" and request.params[:screen] == "overview_villages" }
+
 
   get 'game.php' => 'tribal_wars#proxy'
   post 'game.php' => 'tribal_wars#proxy'

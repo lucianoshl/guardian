@@ -12,3 +12,4 @@
 !/log/.keep
 /tmp
 vendor/bundle/
+app/views/layouts/tmp

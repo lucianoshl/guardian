@@ -18,7 +18,11 @@ class TribalWarsController < ApplicationController
   end
 
   def proxy
-    target_url = request.fullpath == '/game.php' ? '/game.php?screen=overview_villages' : request.fullpath
+    if (request.fullpath == '/game.php')
+      redirect_to "/game.php?village=#{Village.my_cache.first.vid}&screen=overview_villages"
+      return
+    end
+    target_url = request.fullpath
 
     base = "https://#{User.current.world}.tribalwars.com.br"
 

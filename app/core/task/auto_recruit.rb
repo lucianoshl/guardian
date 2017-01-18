@@ -164,6 +164,7 @@ module Recruiter
 
         less_complete_unit = compute_less_complete_unit(target_train,percent_completed)
         cost_info = train_screen.train_info[less_complete_unit.to_s]
+
         if (!cost_info.nil?)
           cost = cost_info.to_resource
           train_seconds = train_screen.train_info[less_complete_unit.to_s]["build_time"]
@@ -284,38 +285,38 @@ module Transporter
 
     return if (all_markets.size < 2)
 
-    # storage_use = {}
+    storage_use = {}
 
-    # all_markets.map do |market|
-    #   storage_use[market.village.vid] = (market.resources + market.trader.incomming)/market.storage_size.to_f
-    #   storage_use[market.village.vid].storage_unit = 1000/market.storage_size.to_f
-    # end
+    all_markets.map do |market|
+      storage_use[market.village.vid] = (market.resources + market.trader.incomming)/market.storage_size.to_f
+      storage_use[market.village.vid].storage_unit = 1000/market.storage_size.to_f
+    end
 
-    # storage_levels = all_markets.map{|a| [a.village.vid,a.building_levels['storage'].to_i] }.to_h
+    storage_levels = all_markets.map{|a| [a.village.vid,a.building_levels['storage'].to_i] }.to_h
 
 
-    # # original_storage_use = Marshal.load(Marshal.dump(storage_use.clone)) # deep clone
+    # original_storage_use = Marshal.load(Marshal.dump(storage_use.clone)) # deep clone
 
-    # storage_use_transport = generate_distributed_resources(storage_use)
+    storage_use_transport = generate_distributed_resources(storage_use)
 
-    # lower_villages = storage_levels.select {|village,level| level < 30}
+    lower_villages = storage_levels.select {|village,level| level < 30}
 
-    # lower_villages.keys.map do |village_id|
-    #   target = 0.8
-    #   storage_use_transport[village_id].wood -= target - storage_use_transport[village_id].wood
-    #   storage_use_transport[village_id].stone -= target - storage_use_transport[village_id].wood
-    #   storage_use_transport[village_id].stone -= target - storage_use_transport[village_id].wood
-    # end
+    lower_villages.keys.map do |village_id|
+      target = 0.8
+      storage_use_transport[village_id].wood -= target - storage_use_transport[village_id].wood
+      storage_use_transport[village_id].stone -= target - storage_use_transport[village_id].wood
+      storage_use_transport[village_id].stone -= target - storage_use_transport[village_id].wood
+    end
 
-    # storage_use_transport = generate_distributed_resources(storage_use_transport)
+    storage_use_transport = generate_distributed_resources(storage_use_transport)
 
-    # markets.map do |vid,market|
-    #   if (!storage_use_transport[vid].outcoming.nil?)
-    #     storage_use_transport[vid].outcoming.map do |vid_target,resources|
-    #       market.send_resource(markets[vid_target].village,Resource.new(resources)*1000)
-    #     end
-    #   end
-    # end
+    markets.map do |vid,market|
+      if (!storage_use_transport[vid].outcoming.nil?)
+        storage_use_transport[vid].outcoming.map do |vid_target,resources|
+          market.send_resource(markets[vid_target].village,Resource.new(resources)*1000)
+        end
+      end
+    end
 
   end
 
@@ -347,13 +348,13 @@ class Task::AutoRecruit < Task::Abstract
 
   def run
     dates = []
-    # Village.my.map do |village|
-    #   if (!village.model.nil?)
-    #       recruit(village) if (village.disable_auto_recruit != true)
-    #       dates << build(village)
-    #       coins(village)
-    #   end
-    # end
+    Village.my.map do |village|
+      if (!village.model.nil?)
+          recruit(village) if (village.disable_auto_recruit != true)
+          dates << build(village)
+          coins(village)
+      end
+    end
 
     distribute_resources
  

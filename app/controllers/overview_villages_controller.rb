@@ -1,5 +1,11 @@
 class OverviewVillagesController < InjectedController
-  def troops
+
+	def resources
   	# binding.pry
+	end
+
+
+  def troops
   end
+
 end

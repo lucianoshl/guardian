@@ -1,14 +1,6 @@
 class InjectedController < ActionController::Base
 
-  
-
-  before_filter do 
-    @vid = request.url.scan(/village=(\d+)/).first.first.to_i
-
-    target_url = request.fullpath
-    base = "https://#{User.current.world}.tribalwars.com.br"
-    uri = base + target_url
-
+  def process_headers(headers)
     headers = request.headers.to_h.select {|k,v| k.include?('HTTP_')}
     headers = (headers.map do |k,v|
       [k.gsub('HTTP_','').titleize.gsub(' ','-'),v]
@@ -17,9 +9,35 @@ class InjectedController < ActionController::Base
     headers.delete('Host')
     headers.delete('Referer')
     headers.delete('Cookie')
-    page = client.send(:get,uri,headers)
+    return headers
+  end
 
-    doc = Nokogiri::HTML(page.content)
+  def process_page(doc)
+    Village.my_cache.pmap do |village|
+      title = doc.search('title').first
+      if (!title.content.scan("#{village.name} (#{village.x}|#{village.y})").empty?)
+        title.content = title.content.gsub(village.name,village.significant_name)
+      end
+
+      doc.search("a[href*='#{village.vid}']").map do |element|
+        wrapper = element.search("*:contains('#{village.name}')").first
+
+        if (!wrapper.nil?)
+          wrapper.content = wrapper.content.gsub(village.name,village.significant_name)
+        elsif (element.text.include?(village.name))
+          element.content = element.content.gsub(village.name,village.significant_name)
+        end
+      end
+    end
+    return doc
+  end
+
+  def generate_template doc
+    @original_content = doc.search('#content_value').first.clone
+    @original_content.name = 'div'
+    @original_content.remove_attribute('id')
+
+    @mode = request.params[:mode] || 'default'
 
     doc.search('#content_value').first.content = ''
 
@@ -32,15 +50,24 @@ class InjectedController < ActionController::Base
     file.rewind
     file.close
     tmp_root = "#{Rails.root}/app/views/layouts/tmp"
-    FileUtils.mv(file.path,tmp_root)
     Dir.mkdir(tmp_root) if !File.exists?(tmp_root)
+    FileUtils.mv(file.path,tmp_root)
     @template_file = "#{Rails.root}/app/views/layouts/tmp/#{file.path.split('/').last}"
 
     self.class.layout "tmp/#{file.path.split('/').last}"
   end
 
+  before_filter do 
+    @vid = request.url.scan(/village=(\d+)/).first.first.to_i
+    @tw_path = "https://#{User.current.world}.tribalwars.com.br" + request.fullpath
+    page = client.send(:get,@tw_path, process_headers(headers) )
+    doc = Nokogiri::HTML(page.content)
+    @doc = process_page(doc)
+    generate_template(@doc)
+  end
+
   after_filter do
-    FileUtils.rm(@template_file )
+    FileUtils.rm( @template_file )
   end
 
   def render *args
@@ -51,4 +78,5 @@ class InjectedController < ActionController::Base
   def client
     Client::Logged.new
   end
+
 end

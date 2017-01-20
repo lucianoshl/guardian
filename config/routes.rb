@@ -4,6 +4,11 @@ Rails.application.routes.draw do
 
   get 'config/index'
 
+
+  get 'game.php' => 'overview_villages#resources',
+    :constraints => lambda { |request| 
+      request.params[:mode].nil? and request.params[:screen] == "overview_villages" }
+      
   get 'game.php' => 'overview_villages#troops',
     :constraints => lambda { |request| 
       request.params[:mode] == "troops" and request.params[:screen] == "overview_villages" }

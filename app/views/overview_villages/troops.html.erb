@@ -2,19 +2,34 @@
 <table id="production_table" class="vis overview_table" width="100%">
 	<tbody><tr>
 		<th>Aldeia</th>
+		<% (Troop.new.my_fields - ['militia']).map do |unit| %>
+			<th>
+				<%= image_tag("https://dsbr.innogamescdn.com/8.69/32045/graphic/unit/unit_#{unit}.png") %>
+			</th>
+		<% end %>
+		<th>Fazenda</th>
 	</tr>
-	<% Village.my.sort{|a,b| a.significant_name <=> b.significant_name }.map do |village| %>
+	<% @villages.map do |village| %>
 	<tr class="nowrap <%= @vid == village.vid ? 'selected' : '' %> row_b">
 		<td>
 			<span class="quickedit-vn" data-id="16205">
 				<span class="quickedit-content">
-					<a href="/game.php?village=16205&amp;screen=overview">
+					<a href="<%= generate_url(village: village.vid, screen: 'place') %>">
 						<span class="quickedit-label" data-text="AppleRed">
 						<%= village.significant_name %>                </span>
 					</a>
 					<a class="rename-icon" href="#" title="Renomear"></a>
 				</span>
 			</span>
+		</td> 
+		<% 	units = @places[village.vid].units
+			(units.my_fields - ['militia']).map do |unit| %>
+			<td class="align_right">
+				<%= number_with_delimiter(units[unit]) %>
+			</td>
+		<% end %>
+		<td>
+			<%= @places[village.vid].current_population %>/<%= @places[village.vid].limit_population %>
 		</td>
 	</tr>
 	<% end %>

@@ -13,6 +13,14 @@ class InjectedController < ActionController::Base
   end
 
   def process_page(doc)
+
+    decorator_name = 'Decorator::'+@screen.camelize
+    begin
+      Rails.logger.info("Decorator name : #{decorator_name}")
+      decorator = decorator_name.constantize.new
+    rescue
+    end
+
     Village.my_cache.pmap do |village|
       title = doc.search('title').first
       if (!title.content.scan("#{village.name} (#{village.x}|#{village.y})").empty?)
@@ -29,6 +37,11 @@ class InjectedController < ActionController::Base
         end
       end
     end
+
+    decorator.html(doc) if (decorator.respond_to?("html"))
+
+    Decorator::Global.new.html(doc,request)
+
     return doc
   end
 
@@ -36,8 +49,6 @@ class InjectedController < ActionController::Base
     @original_content = doc.search('#content_value').first.clone
     @original_content.name = 'div'
     @original_content.remove_attribute('id')
-
-    @mode = request.params[:mode] || 'default'
 
     doc.search('#content_value').first.content = ''
 
@@ -58,8 +69,11 @@ class InjectedController < ActionController::Base
   end
 
   before_filter do 
+    @mode = request.params[:mode] || 'default'
+    @screen = request.params[:screen] || 'default'
     @vid = request.url.scan(/village=(\d+)/).first.first.to_i
     @tw_path = "https://#{User.current.world}.tribalwars.com.br" + request.fullpath
+    
     page = client.send(:get,@tw_path, process_headers(headers) )
     doc = Nokogiri::HTML(page.content)
     @doc = process_page(doc)

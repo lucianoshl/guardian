@@ -11,7 +11,7 @@ class Screen::Market < Screen::Basic
 
   	Rails.logger.info("Send resource to #{village.to_s}".blue.on_white)
 
-  	send_resource_form['x'] = village.x
+  	send_resource_form['x'] = village.x  
   	send_resource_form['y'] = village.y
   	send_resource_form['wood'] = resource['wood']
   	send_resource_form['stone'] = resource['stone']

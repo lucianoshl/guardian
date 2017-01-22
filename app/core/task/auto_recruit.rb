@@ -223,58 +223,6 @@ module Transporter
     Screen::ReportList.new(mode: 'trade').clear_all
   end
 
-  def generate_distributed_resources(storage_use)
-    storage_use_cloned = Marshal.load(Marshal.dump(storage_use.clone))
-    max_storage_unit = storage_use_cloned.values.map(&:storage_unit).max
-
-    runnings_limit = 2000
-    runnings = 0
-    loop do
-      exchange = false
-
-      ['wood','stone','iron'].map do |resource|
-        puts "iterate"
-        runnings += 1
-        min_target, max_target = get_min_max(storage_use_cloned,resource)
-
-        resources_target = storage_use_cloned[min_target]
-        resources_origin = storage_use_cloned[max_target]
-
-        resources_target.incoming ||= {}
-        resources_target.outcoming ||= {}
-
-        resources_origin.incoming ||= {}
-        resources_origin.outcoming ||= {}
-
-        difference = (resources_target[resource] - resources_origin[resource]).abs
-
-        if ( difference > max_storage_unit &&
-          resources_origin[resource] - resources_origin.storage_unit > 0 &&
-          resources_target[resource] + resources_target.storage_unit < 1 )
-
-          resources_target[resource] += resources_target.storage_unit
-
-          resources_target.incoming[max_target] ||= {}
-          resources_target.incoming[max_target][resource] ||= 0
-          resources_target.incoming[max_target][resource] += 1
-
-          resources_origin[resource] -= resources_origin.storage_unit
-
-          resources_origin.outcoming[min_target] ||= {}
-          resources_origin.outcoming[min_target][resource] ||= 0
-          resources_origin.outcoming[min_target][resource] += 1
-
-          exchange = true
-        end
-
-      end
-
-      break if (runnings >= runnings_limit)
-      break if (!exchange)
-    end
-    return storage_use_cloned
-  end
-
   def distribute_resources
 
     clean_reports
@@ -285,54 +233,193 @@ module Transporter
 
     return if (all_markets.size < 2)
 
-    storage_use = {}
+    all_resources = Resource.new
 
-    all_markets.map do |market|
-      storage_use[market.village.vid] = (market.resources + market.trader.incomming)/market.storage_size.to_f
-      storage_use[market.village.vid].storage_unit = 1000/market.storage_size.to_f
-    end
+    markets.values.map {|v| all_resources += v.resources + v.trader.incomming }
 
     storage_levels = all_markets.map{|a| [a.village.vid,a.building_levels['storage'].to_i] }.to_h
-
-
-    # original_storage_use = Marshal.load(Marshal.dump(storage_use.clone)) # deep clone
-
-    storage_use_transport = generate_distributed_resources(storage_use)
-
     lower_villages = storage_levels.select {|village,level| level < 30}
 
-    lower_villages.keys.map do |village_id|
-      target = 0.1
-      storage_use_transport[village_id].wood -= target - storage_use_transport[village_id].wood
-      storage_use_transport[village_id].stone -= target - storage_use_transport[village_id].wood
-      storage_use_transport[village_id].stone -= target - storage_use_transport[village_id].wood
+    distribution = {}
+    all_markets.map {|market| distribution[market.village.vid] = Resource.new }
+
+    unit = 1000 
+
+   loop do
+      exchange = false
+
+      ['wood','stone','iron'].map do |resource|
+        minimal_vid = get_minimal(distribution,resource,markets)
+        puts "#{all_resources.wood} #{all_resources.stone} #{all_resources.iron}"
+        if (all_resources[resource] >= unit)
+
+          distribution[minimal_vid][resource] += unit
+          all_resources[resource] -= unit
+          exchange = true
+        end
+      end
+
+      break if (!exchange)
     end
 
-    storage_use_transport = generate_distributed_resources(storage_use_transport)
+    equal_distribution = distribution.clone
+
+    lower_villages = equal_distribution.select {|k,v| lower_villages.include?(k)}
+    normal_villages = equal_distribution.select {|k,v| !lower_villages.include?(k)}
+
+    loop do
+      exchange = false
+
+      ['wood','stone','iron'].map do |resource|
+        minimal_vid = get_minimal(lower_villages,resource,markets)
+        normal_village = get_max(normal_villages,resource,markets)
+        puts "#{all_resources.wood} #{all_resources.stone} #{all_resources.iron}"
+        storage_in_limit = lower_villages[minimal_vid][resource]/markets[minimal_vid].storage_size.to_f >= 0.9
+        if (normal_villages[normal_village][resource] >= unit && !storage_in_limit)
+
+          lower_villages[minimal_vid][resource] += unit
+          normal_villages[normal_village][resource] -= unit
+          exchange = true
+        end
+      end
+
+      break if (!exchange)
+    end
+
+
+    target_distribution = lower_villages.merge(normal_villages)
+
+    transport = distribute(target_distribution,markets)
 
     markets.map do |vid,market|
-      if (!storage_use_transport[vid].outcoming.nil?)
-        storage_use_transport[vid].outcoming.map do |vid_target,resources|
-          market.send_resource(markets[vid_target].village,Resource.new(resources)*1000)
+      if (!transport[vid].nil? && transport[vid].size > 0) 
+        transport[vid].map do |vid_target,resources|
+          market.send_resource(markets[vid_target].village,resources) 
         end
       end
     end
 
   end
 
-  def get_min_max(storage_use,resource)
-    result = []
+  def distribute(target,markets)
+    unit = 1000
+    actual = {}
+    markets.map { |k,v| actual[k] = v.resources + v.trader.incomming  }
 
-    result[0] = storage_use.min do |a,b|
-      a[1][resource] <=> b[1][resource]
+    transport = {}
+
+    loop do
+      exchange = false
+
+      ['wood','stone','iron'].map do |resource|
+        missing_vid = find_missing(target,actual,resource)
+        remaining_vid = find_remaining(target,actual,resource)
+
+        puts "M: #{missing_vid} V: #{remaining_vid}"
+
+        is_transporting = (transport[missing_vid]|| {}).keys.include?(remaining_vid)
+        is_transporting &&= transport[missing_vid][remaining_vid][resource] > 0
+
+        if (actual[remaining_vid][resource] >= unit && !is_transporting)
+          actual[missing_vid][resource] += unit
+          actual[remaining_vid][resource] -= unit
+
+          transport[remaining_vid] ||= {}
+          transport[remaining_vid][missing_vid] ||= Resource.new
+          transport[remaining_vid][missing_vid][resource] += unit
+          exchange = true
+        end
+      end
+
+      break if (!exchange)
     end
 
-    result[1] = storage_use.max do |a,b|
-      a[1][resource] <=> b[1][resource]
-    end
-
-    result.map{|a| a.first}
+    return transport
   end
+
+  def find_missing(target,actual,resource)
+    diferences = {}
+    target.map do |v,r|
+      diferences[v] = actual[v] - r
+    end
+
+    (diferences.sort do |a,b|
+      a[1][resource] <=> b[1][resource]
+    end).first.first
+  end
+
+  def find_remaining(target,actual,resource)
+    diferences = {}
+    target.map do |v,r|
+      diferences[v] = actual[v] - r
+    end
+
+    (diferences.sort do |a,b|
+      b[1][resource] <=> a[1][resource]
+    end).first.first
+  end
+
+
+  def get_minimal(distribution,resource,markets)
+    (distribution.to_a.sort do |a,b| 
+      a[1][resource]/markets[a.first].storage_size.to_f <=> b[1][resource]/markets[b.first].storage_size.to_f
+    end).first.first
+  end
+
+  def get_max(distribution,resource,markets)
+    (distribution.to_a.sort do |b,a| 
+      a[1][resource]/markets[a.first].storage_size.to_f <=> b[1][resource]/markets[b.first].storage_size.to_f
+    end).first.first
+  end
+
+  #   storage_use = {}
+
+  #   all_markets.map do |market|
+  #     storage_use[market.village.vid] = (market.resources + market.trader.incomming)/market.storage_size.to_f
+  #     storage_use[market.village.vid].storage_unit = 1000/market.storage_size.to_f
+  #   end
+
+  #   storage_levels = all_markets.map{|a| [a.village.vid,a.building_levels['storage'].to_i] }.to_h
+
+
+  #   # original_storage_use = Marshal.load(Marshal.dump(storage_use.clone)) # deep clone
+
+  #   storage_use_transport = generate_distributed_resources(storage_use)
+
+  #   lower_villages = storage_levels.select {|village,level| level < 30}
+
+  #   lower_villages.keys.map do |village_id|
+  #     target = 0.1
+  #     storage_use_transport[village_id].wood -= target - storage_use_transport[village_id].wood
+  #     storage_use_transport[village_id].stone -= target - storage_use_transport[village_id].wood
+  #     storage_use_transport[village_id].stone -= target - storage_use_transport[village_id].wood
+  #   end
+
+  #   storage_use_transport = generate_distributed_resources(storage_use_transport)
+
+  #   markets.map do |vid,market|
+  #     if (!storage_use_transport[vid].outcoming.nil?)
+  #       storage_use_transport[vid].outcoming.map do |vid_target,resources|
+  #         market.send_resource(markets[vid_target].village,Resource.new(resources)*1000)
+  #       end
+  #     end
+  #   end
+
+  # end
+
+  # def get_min_max(storage_use,resource)
+  #   result = []
+
+  #   result[0] = storage_use.min do |a,b|
+  #     a[1][resource] <=> b[1][resource]
+  #   end
+
+  #   result[1] = storage_use.max do |a,b|
+  #     a[1][resource] <=> b[1][resource]
+  #   end
+
+  #   result.map{|a| a.first}
+  # end
 end
 
 

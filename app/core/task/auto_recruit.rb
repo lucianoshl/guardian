@@ -274,7 +274,7 @@ module Transporter
         minimal_vid = get_minimal(lower_villages,resource,markets)
         normal_village = get_max(normal_villages,resource,markets)
         puts "#{all_resources.wood} #{all_resources.stone} #{all_resources.iron}"
-        storage_in_limit = lower_villages[minimal_vid][resource]/markets[minimal_vid].storage_size.to_f >= 0.9
+        storage_in_limit = lower_villages[minimal_vid][resource]/markets[minimal_vid].storage_size.to_f >= 0.8
         if (normal_villages[normal_village][resource] >= unit && !storage_in_limit)
 
           lower_villages[minimal_vid][resource] += unit

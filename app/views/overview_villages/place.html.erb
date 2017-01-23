@@ -22,14 +22,14 @@
 				</span>
 			</span>
 		</td> 
-		<% 	units = @units[village.vid]
+		<% 	units = @places[village.vid].units
 			(units.my_fields - ['militia']).map do |unit| %>
 			<td class="align_right">
 				<%= number_with_delimiter(units[unit]) %>
 			</td>
 		<% end %>
 		<td class="align_right">
-			<%= @snob[village.vid].current_population %>/<%= @snob[village.vid].limit_population %>
+			<%= @places[village.vid].current_population %>/<%= @places[village.vid].limit_population %>
 		</td>
 	</tr>
 	<% end %>

@@ -17,7 +17,7 @@ class Task::PillageAround < Task::Abstract
 
     candidates = Village.pillage_candidates.any_of({:next_event => nil}, {:next_event.lte => Time.zone.now}).asc(:next_event)
 
-    @my_villages = Village.my.to_a
+    @my_villages = Village.my.where(use_in_pillage: true).to_a
 
     info "Running for #{candidates.size} candidates"
 

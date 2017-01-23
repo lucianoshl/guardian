@@ -77,6 +77,11 @@ RailsAdmin.config do |config|
           end
         end
       end
+      field :snobs do
+        formatted_value do
+          bindings[:object].troop.snob
+        end
+      end
     end
   end
 

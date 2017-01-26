@@ -7,8 +7,7 @@ class Task::PlayerMonitor < Task::Abstract
   def save_my_villages
     player_screen = Screen::InfoPlayer.new(id: User.first.player.pid)
 
-    my_villages = player_screen.villages.map do |id| 
-      sleep(0.2)
+    my_villages = player_screen.villages.pmap do |id| 
       Screen::InfoVillage.new(id: id).village
     end
 
@@ -59,13 +58,12 @@ class Task::PlayerMonitor < Task::Abstract
 
     Rails.logger.info("Merging new information with saved villages start")
     # targets_to_save = (targets.map do |item|
-    targets_to_save = (Parallel.map(targets, { progress: "Merging", in_threads: 3 }) do |item|
+    targets_to_save = (Parallel.map(targets, { progress: "Merging", in_threads: 1 }) do |item|
 
+      database_village = saved[item.vid].clone.attributes.clone  if (!saved[item.vid].nil?)
       
       village = merge_one(item,saved[item.vid])
-      database_village = nil
       if (!saved[item.vid].nil?)
-        database_village = saved[item.vid].clone.attributes.clone
         database_village.delete('next_event')
         database_village.delete('model_id')
         database_village.delete('_id')

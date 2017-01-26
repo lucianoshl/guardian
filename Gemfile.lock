@@ -255,6 +255,8 @@ GEM
       rails_admin (> 0)
     rails_admin_material_theme (0.2.0)
       rails (>= 4.2)
+    rails_admin_toggleable (0.7.1)
+      rails_admin
     rails_real_favicon (0.0.6)
       json (>= 1.7, < 3)
       rails (>= 3.1)
@@ -390,6 +392,7 @@ DEPENDENCIES
   rails_admin
   rails_admin_charts
   rails_admin_material_theme (~> 0.2.0)
+  rails_admin_toggleable
   rails_real_favicon
   rspec-rails
   ruby-progressbar

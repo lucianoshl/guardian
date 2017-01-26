@@ -77,6 +77,11 @@ RailsAdmin.config do |config|
           end
         end
       end
+      field :snobs do
+        formatted_value do
+          bindings[:object].troop.snob
+        end
+      end
     end
   end
 
@@ -99,9 +104,10 @@ RailsAdmin.config do |config|
       end
       field :label
       field :name
-      field :points
+      # field :points
       field :model_id
-      field :disable_auto_recruit
+      # field :disable_auto_recruit, :toggle
+      field :use_in_pillage, :toggle
       scopes(Village.scopes.keys - [:page])
     end
   end
@@ -143,6 +149,7 @@ RailsAdmin.config do |config|
     end
     delete
     show_in_app
+    toggle
     charts
 
     ## With an audit adapter, you can add:

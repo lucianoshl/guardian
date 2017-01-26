@@ -84,3 +84,4 @@ gem 'rails_admin_material_theme', '~> 0.2.0'
 gem 'rails_admin_charts'
 
 gem 'ruby-progressbar'
+gem 'rails_admin_toggleable'

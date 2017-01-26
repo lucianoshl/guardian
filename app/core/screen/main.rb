@@ -1,6 +1,6 @@
 class Screen::Main < Screen::Basic
 
-  attr_accessor :buildings_metadata,:queue,:buildings,:buildings_meta_json
+  attr_accessor :buildings_metadata,:queue,:buildings,:buildings_meta_json, :rename_form
 
   url screen: 'main'  
 
@@ -18,6 +18,12 @@ class Screen::Main < Screen::Basic
   	parse(client.get(build_link))
   	last_building = queue.first
   	return last_building.completed_in
+  end
+
+  def rename(name)
+    Rails.logger.info("Rename village #{self.village.name} (#{self.village.vid}) to #{name}")
+    rename_form.name = name
+    parse(rename_form.submit)
   end
 
 end

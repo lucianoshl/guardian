@@ -22,8 +22,9 @@ class Screen::Main < Screen::Basic
 
   def rename(name)
     Rails.logger.info("Rename village #{self.village.name} (#{self.village.vid}) to #{name}")
-    rename_form.name = name
-    parse(rename_form.submit)
+    rename_form['name'] = name
+    page = rename_form.submit
+    parse(page)
   end
 
 end

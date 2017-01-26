@@ -60,7 +60,8 @@ class Mobile::Abstract
 	end
 
 	def client
-		Mobile::Client.new
+		@client = Mobile::Client.new if @client.nil?
+		@client
 	end
 
 	def client_time

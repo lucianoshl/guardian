@@ -1,3 +1,4 @@
+
 class MobileCookie
   include Mongoid::Document
 
@@ -18,7 +19,6 @@ class MobileCookie
     last.nil? ? nil : last.content
   end
 
-
   def self.store_cookies cookies
     cookie = MobileCookie.new
     cookie.user = User.current
@@ -31,8 +31,8 @@ class MobileCookie
     Mobile::Client.client.cookie_jar.clear
     login = Mobile::Login.from_user
     worlds = Mobile::Worlds.new(login.token)
-    Mobile::WorldLogin.new(login.token,2,'android')
-    Mobile::Client.new.get("https://#{User.current.world}.tribalwars.com.br/login.php?mobile&sid=#{$sid}&2")
+    world_login_screen = Mobile::WorldLogin.new(login.token,2,'android')
+    Mobile::Client.new.get("https://#{User.current.world}.tribalwars.com.br/login.php?mobile&sid=#{world_login_screen.sid}&2")
 
     MobileCookie.where(user: User.current).delete
     MobileCookie.store_cookies(Mobile::Client.client.cookies)

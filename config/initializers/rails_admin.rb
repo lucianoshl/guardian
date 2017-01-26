@@ -10,7 +10,8 @@ RailsAdmin.config do |config|
     Partner,
     Job::Reserve,
     Job::SendAttack,
-    Model::Village
+    Model::Village,
+    ApplicationError
   ]
 
   report_enum =  {

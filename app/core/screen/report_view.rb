@@ -2,7 +2,7 @@ class Screen::ReportView < Screen::Basic
 
   attr_accessor :report
 
-  url screen: 'report', mode: 'all'
+  url screen: 'report', mode: 'attack'
 
   def self.load_all
     Rails.logger.debug("Loading all reports: start")

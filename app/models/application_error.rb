@@ -5,5 +5,9 @@ class ApplicationError
   field :event, type: DateTime
 
   def self.register(exception)
+  	error = ApplicationError.new
+  	error.event = Time.zone.now
+  	error.stack = "#{e.backtrace.first}: #{e.message} (#{e.class})", e.backtrace.drop(1).map{|s| "\t#{s}"}
+  	error.save
   end
 end

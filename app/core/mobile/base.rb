@@ -18,7 +18,8 @@ class Mobile::Base < Mobile::Abstract
 	def get(args)
 		request = client.get(generate_url,args)
 		if (request.uri.to_s.include?("sid_wro"))
-			MobileCookie.do_login.first.value.gsub('0%3A','')
+			# MobileCookie.do_login.first.value.gsub('0%3A','')
+			client.login
 			request = client.post(generate_url,args)
 		end
 		return request
@@ -28,7 +29,8 @@ class Mobile::Base < Mobile::Abstract
 		request = client.post(generate_url,args)
 		if (request.body.include?("invalidsession"))
 			args.unshift
-			MobileCookie.do_login.first.value.gsub('0%3A','')
+			client.login
+			# MobileCookie.do_login.first.value.gsub('0%3A','')
 			before_request(args)
 			request = client.post(generate_url,args)
 		end

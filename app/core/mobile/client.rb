@@ -36,6 +36,11 @@ class Mobile::Client
 	    sid_cookie.value.gsub('0%3A','')
 	end
 
+	def login
+		MobileCookie.do_login
+		@client = Mobile::Client.create_new_client
+	end
+
 	def self.create_new_client
 		_client = Mechanize.new
 		_client.user_agent = "Mozilla/5.0 (Linux; Android 4.4.4; SAMSUNG-SM-N900A Build/tt) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/33.0.0.0 Mobile Safari/537.36"

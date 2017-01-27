@@ -9,8 +9,9 @@ class Mobile::Base < Mobile::Abstract
 	# Mobile::Client.client.add_cookies(MobileCookie.latest)
 
 	def before_request args
-		if (!$sid.nil? && args.first != $sid)
-			args.unshift($sid)
+		sid = self.client.sid
+		if (!sid.nil? && args.first != sid)
+			args.unshift(sid)
 		end
 	end
 

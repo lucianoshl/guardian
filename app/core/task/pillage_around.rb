@@ -49,13 +49,14 @@ class Task::PillageAround < Task::Abstract
         info("#{candidates.size}/#{index}")
         info("Running state #{current_state} for #{@target} (#{@target.name}) using #{@origin.nil? ? "FAR AWAY!!" : @origin.name}")
         info("@origin=#{@origin.nil? ? "nil" : @origin.name}")
-        info("@candidates=#{@origin_candidates.map(&:name)}")
+        info("@candidates=#{@origin_candidates.map(&:vid)}")
         state,_next_event = self.send("state_#{current_state}")
       rescue DeletedPlayerException => e
         target.delete
         next
       rescue Exception => e
         Rails.logger.error("Error in village #{target.to_s}".white.on_red)
+        ApplicationError.register(e)
         next
       end
 

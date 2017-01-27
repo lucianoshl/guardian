@@ -43,6 +43,8 @@ class Parser::Main < Parser::Basic
       building.name = id
     end
 
+    screen.rename_form = @page.forms.first
+
     # game_data = JSON.parse page.body.scan(/game_data = ({.*})/).first.first
 
     # all_buildings = game_data["village"]["buildings"]

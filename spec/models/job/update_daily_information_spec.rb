@@ -1,7 +1,7 @@
-# require 'rails_helper'
+require 'rails_helper'
 
-# RSpec.describe Job::UpdateDailyInformation , type: :model do
-#   it "execute" do
-#     # Job::UpdateDailyInformation.new.run
-#   end
-# end
+RSpec.describe Task::UpdateDailyInformation , type: :model do
+  it "update_daily_information" do
+    Task::UpdateDailyInformation.new.run
+  end
+end

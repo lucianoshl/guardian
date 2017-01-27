@@ -4,7 +4,7 @@ class Task::UpdateDailyInformation < Task::Abstract
 
   def run
     update_ally_partners
-    # rename_villages
+    rename_villages
     # renew_village_reserve
     # generate_player_arround
     update_profile_photo
@@ -12,7 +12,12 @@ class Task::UpdateDailyInformation < Task::Abstract
   end
 
   def rename_villages
-    binding.pry
+    Rails.logger.info("Renaming all villages: start")
+    Village.my.map do |village|
+      name = User.current.player.name
+      Screen::Main.new(village: village.vid).rename(name) if (village.name != name)
+    end
+    Rails.logger.info("Renaming all villages: end")
   end
 
   def update_ally_partners

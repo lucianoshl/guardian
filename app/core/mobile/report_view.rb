@@ -1,8 +1,8 @@
 class Mobile::ReportView < Mobile::Base
 
-	entry 'm.php'
+	entry 'game.php'
 	end_point '' 
-	url mode: 'report'
+	url screen: 'report', mode: 'attack'
 
 	attr_accessor :report
 
@@ -46,7 +46,8 @@ class Mobile::ReportView < Mobile::Base
 			raise Exception.new("Erro ao parsear o report #{page.uri}")
 		end
 
-		report.occurrence = page.search('.report_table > tr > td').text.parse_datetime
+		# report.occurrence = page.search('.report_table > tr > td').text.parse_datetime
+		report.occurrence = page.search('span[data-id]').first.parents(3).search('tr')[1].search('td')[1].text.strip.parse_datetime
 
 		report.origin_troops = parse_report_troops(page.search("#attack_info_att_units tr")[1])
 		report.origin_troops_losses = parse_report_troops(page.search("#attack_info_att_units tr")[2])

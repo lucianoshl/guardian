@@ -7,7 +7,7 @@ class Mobile::WorldLogin < Mobile::Base
 	end
 
 	def parse page
-		$sid = page["result"]["sid"]
+		self.sid = page["result"]["sid"]
 	end
 
 	def get(args)

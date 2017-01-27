@@ -1,13 +1,13 @@
 class Screen::Logged < Screen::Anonymous
 
-  def self.client
-    _client = Mechanize.my
-    # _client.user_agent_alias = 'iPhone'
-    _client.add_cookies(Cookie.latest)
-  end
+  # def self.client
+  #   _client = Mechanize.my
+  #   # _client.user_agent_alias = 'iPhone'
+  #   _client.add_cookies(Cookie.latest)
+  # end
 
   def client
-    @client = Mobile::Client.client if @client.nil?
+    @client = Mobile::Client.new if @client.nil?
     @client
   end
 
@@ -21,26 +21,11 @@ class Screen::Logged < Screen::Anonymous
     raise Exception.new("bot_protection") if (!page.search('body').attr('data-bot-protect').nil?) 
   end
 
-  # def request url
-  #   page = _request(method,url)
-  #   Rails.logger.info "#{method} #{url}"
-  #   if (!Cookie.is_logged?(page))
-  #     client.add_cookies(Cookie.do_login)
-  #     page = _request(method,url)
-  #   end
-
-  #   if (!Cookie.is_logged?(page))
-  #     raise Exception.new("Error on login")
-  #   end
-
-  #   return page
-  # end
-
   def request url
     page = _request(method,url)
     Rails.logger.info "#{method} #{url}"
     if (!Cookie.is_logged?(page))
-      client.add_cookies(MobileCookie.do_login)
+      client.login
       page = _request(method,url)
     end
 

@@ -36,9 +36,16 @@ class Mobile::Client
 	    sid_cookie.value.gsub('0%3A','')
 	end
 
+	def cookies
+		@client.cookies
+	end
+
 	def login
+		Rails.logger.info("Login: start")
 		MobileCookie.do_login
 		@client = Mobile::Client.create_new_client
+		Rails.logger.info("Login after  SID: #{sid}")
+		Rails.logger.info("Login: end")
 	end
 
 	def self.create_new_client

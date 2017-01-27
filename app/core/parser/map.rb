@@ -25,6 +25,9 @@ class Parser::Map < Parser::Abstract
       base_x = item['data']['x']
       base_y = item['data']['y']
 
+      # debug_base = OpenStruct.new(x: 340, y: 360)
+      # binding.pry if (debug_base.x == base_x && debug_base.y == base_y && true)
+
       if (villages.class != Hash) then
         villages = Hash[(0...villages.size).zip villages]
       end

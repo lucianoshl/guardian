@@ -58,8 +58,9 @@ class Task::PlayerMonitor < Task::Abstract
     Rails.logger.info("Saving allies and players end")
 
     Rails.logger.info("Merging new information with saved villages start")
-    # targets_to_save = (targets.map do |item|
     targets_to_save = (Parallel.map(targets, { progress: "Merging", in_threads: 1 }) do |item|
+      # binding.pry if item.vid == 41563m
+      # binding.pry if item.x == 347 && item.y == 379 
 
       database_village = saved[item.vid].clone.attributes.clone  if (!saved[item.vid].nil?)
       

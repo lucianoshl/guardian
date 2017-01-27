@@ -8,8 +8,11 @@ class Screen::Map < Screen::Guest
   def self.neighborhood villages,distance
     targets = {}
 
+    distance = Config.pillager.distance(10)  
+
     villages.map do |village|
-      squares = (distance / 20) + 1
+      # se o distancia é > que 20 temos que pegar (distance/20.0).ceil quadros a mais
+      squares = (distance/20.0).ceil + 1
 
       start_x = (village.x / 20) * 20 - 20 * squares
       start_y = (village.y / 20) * 20 - 20 * squares

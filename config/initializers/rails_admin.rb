@@ -91,7 +91,6 @@ RailsAdmin.config do |config|
     edit do
       field :label
       field :use_in_pillage
-      field :in_blacklist
       field :reserved_troops
       field :model_id
       field :disable_auto_recruit
@@ -109,6 +108,7 @@ RailsAdmin.config do |config|
       field :model_id
       # field :disable_auto_recruit, :toggle
       field :use_in_pillage, :toggle
+      field :disable_auto_recruit, :toggle
       scopes(Village.scopes.keys - [:page])
     end
   end

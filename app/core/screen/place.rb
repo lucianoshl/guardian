@@ -89,7 +89,7 @@ class Screen::Place < Screen::Basic
       if (!village_info.village.player_id.nil?)
         player_info = Screen::InfoPlayer.new(id: village_info.village.player_id)
         if (!player_info.ally_id.nil? && my_ally.aid == player_info.ally_id) 
-          msg = "Estou tentando atacar o player #{village_info.village.player_id} mas ele é da ally #{player_info.ally_id} e eu sou da ally #{my_ally.aid}"
+          msg = "Estou tentando atacar o player #{village_info.village.player_id} na village #{village_info.village.vid} mas ele é da ally #{player_info.ally_id} e eu sou da ally #{my_ally.aid}"
           Rails.logger.error(msg)
           raise Exception.new(msg)
           binding.pry

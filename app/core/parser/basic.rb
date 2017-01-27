@@ -31,7 +31,9 @@ class Parser::Basic < Parser::Abstract
     
     screen.storage_alert = screen.resources.attributes.values.select{|a| a.class == Fixnum}.max/screen.storage_size.to_f > 0.85
 
-    screen.building_levels = json["village"]["buildings"]
+    json["village"]["buildings"].delete("village")
+
+    screen.building_levels = json["village"]["buildings"].map{|k,v| [k,v.to_i] }.to_h
 
   end
 

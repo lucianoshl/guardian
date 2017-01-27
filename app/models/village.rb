@@ -49,16 +49,6 @@ class Village
     snobs = self.with_snob.to_a
     targets = self.monitor.to_a 
 
-    # distances = snobs.map do |my_v|
-    #   c_dist = targets.map do |target|
-    #     {
-    #       target: target,
-    #       distance: target.distance(my_v)
-    #     }
-    #   end
-    #   binding.pry
-    # end
-
     combinations = targets.map do |target|
       dists = (snobs.map do |my_v|
         {

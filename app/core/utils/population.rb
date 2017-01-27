@@ -21,21 +21,10 @@ class Population
 	end
 
 	def self.from_config(model)
-		max_values = Model::Buildings.new
-
-		config = model.priorities
-		config << model.buildings
-		config.each do |config|
-			config.my_fields.each do |field|
-				if (config[field] > max_values[field])
-					max_values[field] = config[field]
-				end
-			end
-		end
 
 		population = 0
-		max_values.my_fields.each do |field|
-			population += calc(field,max_values[field])
+		model.my_fields.each do |field|
+			population += calc(field,model[field])
 		end
 
 		return population

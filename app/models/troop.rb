@@ -7,7 +7,7 @@ class Troop
   embedded_in :village
 
   Unit.names.map do |unit_name|
-    field unit_name.to_sym, type: Integer, default: 0
+    field unit_name.to_sym, type: Float, default: 0
   end
 
   def total
@@ -165,7 +165,7 @@ class Troop
     self.to_h.map do |unit,qte|
       total += Unit.get(unit).population*(qte||0)
     end
-    total
+    total.to_i
   end
 
   def increase_population(disponible,target_population)

@@ -1,6 +1,6 @@
 class Screen::Train < Screen::Basic
 
-  attr_accessor :current_units,:total_units,:production_units,:release_time,:train_info
+  attr_accessor :current_units,:total_units,:production_units,:release_time,:train_info,:_snob_related
 
   url screen: 'train'
 
@@ -17,7 +17,14 @@ class Screen::Train < Screen::Basic
     complete_units = {}
     production_units.values.map{|a| complete_units.merge!(a)}
     complete_units = Troop.new(total_units) + Troop.new(complete_units)
+    complete_units.snob = snob_screen.total_snob + snob_screen.queue_size
+
     return complete_units
+  end
+
+  def snob_screen
+    self._snob_related = Screen::Snob.new(village: self.village.vid) if (self._snob_related.nil?)
+    self._snob_related
   end
 
 end

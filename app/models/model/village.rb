@@ -10,4 +10,21 @@ class Model::Village
   accepts_nested_attributes_for :buildings 
   accepts_nested_attributes_for :priorities 
 
+
+
+  def complete_building_model
+    max_values = Model::Buildings.new
+
+    config = self.priorities
+    config << self.buildings
+    config.each do |config|
+      config.my_fields.each do |field|
+        if (config[field] > max_values[field])
+          max_values[field] = config[field]
+        end
+      end
+    end
+    max_values
+  end
+
 end

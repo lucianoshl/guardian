@@ -27,9 +27,6 @@ module Builder
       current[queue_item.building] += 1
     end
 
-    # pop = Population.from_config(village.model)
-    # binding.pry
-
     remaining = (config - current).remove_negative
     remaining = remove_without_population(remaining,main_screen)
     remaining = build_priorities(remaining,main_screen,config)
@@ -126,10 +123,28 @@ end
 
 module Recruiter
 
+  def calculate_population_for_buidings village,train_screen
+
+    merged = Model::Buildings.new
+
+    buildings_model = village.model.complete_building_model;
+    buildings_model.my_fields.map do |building|
+      merged[building] = buildings_model[building]
+      if (buildings_model[building] < train_screen.building_levels[building])
+        merged[building] = train_screen.building_levels[building]
+      end
+    end
+
+    Population.from_config(merged)
+  end
 
   def recruit village
+
     train_screen = Screen::Train.new(village: village.vid)
-    units_to_train = calculate_units_to_train(train_screen,village)
+
+    reserved_for_buildings = calculate_population_for_buidings(village,train_screen)
+
+    units_to_train = calculate_units_to_train(train_screen,village,reserved_for_buildings)
     percent_completed = calculate_percent_completed_units(train_screen.complete_units.clone.to_h,village)
 
     trail_util = Time.zone.now + self.class._performs_to + 10.minutes
@@ -192,12 +207,29 @@ module Recruiter
     return nil
   end
 
-  def calculate_units_to_train(train_screen,village)
+  def calculate_units_to_train(train_screen,village,reserved_population)
     if (village.model.troops.nil?)
       return Troop.new
     end
 
-    to_train = (village.model.troops - train_screen.complete_units).remove_negative
+    limit_units = 24000 - reserved_population
+
+
+    troops_model = village.model.troops.clone
+
+    troops_model.my_fields.map do |unit|
+      if (troops_model[unit] >= 1)
+        limit_units -= troops_model[unit] * Unit.get(unit).population
+      end
+    end
+
+    troops_model.my_fields.map do |unit|
+      if (troops_model[unit] < 1 && troops_model[unit] > 0)
+        troops_model[unit] = ((limit_units * troops_model[unit])/Unit.get(unit).population).floor
+      end 
+    end
+
+    to_train = (troops_model - train_screen.complete_units).remove_negative
     return to_train
   end
 

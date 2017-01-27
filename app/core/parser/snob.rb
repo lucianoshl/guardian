@@ -8,6 +8,8 @@ class Parser::Snob < Parser::Basic
 
     screen.possible_snobs = 0
 
+    screen.queue_size = @page.search("a[href*='action=cancel']").size
+
     if (screen.enabled)
       screen.total_snob = content.split('/').last.extract_number
       screen.possible_snobs = @page.search('h3')[1].parent.search('span').last.extract_number

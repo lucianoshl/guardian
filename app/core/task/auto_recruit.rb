@@ -135,7 +135,7 @@ module Recruiter
       end
     end
 
-    Population.from_config(merged)
+    Utils::Population.from_config(merged)
   end
 
   def recruit village

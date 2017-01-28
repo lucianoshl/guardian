@@ -1,6 +1,6 @@
 # http://br3.tribalwars.com.br/popup_building.php?building=stable
 
-class Population
+class Utils::Population
 
 	def self.calc(building,level)
 		values = Rails.cache.fetch("population_cost_#{building}") do 

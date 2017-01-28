@@ -16,8 +16,8 @@ class Screen::Train < Screen::Basic
   def complete_units
     complete_units = {}
     production_units.values.map{|a| complete_units.merge!(a)}
-    complete_units = Troop.new(total_units) + Troop.new(complete_units)
-    complete_units.snob = snob_screen.total_snob + snob_screen.queue_size
+    complete_units = Troop.new(total_units) + complete_units
+    complete_units.snob = (snob_screen.total_snob || 0) + snob_screen.queue_size
 
     return complete_units
   end

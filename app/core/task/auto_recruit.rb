@@ -229,6 +229,8 @@ module Recruiter
       end 
     end
 
+    tropas_sobrando = (troops_model - train_screen.complete_units).to_h.select{|k,v| v < 0}.map{|k,v| [k,v*-1]}.to_h
+    Rails.logger.info "Tropas sobrando #{tropas_sobrando} em #{village.vid}".on_red if (tropas_sobrando.size > 0)
     to_train = (troops_model - train_screen.complete_units).remove_negative
     return to_train
   end

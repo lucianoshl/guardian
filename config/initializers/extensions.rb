@@ -83,6 +83,7 @@ module Mongoid::Document
   def my_fields
     result = fields
     result.delete('_id')
+    result.delete('_type')
     result = result.map{|k,v| v.name }
   end
 end

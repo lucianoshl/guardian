@@ -11,6 +11,7 @@ RailsAdmin.config do |config|
     Job::Reserve,
     Job::SendAttack,
     Model::Village,
+    Model::Troop,
     ApplicationError
   ]
 

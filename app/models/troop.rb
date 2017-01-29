@@ -215,6 +215,7 @@ class Troop
   def to_h
     r = self.attributes.clone
     r.delete('_id')
+    r.delete('_type')
     return r
   end
 

@@ -145,7 +145,7 @@ module Recruiter
     reserved_for_buildings = calculate_population_for_buidings(village,train_screen)
 
     units_to_train = calculate_units_to_train(train_screen,village,reserved_for_buildings)
-    percent_completed = calculate_percent_completed_units(train_screen.complete_units.clone.to_h,village)
+    percent_completed = calculate_percent_completed_units(units_to_train,train_screen.complete_units.clone.to_h,village)
 
     trail_util = Time.zone.now + self.class._performs_to + 10.minutes
 
@@ -159,7 +159,7 @@ module Recruiter
 
     loop do 
       release_times = release_times.select{|k,v| v <= Time.zone.now + self.class._performs_to}
-      percent_completed = calculate_percent_completed_units(current_units.to_h,village)
+      percent_completed = calculate_percent_completed_units(units_to_train,current_units.to_h,village)
       target_units = percent_completed.to_h.select {|unit,percent| percent != 1}.keys
       target_buildings = target_units.map{|unit| Troop.get_building(unit)}.uniq
 
@@ -180,6 +180,7 @@ module Recruiter
         less_complete_unit = compute_less_complete_unit(target_train,percent_completed)
         cost_info = train_screen.train_info[less_complete_unit.to_s]
 
+        # && cost_info["requirements_met"]
         if (!cost_info.nil?)
           cost = cost_info.to_resource
           train_seconds = train_screen.train_info[less_complete_unit.to_s]["build_time"]
@@ -191,7 +192,7 @@ module Recruiter
             release_times[building.to_s] += train_seconds
           end
         else
-          # do research
+          Rails.logger.error("Implementar pesquisa no ferreiro".on_red)
         end
       end
 
@@ -200,7 +201,7 @@ module Recruiter
 
       break if stop
     end
-    
+
     if (!to_train.to_h.select{|k,v| v > 0}.empty?)
       train_screen.train(to_train)
     end
@@ -235,9 +236,9 @@ module Recruiter
     return to_train
   end
 
-  def calculate_percent_completed_units(current_units,village)
+  def calculate_percent_completed_units(units_to_train,current_units,village)
     result = {}
-    village.model.troops.to_h.each do |unit,total|
+    units_to_train.to_h.each do |unit,total|
       result[unit] = total.to_f != 0 ? current_units[unit]/total.to_f : 1
     end
     return OpenStruct.new result

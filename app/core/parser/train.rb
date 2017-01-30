@@ -35,6 +35,7 @@ class Parser::Train < Parser::Basic
 
 
     screen.train_info = ExecJS.eval(@page.body.scan(/unit_managers.units = ({(?:\n|.)+?);/).first.first)
+    screen.form = @page.forms.first
 
   end
 

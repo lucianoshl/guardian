@@ -8,7 +8,7 @@ class Screen::Basic < Screen::Logged
   end
 
   def client_time
-    Time.zone.now.to_i * 1000
+    Time.zone.now.to_i
   end
   
 end

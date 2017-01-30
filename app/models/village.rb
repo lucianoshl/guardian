@@ -203,9 +203,9 @@ class Village
   end
 
   def self.my_cache
-    Rails.cache.fetch('Village.my', expires_in: 1.year) do
+    # Rails.cache.fetch('Village.my', expires_in: 1.year) do
       Village.my.to_a
-    end
+    # end
   end
 
 end

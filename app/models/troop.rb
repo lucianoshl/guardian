@@ -249,7 +249,8 @@ class Troop
     locations = {
       barracks: ['spear','sword','axe'],
       stable: ['spy','light','heavy'],
-      garage: ['ram','catapult']
+      garage: ['ram','catapult'],
+      snob: ['snob']
     }
 
     locations.map do |building,units|

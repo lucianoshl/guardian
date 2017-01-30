@@ -145,6 +145,7 @@ module Recruiter
     reserved_for_buildings = calculate_population_for_buidings(village,train_screen)
 
     units_to_train = calculate_units_to_train(train_screen,village,reserved_for_buildings)
+    snob_to_train = units_to_train.snob
     percent_completed = calculate_percent_completed_units(units_to_train,train_screen.complete_units.clone.to_h,village)
 
     trail_util = Time.zone.now + self.class._performs_to + 10.minutes
@@ -169,6 +170,7 @@ module Recruiter
         if (elements.empty?)
           next
         end
+
         next_release_building = elements[0][0]
         
         next if (next_release_building != building.to_s)
@@ -202,9 +204,14 @@ module Recruiter
       break if stop
     end
 
+    if (snob_to_train > 0)
+      Screen::Snob.new(village: village.vid).train(snob_to_train)
+    end
+
     if (!to_train.to_h.select{|k,v| v > 0}.empty?)
       train_screen.train(to_train)
     end
+
     return nil
   end
 

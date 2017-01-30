@@ -43,7 +43,7 @@ class TribalWarsController < ApplicationController
       page = client.send(method,uri,headers)
     end
 
-    Rails.logger.info("ACAO INVALIDA".on_red) if (page.body.include?("Ação inválida"))
+    Rails.logger.info("ACAO INVALIDA".on_red) if (page.body.scan(/A..o inv.lida/).size > 0)
     
 
     if page.uri.to_s.include?('map.php')

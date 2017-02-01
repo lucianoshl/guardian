@@ -23,7 +23,7 @@ class Object
             raise Exception.new("result < Time.now") if result < Time.now
             result =    result
         elsif scan(/... \d{1,2}, \d{4}/).size > 0 then
-            raw = self.gsub('Set','Sep').gsub('Out','Oct').gsub('Dez','Dec')
+            raw = self.gsub('Set','Sep').gsub('Out','Oct').gsub('Dez','Dec').gsub('Fev','Feb')
             result = DateTime.strptime(raw,"%b %d, %Y %H:%M:%S")
             result = result.to_datetime.change(offset: Time.zone.now.strftime("%z"))
 

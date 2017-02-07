@@ -18,17 +18,18 @@ class VillageController < ApplicationController
 
   def show
     @village = Village.find(params["id"])
-    @points_history_chart = {
-      labels: @village.points_history.map{|a| a["date"].strftime("%d/%m %H:%M") + " " + a["difference"].to_s  },
-      datasets: [
-        {
-            label: "Evolução",
-            backgroundColor: "white",
-            borderColor: "green",
-            data: @village.points_history.map{|a| a["points"] } 
-        }
-      ]
-    }
+    # @points_history_chart = {
+    #   labels: @village.points_history.map{|a| a["date"].strftime("%d/%m %H:%M") + " " + a["difference"].to_s  },
+    #   datasets: [
+    #     {
+    #         label: "Evolução",
+    #         backgroundColor: "white",
+    #         borderColor: "green",
+    #         data: @village.points_history.map{|a| a["points"] } 
+    #     }
+    #   ]
+    # }
+    @points_history_chart = {}
     
     @opts = {
       height: 200,

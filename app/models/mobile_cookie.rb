@@ -40,6 +40,7 @@ class MobileCookie
   end
 
   def self.is_logged? page
+    binding.pry
     !page.uri.to_s.include?("sid_wrong") && page.search('input[type="password"]').empty?
   end
 end

@@ -31,22 +31,19 @@ class Client::Desktop
 	      user.password = user.name.parameterize + "-12345"
 	    end
 
-	    select_world_page = client.post("#{base}/index.php?action=login&show_server_selection=1",{
+	    select_world_page = client.post('https://www.tribalwars.com.br/page/auth',{
 	      user: user.name,
 	      password: user.password,
-	      cookie: true,
-	      clear: true
+	      remember: 1
 	      });
 
-	    game_screen = client.post("#{base}/index.php?action=login&server_#{User.current.world}",{
-	        user: user.name,
-	        password: select_world_page.body.scan(/password.*?value=\\\"(.*?)\\/).first.first,
-	        })
+	    game_screen = client.get("https://www.tribalwars.com.br/page/play/#{User.current.world}")
+
 	    client.cookies
 	end
 
 	def is_logged?(page)
-		!page.uri.to_s.include?('sid_wrong.php')
+		!page.uri.to_s.include?('session_expired=1')
 	end
 
 end

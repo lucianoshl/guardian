@@ -187,19 +187,22 @@ class Village
   end
 
   def significant_name
+      
+    local = self.y/100.floor * 10 + self.x/100.floor
+
     if (self.model.nil?)
       # return self.label || "SEM MODELO"
-      return "SEM MODELO"
+      result = "SEM MODELO"
+    else
+      result = self.model.name
+
+      if (!self.label.nil?)
+        # result = self.label + '-' + result
+        result = result+ '-' + vid.to_s
+      end
     end
 
-    result = self.model.name
-
-    if (!self.label.nil?)
-      # result = self.label + '-' + result
-      result = result
-    end
-    
-    return result + '-' + vid.to_s
+    return result + " (#{self.x}|#{self.y}) K#{local}"
   end
 
   def self.my_cache

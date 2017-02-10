@@ -10,6 +10,8 @@ class Model::Village
   accepts_nested_attributes_for :buildings 
   accepts_nested_attributes_for :priorities 
 
+  has_many :villages, class_name: Village.to_s , inverse_of: :modelo
+
 
 
   def complete_building_model

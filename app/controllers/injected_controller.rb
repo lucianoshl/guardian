@@ -54,7 +54,8 @@ class InjectedController < ActionController::Base
 
     template = doc.to_html
 
-    template = template.gsub("content_value\"><","content_value\"><%= yield %><")
+    template = template.gsub("content_value\"><","content_value\" class=\"custom-page\"><%= yield %><")
+    
 
     file = Tempfile.new('template')
     file.write(template.force_encoding('UTF-8'))

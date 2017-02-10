@@ -93,7 +93,7 @@ RailsAdmin.config do |config|
       field :label
       field :use_in_pillage
       field :reserved_troops
-      field :model_id
+      field :model
       field :disable_auto_recruit
     end
 

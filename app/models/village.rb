@@ -20,8 +20,10 @@ class Village
   field :in_blacklist, type: Boolean
   field :use_in_pillage, type: Boolean, default: true
   field :disable_auto_recruit, type: Boolean, default: false
-  field :model_id, type: BSON::ObjectId
+  # field :model_id, type: BSON::ObjectId
   field :label, type: String
+
+  belongs_to :model, class_name: Model::Village.to_s
 
   has_many :reports , inverse_of: 'target' 
 
@@ -176,15 +178,15 @@ class Village
     return 'pie'
   end
 
-  def model_id_enum
-    Model::Village.all.map {|model| [model.name,model.id] }
-  end
+  # def model_id_enum
+  #   Model::Village.all.map {|model| [model.name,model.id] }
+  # end
 
-  def model
-    return nil if (self.model_id.nil?)
+  # def model
+  #   return nil if (self.model_id.nil?)
 
-    Model::Village.where(id: self.model_id).first
-  end
+  #   Model::Village.where(id: self.model_id).first
+  # end
 
   def significant_name
       
@@ -207,7 +209,7 @@ class Village
 
   def self.my_cache
     Rails.cache.fetch('Village.my', expires_in: 5.minutes) do
-      Village.my.to_a
+      Village.includes(:model).my.to_a
     end
   end
 

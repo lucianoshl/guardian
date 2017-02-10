@@ -1,0 +1,49 @@
+<table width="100%">
+	<tr>
+		<td style="vertical-align: top"><%= @original_content.to_html.html_safe %></td>
+		<td style="vertical-align: top">
+			<h2>Aldeias mais próximas</h2>
+			<table class="vis">
+				<thead>
+					<tr>
+						<th>Aldeia</th>
+						<th>Distância</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% Village.my_cache.sort{|a,b| a.distance(@village) <=> b.distance(@village)}.each do |my_village| %>
+					<tr>
+						<td><%= render_village_small(my_village) %></td>
+						<td><%= my_village.distance(@village).round(2) %></td>
+					</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</td>
+		<td style="vertical-align: top">
+			<h2>Relatórios</h2>
+			<table class="vis">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Relatório</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @village.reports.desc(:occurrence).limit(Village.my_cache.size).each do |report| %>
+					<tr>
+						<td><img src="<%= report.color %>" /></td>
+						<td><%= render_troops(report.target_troops,false) %></td>
+						<td>
+							<a href="/game.php?village=<%= @vid %>&screen=report&mode=all&group_id=0&view=<%= report.rid %>">
+								<%= report.occurrence.strftime("%d/%m - %H:%M:%S") %>
+							</a>
+						</td>
+					</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</td>
+	</tr>
+</table>

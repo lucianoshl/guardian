@@ -28,15 +28,18 @@ module Guardian
     config.i18n.default_locale = 'pt-BR'
     config.time_zone = Time.zone = 'Brasilia'
 
-    Mongoid.logger.level = Logger::DEBUG
+
+    Mongoid.logger.level = Logger::INFO
 
     if (['development','test'].include?(Rails.env)) 
+        Mongoid.logger.level = Logger::DEBUG
         Thread.new do 
             FileWatcher.new(Dir.glob("#{Rails.root}/**/*.rb")).watch do |f| 
                 load(f)
             end
         end
     end
+
 
     config.log_level = :debug
 

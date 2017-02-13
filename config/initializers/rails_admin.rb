@@ -107,7 +107,7 @@ RailsAdmin.config do |config|
       field :label
       field :name
       # field :points
-      field :model_id
+      field :model
       # field :disable_auto_recruit, :toggle
       field :use_in_pillage, :toggle
       field :disable_auto_recruit, :toggle

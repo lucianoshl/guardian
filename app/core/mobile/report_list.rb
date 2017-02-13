@@ -15,6 +15,8 @@ class Mobile::ReportList < Mobile::Base
 	def self.load_all
 		Rails.logger.info("Loading all reports: start")
 
+		not_erased_reports = []
+
 		loop do
 			report_list = Mobile::ReportList.new('attack',0,0,2000).reports
 			Rails.logger.info("Loading all reports: request with #{report_list.size} reports")
@@ -34,10 +36,14 @@ class Mobile::ReportList < Mobile::Base
 				not_erase = my_attack_troops.snob > 0 || my_attack_troops.population >= 5000 || my_attack_troops.spy > 50 || target_troops.total > 0
 				my_looses.population > 500 || my_attack_troops.population == my_looses.population
 
-				erase(report_id) if !not_erase
+				if (not_erase)
+					not_erased_reports << report_id
+				else
+					erase(report_id) 
+				end
 			end	
 			
-			break if (report_list.size < 55)
+			break if (report_list.size < 55 || not_erased_reports.size > 55)
 		end
 		Rails.logger.info("Loading all reports: end")
 	end

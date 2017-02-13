@@ -40,17 +40,16 @@ class Job::Reserve < Job::Abstract
 			self.x = village.x
 			self.y = village.y
 
-			coordinates.map do |village|
+			coordinates = coordinates.map do |village|
 				coords = { x: village.x, y: village.y }
 				if (Job::Reserve.where(coords).first.nil?)
-					return Job::Reserve.new(coords)
+					Job::Reserve.new(coords)
 				else
-					return nil
+					nil
 				end
 			end
 			coordinates.unshift(self)
 
-			binding.pry
 			coordinates.compact.map(&:save)
 			return Time.zone.now
 		end

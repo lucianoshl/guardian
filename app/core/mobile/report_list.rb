@@ -15,11 +15,12 @@ class Mobile::ReportList < Mobile::Base
 	def self.load_all
 		Rails.logger.info("Loading all reports: start")
 
-		not_erased_reports = []
+		
 
 		loop do
 			report_list = Mobile::ReportList.new('attack',0,0,2000).reports
 			Rails.logger.info("Loading all reports: request with #{report_list.size} reports")
+			not_erased_reports = []
 			report_list.pmap do |report_id|
 				report_screen = Mobile::ReportView.new(view: report_id)
 
@@ -43,7 +44,7 @@ class Mobile::ReportList < Mobile::Base
 				end
 			end	
 			
-			break if (report_list.size < 55 || not_erased_reports.size > 55)
+			break if (report_list.size < 55 || report_list.last == not_erased_reports.last )
 		end
 		Rails.logger.info("Loading all reports: end")
 	end

@@ -43,6 +43,7 @@ class Job::Abstract
       result = self.execute
       rescue Exception => e
         change_state('error')
+        ApplicationError.register(e)
         raise e
       end
       change_state('scheduled')

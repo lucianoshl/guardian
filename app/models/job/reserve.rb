@@ -5,6 +5,8 @@ class Job::Reserve < Job::Abstract
 	field :x, type: Integer
 	field :y, type: Integer
 
+	field :targets
+
 	# def initialize *args
 	# 	if (args.size == 1)
 	# 		arg = args.first
@@ -27,6 +29,34 @@ class Job::Reserve < Job::Abstract
 
 	def execute
 		screen = Screen::Reservations.new
+
+		if (x == nil && y == nil)
+			coordinates = (targets.split(' ').map do |target|
+				player = Player.where(name: target).first
+				player.villages
+			end).flatten
+
+			village = coordinates.shift
+			self.x = village.x
+			self.y = village.y
+
+			coordinates.map do |village|
+				coords = { x: village.x, y: village.y }
+				if (Job::Reserve.where(coords).first.nil?)
+					return Job::Reserve.new(coords)
+				else
+					return nil
+				end
+			end
+			coordinates.unshift(self)
+
+			binding.pry
+			coordinates.compact.map(&:save)
+			return Time.zone.now
+		end
+
+		
+
 		reserve = screen.search_reserve(x,y)
 		if (reserve.nil?)
 			screen.do_reserve(OpenStruct.new(x: x, y: y))

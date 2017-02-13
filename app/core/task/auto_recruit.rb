@@ -204,6 +204,7 @@ module Recruiter
       break if stop
     end
 
+    binding.pry 
     if (snob_to_train > 0)
       Screen::Snob.new(village: village.vid).train(snob_to_train)
     end

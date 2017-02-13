@@ -31,6 +31,7 @@ RailsAdmin.config do |config|
     edit do
       field :x
       field :y
+      field :targets
     end
 
     list do

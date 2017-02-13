@@ -29,9 +29,12 @@ RailsAdmin.config do |config|
 
   config.model Job::Reserve do
     edit do
-      field :x
-      field :y
-      field :targets
+      field :targets do
+        configure :description do
+          html_attributes rows: 20, cols: 50
+        end
+      end
+
     end
 
     list do

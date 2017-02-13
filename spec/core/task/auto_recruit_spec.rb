@@ -11,7 +11,7 @@ RSpec.describe Task::AutoRecruit, type: :model do
   end
 
   it "do_task" do 
-  	# Job::Reserve.new(targets: 'comcomsur22').execute
+  	Job::Reserve.new(targets: 'Heartbreaker  x 004 x BanG (299|484) K42').execute
   	
   end
 

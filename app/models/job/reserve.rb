@@ -7,28 +7,34 @@ class Job::Reserve < Job::Abstract
 
 	field :targets
 
-	# def initialize *args
-	# 	if (args.size == 1)
-	# 		arg = args.first
-	# 		if (arg.class == String)
-	# 			x,y = arg.split('|').map(&:to_i)
-	# 			super(x: x, y: y)
-	# 		elsif (arg.class == Fixnum) 
-	# 			arg = Village.where(vid: arg).first
-	# 			super(x: arg.x, y: arg.y) 
-	# 		elsif (arg.class == Village)
-	# 			super(x: arg.x, y: arg.y)
-	# 		elsif (arg.class == BSON::ObjectId)
-	# 			arg = Village.where(id: arg).first
-	# 			super(x: arg.x, y: arg.y) 
-	# 		end
-	# 	elsif (args.size == 2)
-	# 		super(x: args[0], y: args[1])
-	# 	end
-	# end
+	belongs_to :target
 
 	def execute
 		screen = Screen::Reservations.new
+
+		
+
+		if (!targets.blank?)
+			villages = []
+			possible_players = []
+			targets.split(/ /).each do |content|
+				coordinates = content.scan(/\d{3}\|\d{3}/)
+				if (coordinates.empty?)
+					possible_players << content
+				else
+					villages << coordinates.first
+				end
+			end
+			possible_players = possible_players.uniq
+			villages = villages.uniq
+
+			players = Player.in(name: possible_players)
+
+			binding.pry
+		end
+
+		binding.pry
+
 
 		if (x == nil && y == nil)
 			coordinates = (targets.split(' ').map do |target|

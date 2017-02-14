@@ -1,6 +1,9 @@
 <table width="100%">
 	<tr>
-		<td style="vertical-align: top"><%= @original_content.to_html.html_safe %></td>
+		<td style="vertical-align: top">
+			<%= @original_content.search("h2").first.to_html.html_safe %>
+			<%= @original_content.search("td[width='30%'] > table").first.to_html.html_safe %>
+		</td>
 		<td style="vertical-align: top">
 			<h2>Aldeias mais próximas</h2>
 			<table class="vis">

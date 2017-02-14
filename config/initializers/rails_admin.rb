@@ -33,6 +33,7 @@ RailsAdmin.config do |config|
     end
 
     list do
+      sort_by :scheduled
       field :state
       field :target do
         formatted_value do
@@ -40,7 +41,9 @@ RailsAdmin.config do |config|
         end
       end
       field :player
-      field :scheduled
+      field :scheduled do
+        sort_reverse false
+      end
     end
 
   end

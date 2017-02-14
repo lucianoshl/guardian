@@ -34,13 +34,16 @@ RailsAdmin.config do |config|
           html_attributes rows: 20, cols: 50
         end
       end
-
     end
 
     list do
       field :state
-      field :x
-      field :y
+      field :target do
+        formatted_value do
+          "#{bindings[:object].x}|#{bindings[:object].y}"
+        end
+      end
+      field :player
       field :scheduled do
         formatted_value do
           if (!bindings[:object].active_job.nil?)

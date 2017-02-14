@@ -28,7 +28,7 @@ class Village
   has_many :reports , inverse_of: 'target' 
 
   has_many :send_attack, class_name: Job::SendAttack.to_s, inverse_of: 'origin' 
-  has_many :reserve, class_name: Job::Reserve, inverse_of: 'target' 
+  # has_many :reserve, class_name: Job::Reserve, inverse_of: 'target' 
 
   embeds_one :reserved_troops, class_name: Troop.to_s
 

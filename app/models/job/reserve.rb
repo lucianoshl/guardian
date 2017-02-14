@@ -5,14 +5,12 @@ class Job::Reserve < Job::Abstract
 	field :x, type: Integer
 	field :y, type: Integer
 
-	field :targets
+	field :player, type: String
 
-	belongs_to :target
+	field :targets
 
 	def execute
 		screen = Screen::Reservations.new
-
-		
 
 		if (!targets.blank?)
 			villages = []
@@ -28,25 +26,18 @@ class Job::Reserve < Job::Abstract
 			possible_players = possible_players.uniq
 			villages = villages.uniq
 
-			players = Player.in(name: possible_players)
+			villages = villages.map {|c| x,y = c.split('|'); OpenStruct.new(x:x,y:y)}
 
-			binding.pry
-		end
+			Player.in(name: possible_players).map do |player|
+				villages = villages.concat(player.villages)
+			end
 
-		binding.pry
-
-
-		if (x == nil && y == nil)
-			coordinates = (targets.split(' ').map do |target|
-				player = Player.where(name: target).first
-				player.villages
-			end).flatten
-
-			village = coordinates.shift
+			village = villages.shift
 			self.x = village.x
 			self.y = village.y
+			self.targets = nil
 
-			coordinates = coordinates.map do |village|
+			jobs = villages.map do |village|
 				coords = { x: village.x, y: village.y }
 				if (Job::Reserve.where(coords).first.nil?)
 					Job::Reserve.new(coords)
@@ -54,13 +45,16 @@ class Job::Reserve < Job::Abstract
 					nil
 				end
 			end
-			coordinates.unshift(self)
 
-			coordinates.compact.map(&:save)
+			jobs.unshift(self)
+			jobs.compact.map(&:save)
+
 			return Time.zone.now
+
 		end
 
-		
+		self.player = JSON.parse(screen.client.get("/game.php?screen=api&ajax=target_selection&input=#{x}%7C#{y})&type=coord").body)["villages"].first['player_name'] || "Barbaro" if (self.player.nil?)
+		self.save
 
 		reserve = screen.search_reserve(x,y)
 		if (reserve.nil?)

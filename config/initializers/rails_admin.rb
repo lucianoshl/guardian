@@ -29,18 +29,17 @@ RailsAdmin.config do |config|
 
   config.model Job::Reserve do
     edit do
-      field :targets do
-        configure :description do
-          html_attributes rows: 20, cols: 50
-        end
-      end
-
+      field :targets
     end
 
     list do
       field :state
-      field :x
-      field :y
+      field :target do
+        formatted_value do
+          "#{bindings[:object].x}|#{bindings[:object].y}"
+        end
+      end
+      field :player
       field :scheduled do
         formatted_value do
           if (!bindings[:object].active_job.nil?)

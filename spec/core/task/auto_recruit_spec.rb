@@ -11,7 +11,8 @@ RSpec.describe Task::AutoRecruit, type: :model do
   end
 
   it "do_task" do 
-  	Job::Reserve.new(targets: 'Heartbreaker  x 004 x BanG (299|484) K42').execute
+    Job::SendAttack.find('58a2949fe6335c0a3789b6e9').execute
+
   	
   end
 

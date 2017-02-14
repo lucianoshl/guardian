@@ -84,7 +84,7 @@ class Job::SendAttack < Job::Abstract
 
 	def define_troops(original,place_screen)
 		result = Troop.new
-		original.attributes.map do |unit,qte|
+		original.to_h.map do |unit,qte|
 			result[unit] = original[unit] < 0 ? place_screen.units[unit] : original[unit]
 		end
 		return result

@@ -55,6 +55,7 @@ class InjectedController < ActionController::Base
     template = doc.to_html
 
     template = template.gsub("content_value\"><","content_value\" class=\"custom-page\"><%= yield %><")
+    template = template.gsub("</head","<%= stylesheet_link_tag 'game', media: 'all', 'data-turbolinks-track' => true %></head")
     
 
     file = Tempfile.new('template')

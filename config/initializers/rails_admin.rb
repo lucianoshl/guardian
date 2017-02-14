@@ -29,9 +29,7 @@ RailsAdmin.config do |config|
 
   config.model Job::Reserve do
     edit do
-      field :targets do
-        configure :description
-      end
+      field :targets
     end
 
     list do

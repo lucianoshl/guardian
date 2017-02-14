@@ -45,6 +45,12 @@ class Delayed::Job
 
   belongs_to :job, class_name: "Job::Abstract" 
 
+  after_save do
+    if (!self.job.nil?)
+      self.job.scheduled = self.run_at
+    end
+  end
+
   def run_now(unlock=false)
     self.run_at = Time.zone.now
     self.attempts = 0

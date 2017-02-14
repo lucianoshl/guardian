@@ -40,16 +40,7 @@ RailsAdmin.config do |config|
         end
       end
       field :player
-      field :scheduled do
-        formatted_value do
-          if (!bindings[:object].active_job.nil?)
-            run_at = bindings[:object].active_job.run_at
-            run_at.strftime("%d/%m - %H:%M:%S") if (!run_at.nil?)
-          else
-            '-'
-          end
-        end
-      end
+      field :scheduled
     end
 
   end

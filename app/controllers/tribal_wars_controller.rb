@@ -9,12 +9,15 @@ class TribalWarsController < ApplicationController
     require 'open-uri'
     base = "https://#{User.current.world}.tribalwars.com.br"
     uri = base + request.fullpath
-    download = open(uri)
-    page = Tempfile.new('page')
-    IO.copy_stream(download, page.path)
-    # binding.pry
 
-    send_file page.path, type: download.meta["content-type"], disposition: 'inline'
+    path,content_type = Rails.cache.fetch("#{uri}_tmp_file") do
+      download = open(uri)
+      page = Tempfile.new('page')
+      IO.copy_stream(download, page.path)
+      [page.path,download.meta["content-type"]]
+    end
+
+    send_file path, type: content_type, disposition: 'inline'
   end
 
   def proxy

@@ -1,0 +1,31 @@
+<table class="vis modemenu">
+	<tbody>
+		<tr>
+			<td class="<%= @mode=='snob' ? 'selected' : '' %>" style="min-width: 80px">
+				<a href="<%= generate_url(screen: 'overview_villages', mode: 'commands', filter: 'snob') %>">
+				Nobre
+				</a>
+			</td>
+			<td class="<%= @mode=='full' ? 'selected' : '' %>" style="min-width: 80px">
+				<a href="<%= generate_url(screen: 'overview_villages', mode: 'commands', filter: 'full') %>">
+				Full
+				</a>
+			</td>
+			<td class="<%= @mode=='full-snob' ? 'selected' : '' %>" style="min-width: 80px">
+				<a href="<%= generate_url(screen: 'overview_villages', mode: 'commands', filter: 'full-snob') %>">
+				Nobre e Full
+				</a>
+			</td>
+			<td class="<%= @mode=='spy' ? 'selected' : '' %>" style="min-width: 80px">
+				<a href="<%= generate_url(screen: 'overview_villages', mode: 'commands', filter: 'spy') %>">
+				Espionagem
+				</a>
+			</td>
+			<td class="<%= @mode=='support' ? 'selected' : '' %>" style="min-width: 80px">
+				<a href="<%= generate_url(screen: 'overview_villages', mode: 'commands', filter: 'support') %>">
+				Apoios
+				</a>
+			</td>
+		</tr>
+	</tbody>
+</table>

@@ -16,6 +16,10 @@ Rails.application.routes.draw do
   get 'game.php' => 'overview_villages#place',
     :constraints => lambda { |request| 
       request.params[:mode] == "place" and request.params[:screen] == "overview_villages" }
+
+  get 'game.php' => 'overview_villages#commands',
+    :constraints => lambda { |request| 
+      request.params[:mode] == "commands" and request.params[:screen] == "overview_villages" }
       
   get 'game.php' => 'info_village#show',
     :constraints => lambda { |request| 

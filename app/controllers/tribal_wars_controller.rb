@@ -17,6 +17,19 @@ class TribalWarsController < ApplicationController
       [page.path,download.meta["content-type"]]
     end
 
+    if (!File.exists?(path))
+      Rails.cache.delete("#{uri}_tmp_file")
+      path,content_type = Rails.cache.fetch("#{uri}_tmp_file") do
+        download = open(uri)
+        page = Tempfile.new('page')
+        IO.copy_stream(download, page.path)
+        [page.path,download.meta["content-type"]]
+      end
+    end
+
+
+
+
     send_file path, type: content_type, disposition: 'inline'
   end
 

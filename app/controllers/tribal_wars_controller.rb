@@ -57,7 +57,7 @@ class TribalWarsController < ApplicationController
       page = client.send(method,uri,headers)
     end
 
-    Rails.logger.info(page.search('h2').text)
+    Rails.logger.info(page.search('h2').text.white.on_red)
     
 
     if page.uri.to_s.include?('map.php')

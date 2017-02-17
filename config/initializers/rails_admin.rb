@@ -30,6 +30,8 @@ RailsAdmin.config do |config|
   config.model Job::Reserve do
     edit do
       field :targets
+      field :x
+      field :y
     end
 
     list do

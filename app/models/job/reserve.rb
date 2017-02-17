@@ -14,20 +14,20 @@ class Job::Reserve < Job::Abstract
 
 		if (!targets.blank?)
 			villages = []
-			possible_players = []
-			targets.split(/ /).each do |content|
-				coordinates = content.scan(/\d{3}\|\d{3}/)
-				if (coordinates.empty?)
-					possible_players << content
-				else
-					villages << coordinates.first
-				end
-			end
-			possible_players = possible_players.uniq
-			villages = villages.uniq
+			possible_players = [targets]
+			# targets.split(/ /).each do |content|
+			# 	coordinates = content.scan(/\d{3}\|\d{3}/)
+			# 	if (coordinates.empty?)
+			# 		possible_players << content
+			# 	else
+			# 		villages << coordinates.first
+			# 	end
+			# end
+			# possible_players = possible_players.uniq
+			# villages = villages.uniq
 
-			villages = villages.map {|c| x,y = c.split('|'); OpenStruct.new(x:x,y:y)}
-
+			# villages = villages.map {|c| x,y = c.split('|'); OpenStruct.new(x:x,y:y)}
+			
 			Player.in(name: possible_players).map do |player|
 				villages = villages.concat(player.villages)
 			end

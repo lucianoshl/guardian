@@ -28,8 +28,6 @@ class TribalWarsController < ApplicationController
     end
 
 
-
-
     send_file path, type: content_type, disposition: 'inline'
   end
 
@@ -59,7 +57,7 @@ class TribalWarsController < ApplicationController
       page = client.send(method,uri,headers)
     end
 
-    Rails.logger.info("ACAO INVALIDA".on_red) if (page.body.scan(/A..o inv.lida/).size > 0)
+    Rails.logger.info(page.search('h2').text)
     
 
     if page.uri.to_s.include?('map.php')

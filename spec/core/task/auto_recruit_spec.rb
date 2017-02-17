@@ -12,7 +12,8 @@ RSpec.describe Task::AutoRecruit, type: :model do
 
   it "do_task" do 
     # Job::SendAttack.find('58a2949fe6335c0a3789b6e9').execute
-    Job::Reserve.new(targets: 'Fazenda Dois Ipês' ).execute
+    # Job::Reserve.new(targets: 'Fazenda Dois Ipês' ).execute
+    Job::SnobTarget.new(coordinate: '399|442').execute
   	
   end
 

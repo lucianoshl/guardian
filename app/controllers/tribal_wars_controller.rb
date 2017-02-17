@@ -9,12 +9,26 @@ class TribalWarsController < ApplicationController
     require 'open-uri'
     base = "https://#{User.current.world}.tribalwars.com.br"
     uri = base + request.fullpath
-    download = open(uri)
-    page = Tempfile.new('page')
-    IO.copy_stream(download, page.path)
-    # binding.pry
 
-    send_file page.path, type: download.meta["content-type"], disposition: 'inline'
+    path,content_type = Rails.cache.fetch("#{uri}_tmp_file") do
+      download = open(uri)
+      page = Tempfile.new('page')
+      IO.copy_stream(download, page.path)
+      [page.path,download.meta["content-type"]]
+    end
+
+    if (!File.exists?(path))
+      Rails.cache.delete("#{uri}_tmp_file")
+      path,content_type = Rails.cache.fetch("#{uri}_tmp_file") do
+        download = open(uri)
+        page = Tempfile.new('page')
+        IO.copy_stream(download, page.path)
+        [page.path,download.meta["content-type"]]
+      end
+    end
+
+
+    send_file path, type: content_type, disposition: 'inline'
   end
 
   def proxy
@@ -43,7 +57,7 @@ class TribalWarsController < ApplicationController
       page = client.send(method,uri,headers)
     end
 
-    Rails.logger.info("ACAO INVALIDA".on_red) if (page.body.scan(/A..o inv.lida/).size > 0)
+    Rails.logger.info(page.search('h2').text.white.on_red)
     
 
     if page.uri.to_s.include?('map.php')

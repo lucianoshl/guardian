@@ -1,6 +1,12 @@
 class OverviewVillagesController < InjectedController
 
   def resources
+  end 
+
+  def commands
+    @places = Village.my.pmap{|a| Screen::Place.new(village: a.vid) }
+    # @commands = @place.map {|a| a.commands }.flatten
+    # binding.pry
   end
 
   def troops

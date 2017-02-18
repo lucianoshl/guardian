@@ -32,6 +32,7 @@ class TribalWarsController < ApplicationController
   end
 
   def proxy
+    Rails.logger.info("proxy start".white.on_red)
     if (request.fullpath == '/game.php')
       redirect_to "/game.php?village=#{Village.my_cache.first.vid}&screen=overview_villages"
       return
@@ -59,6 +60,7 @@ class TribalWarsController < ApplicationController
 
     Rails.logger.info(page.search('h2').text.white.on_red)
     
+    Rails.logger.info("proxy end".white.on_red)
 
     if page.uri.to_s.include?('map.php')
       json = JSON.parse(page.body)

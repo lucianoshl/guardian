@@ -2,8 +2,8 @@ class Parser::Train < Parser::Basic
 
   def parse screen
     super
-    screen.current_units = {}
-    screen.total_units = {}
+    screen.current_units = Troop.new
+    screen.total_units = Troop.new
 
     @page.search('#train_form > .mobileBlock').map do |element|
       unit = element.search('input').attr('name').value

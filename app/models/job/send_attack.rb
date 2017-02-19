@@ -52,7 +52,7 @@ class Job::SendAttack < Job::Abstract
 			else
 				splited_commands = split(real_troop,place_screen)
 			end
-
+			binding.pry
 			form = place_screen.send_command_form(coordinate.to_coordinate,splited_commands.first,'attack',true)
 
 			troops_fields = troop.my_fields - ['militia']
@@ -101,7 +101,7 @@ class Job::SendAttack < Job::Abstract
 				aux.snob = 1
 				result << aux
 			else
-				aux.axe -= min_population
+				aux.axe -= min_population - 100
 				result << Troop.new(axe: min_population - 100,snob: 1)
 			end
 			
@@ -111,6 +111,9 @@ class Job::SendAttack < Job::Abstract
 	end
 
 	def calc_min_population(place_screen)
+		if (Village.where(self.coordinate.to_coordinate.to_h).first.player.nil?)
+			return 200
+		end
 		aux = place_screen.units.clone
 		aux.spy = 0
 		aux.knight = 0 

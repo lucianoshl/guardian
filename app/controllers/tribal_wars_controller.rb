@@ -83,6 +83,17 @@ class TribalWarsController < ApplicationController
     village_map = Village.my_cache.map {|a| [a.vid,a]}.to_h
     json.each_with_index do |item,index|
       item["data"]["villages"].each_with_index do |item2,index2|
+
+        if (item2.class == Array)
+          aux = {}
+          item2.each do |item|
+            if (item.class == Hash)
+              aux = aux.merge(item)
+            end
+            item2 = aux
+          end
+        end
+        
         item2.map do |k,item3|
           if (village_map.keys.include?(item3.first.to_i))
             json[index]["data"]["villages"][index2][k][2] = village_map[item3.first.to_i].significant_name

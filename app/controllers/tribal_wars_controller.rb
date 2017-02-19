@@ -58,7 +58,7 @@ class TribalWarsController < ApplicationController
       page = client.send(method,uri,headers)
     end
 
-    Rails.logger.info(page.search('h2').text.white.on_red)
+    Rails.logger.info(page.search('h2').text.white.on_red) if page.class != Mechanize::File
     
     Rails.logger.info("proxy end".white.on_red)
 

@@ -1,8 +1,9 @@
 module VillageHelper
-  def render_village_small(village)
+  def render_village_small(village,options = {})
     local = village.x/100.floor * 10 + village.y/100.floor
     label = "#{village.significant_name}"
-    link_to label, "/game.php?village=#{village.vid}&screen=place"
+    options = !options.empty? ? "&" + options.to_query : ""
+    link_to label, "/game.php?village=#{village.vid}" + options
   end
 
   def render_buildings(buildings)

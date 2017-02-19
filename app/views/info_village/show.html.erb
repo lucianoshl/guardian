@@ -16,7 +16,9 @@
 				<tbody>
 					<% Village.my_cache.sort{|a,b| a.distance(@village) <=> b.distance(@village)}.each do |my_village| %>
 					<tr>
-						<td><%= render_village_small(my_village) %></td>
+						<td>
+							<%= render_village_small(my_village ,target: @village.vid, screen: 'place') %>	
+						</td>
 						<td><%= my_village.distance(@village).round(2) %></td>
 					</tr>
 					<% end %>

@@ -45,7 +45,7 @@ class Screen::Place < Screen::Basic
 
   @@places = {}
 
-  attr_accessor :units,:free_units,:commands,:incomings,:supports,:form,:unit_metadata
+  attr_accessor :units,:free_units,:commands,:incomings,:form,:unit_metadata
 
   url screen: 'place'  
 
@@ -65,7 +65,7 @@ class Screen::Place < Screen::Basic
     parse(page)
 
     possible_commands = self.commands.select do |command|
-            !command.returning && !command.target.nil? && 
+            !command.returning &&
        command.target.x == target.x && command.target.y == target.y
     end
 

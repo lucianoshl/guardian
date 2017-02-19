@@ -64,6 +64,10 @@ class Report
       total_production_per_hour.to_f
   end
 
+  def wall
+    self.target_buildings["wall"].nil? ? nil : self.target_buildings["wall"].to_i
+  end
+
   def rams_to_destroy_wall
     wall = (self.target_buildings["wall"] || "0").to_i
 

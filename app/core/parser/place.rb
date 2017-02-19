@@ -16,20 +16,20 @@ class Parser::Place < Parser::Basic
 
     screen.free_units = parse_free_units(screen);
 
-    screen.commands = parse_commands(screen,@page.search('a[href*=own]'))
-    screen.incomings = parse_commands(screen,@page.search('a[href*=other]').select{|a| !a.to_xml.include?('support.png')}) 
+    screen.commands = parse_commands2(screen,@page.search('a[href*=own]'))
+    # screen.incomings = parse_commands(screen,@page.search('a[href*=other]').select{|a| !a.to_xml.include?('support.png')}) 
 
-    if (`hostname`.strip == "overmind")
-      fake = OpenStruct.new
-      fake.returning = false
-      fake.id = 0
-      fake.target = Village.last
-      fake.origin = Village.my.first
-      fake.occurence = Time.zone.now + 1.hour
-      screen.incomings = [fake]
-    end
+    # if (`hostname`.strip == "overmind")
+    #   fake = OpenStruct.new
+    #   fake.returning = false
+    #   fake.id = 0
+    #   fake.target = Village.last
+    #   fake.origin = Village.my.first
+    #   fake.occurence = Time.zone.now + 1.hour
+    #   screen.incomings = [fake]
+    # end
 
-    screen.supports = parse_commands(screen,@page.search('a[href*=other]').select{|a| a.to_xml.include?('support.png')})
+    # screen.supports = parse_commands(screen,@page.search('a[href*=other]').select{|a| a.to_xml.include?('support.png')})
     
   end
 
@@ -92,6 +92,18 @@ class Parser::Place < Parser::Basic
       end
       command
     end).sort!{|a,b| a.occurence <=> b.occurence}
+  end
+
+  def parse_commands2 screen,links
+    links.map do |row|
+      row = row.parents(4)
+      command = OpenStruct.new
+      command.returning = row.search('img').first.attr('src').scan('return_').length > 0
+      command.target = OpenStruct.new
+      command.target.x, command.target.y = row.search('td')[0].text.scan(/\d{3}\|\d{3}/).first.split('|').map(&:to_i)
+      command.occurence = row.search('td')[1].text.parse_datetime
+      command
+    end
   end
 
 end

@@ -52,7 +52,6 @@ class Job::SendAttack < Job::Abstract
 			else
 				splited_commands = split(real_troop,place_screen)
 			end
-			binding.pry
 			form = place_screen.send_command_form(coordinate.to_coordinate,splited_commands.first,'attack',true)
 
 			troops_fields = troop.my_fields - ['militia']

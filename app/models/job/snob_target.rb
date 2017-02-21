@@ -12,7 +12,8 @@ class Job::SnobTarget < Job::Abstract
 
 		to_remove = Job::SendAttack.all.map{|a| c = OpenStruct.new;  c.x,c.y = a.origin.split('|').map(&:to_i) ; Village.where(c).first}
 
-		atks_village = Model::Village.where(name: 'ATAQUE').first.villages.map(&:vid)
+
+		atks_village = Model::Village.where(name: 'ATAQUE').first.villages.where(use_in_pillage: false).map(&:vid)
 
 		my_troops = atks_village.pmap { |vid| Screen::Place.new(village: vid) }
 
@@ -46,7 +47,7 @@ class Job::SnobTarget < Job::Abstract
 
 		minimal_population = calculate_minimal_population(target,fulls) - 100
 
-		snobs_qte = 4
+		snobs_qte = 5
 
 		snobs = my_troops.select { |p| u = p.units; u.snob >= snobs_qte && u.axe >= snobs_qte * minimal_population }
 		snobs = snobs - fulls_to_send
@@ -54,8 +55,10 @@ class Job::SnobTarget < Job::Abstract
 
 		snobs = snobs.select { |p| !to_remove.include?(p.village) }
 
+		binding.pry
 
 		send_snob = snobs.first
+		minimal_population = calculate_minimal_population(target,[send_snob]) - 100
 		to_send = OpenStruct.new
 		to_send.troop = Troop.new
 		to_send.troop.axe = snobs_qte * minimal_population
@@ -70,13 +73,13 @@ class Job::SnobTarget < Job::Abstract
 
 		attack_time = Time.zone.now + far.troop.travel_time(far.place.village,target)
 
-	 	night = attack_time < Time.now.at_beginning_of_day + 8.hours && attack_time > Time.now.at_beginning_of_day
+	 	night = attack_time < attack_time.at_beginning_of_day + 8.hours && attack_time > attack_time.at_beginning_of_day
 
 	 	if (night)
-	 		attack_time = Time.now.at_beginning_of_day + 8.hours
+	 		attack_time = attack_time.at_beginning_of_day + 8.hours
 	 	end
 
-	 	attack_time += 5.minutes
+	 	attack_time += 5.minutes + 10.seconds
 
 		atks = fulls_to_send.map do |command|
 			place = command.place
@@ -105,8 +108,17 @@ class Job::SnobTarget < Job::Abstract
 	def calculate_minimal_population(target,fulls)
 		if (target.player.nil?)
 			return 200
-		end
-		binding.pry
+		end 
+
+		atk_origin = fulls.sort{|b,a| a.village.points <=> b.village.points}.first
+		begin
+			unit = fulls.first.units.to_h.select{|a,v| v>0}.first.first
+			troops = Troop.new
+			troops[unit] = 1
+			command = atk_origin.send_attack(target,troops,true)
+		rescue NeedsMorePopulationException => exception
+			return exception.population
+    	end
 	end
 
 end

@@ -17,7 +17,7 @@ class OverviewVillagesController < InjectedController
     Parallel.map(@villages, in_threads: 1 ) do |village|
       @train[village.vid] = Screen::Train.new(village: village.vid)
       @snob[village.vid] = Screen::Snob.new(village: village.vid)
-      @units[village.vid] = Troop.new(@train[village.vid].total_units)
+      @units[village.vid] = @train[village.vid].total_units
       @units[village.vid].snob = @snob[village.vid].total_snob
     end
   end

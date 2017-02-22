@@ -3,6 +3,7 @@
 		<td style="vertical-align: top">
 			<%= @original_content.search("h2").first.to_html.html_safe %>
 			<%= @original_content.search("td[width='30%'] > table").first.to_html.html_safe %>
+			<%= @original_content.search("td[width='30%'] > table").last.to_html.html_safe %>
 		</td>
 		<td style="vertical-align: top">
 			<h2>Aldeias mais próximas</h2>

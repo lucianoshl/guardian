@@ -71,13 +71,14 @@ class InjectedController < ActionController::Base
   end
 
   before_filter do 
+    @world = User.current.world
     @mode = request.params[:mode] || 'default'
     @screen = request.params[:screen] || 'default'
     @vid = request.url.scan(/village=(\d+)/).first.first.to_i
-    @tw_path = "https://#{User.current.world}.tribalwars.com.br" + request.fullpath
+    @tw_path = "https://#{@world}.tribalwars.com.br" + request.fullpath
     
     page = client.send(:get,@tw_path, process_headers(headers) )
-    
+
     doc = Nokogiri::HTML(page.content)
     @doc = process_page(doc)
     generate_template(@doc)

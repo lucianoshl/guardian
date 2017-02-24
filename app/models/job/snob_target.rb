@@ -50,7 +50,8 @@ class Job::SnobTarget < Job::Abstract
 		snobs_qte = 4
 
 		snobs = my_troops.select { |p| u = p.units; u.snob >= snobs_qte && u.axe >= snobs_qte * minimal_population }
-		snobs = snobs - fulls_to_send
+
+		snobs = snobs - fulls_to_send.map(&:place)
 		snobs = snobs.sort{|a,b| a.village.distance(target) <=> b.village.distance(target) }
 
 		snobs = snobs.select { |p| !to_remove.include?(p.village) }

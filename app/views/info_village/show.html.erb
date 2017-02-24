@@ -3,6 +3,34 @@
 		<td style="vertical-align: top">
 			<%= @original_content.search("h2").first.to_html.html_safe %>
 			<%= @original_content.search("td[width='30%'] > table").first.to_html.html_safe %>
+			<table width="100%" class="vis" style="margin-top:10px;">
+			  <tbody>
+			    <tr><th>Ações</th></tr>
+			    <tr><td colspan="2">
+			      <a href="/game.php?village=<%= @vid %>&screen=map&x=<%= @village.x %>&y=<%= @village.y %>&beacon"><span class="action-icon-container"><span class="icon header map"></span></span> Centralizar mapa</a>
+			    </td></tr>
+			    <tr>
+			      <td colspan="2">
+			        <form id="template_form" method="POST">
+			          <a id="send_troops" href="/game.php?village=<%= @vid %>&screen=place&target=<%= @village.vid %>">
+			            <span class="action-icon-container"><span class="icon header troops"></span></span> Enviar tropas
+			          </a>
+			        </form>
+			      </td>
+			    </tr>
+			    <tr>
+			      <td colspan="2"><a href="/game.php?village=<%= @vid %>&screen=market&mode=send&target=<%= @village.vid %>">
+			        <span class="action-icon-container"><span class="icon header ressources"></span></span> Enviar recursos</a></td>
+			    </tr>
+			    <tr>
+			      <td colspan="2">
+			      	<a href="http://br.twstats.com/<%= @world %>/index.php?page=village&id=<%= @village.vid %>">
+			        <span class="action-icon-container"><span class="icon header village"></span></span> TW Status
+			       </a>
+			      </td>
+			    </tr>
+			  </tbody>
+			</table>
 		</td>
 		<td style="vertical-align: top">
 			<h2>Aldeias mais próximas</h2>

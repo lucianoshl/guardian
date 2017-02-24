@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><%= ENV['TW_USER'] %> | Guardian </title>
+  <title><%= @user.name %> | Guardian </title>
 
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -155,13 +155,13 @@
               <!-- Menu Toggle Button -->
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs"><%= ENV['TW_USER'] %></span>
+                <span class="hidden-xs"><%= @user.name %></span>
               </a>
               <ul class="dropdown-menu">
                 <!-- The user image in the menu -->
                 <li class="user-header">
                   <p>
-                    <%= ENV['TW_USER'] %>
+                    <%= @user.name %>
                     <small>Member since Nov. 2012</small>
                   </p>
                 </li>

@@ -10,20 +10,6 @@ class User
 
   has_one :player 
 
-  def self.save_user
-    username = ENV["TW_USER"]
-    password = ENV["TW_PASSWORD"]
-    world = ENV["TW_WORLD"]
-
-    if ([password,world,username].compact.size != 3)
-      raise Exception.new("Invalid user config TW_USER=#{ENV["TW_USER"]} TW_PASSWORD=#{ENV["TW_PASSWORD"]} TW_WORLD=#{ENV["TW_WORLD"]}")
-    end
-
-    user = User.new(name: username, world: world, password: password )
-    user.save
-    user
-  end
-
   def self.fake
     user = User.new
     user.name = I18n.transliterate(Mechanize.new.get("http://www.behindthename.com/random/random.php?number=2&gender=f&surname=&all=yes").search('.heavyhuge').text.strip).split(' ').join(' ')
@@ -34,20 +20,9 @@ class User
   end
 
   def self.current
-    username = ENV["TW_USER"] || "default"
-    Rails.cache.fetch("user_#{username}") do
-      check_is_first_execution
-      User.where(name: username).first 
+    Rails.cache.fetch("user_cached") do
+      User.first
     end
-  end
-
-  def self.check_is_first_execution
-    first_execution = User.where(name: ENV["TW_USER"]).count.zero?
-
-    if (first_execution)
-      binding.pry
-    end
-
   end
 
 end

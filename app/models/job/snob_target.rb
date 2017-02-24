@@ -47,15 +47,13 @@ class Job::SnobTarget < Job::Abstract
 
 		minimal_population = calculate_minimal_population(target,fulls) - 100
 
-		snobs_qte = 5
+		snobs_qte = 4
 
 		snobs = my_troops.select { |p| u = p.units; u.snob >= snobs_qte && u.axe >= snobs_qte * minimal_population }
 		snobs = snobs - fulls_to_send
 		snobs = snobs.sort{|a,b| a.village.distance(target) <=> b.village.distance(target) }
 
 		snobs = snobs.select { |p| !to_remove.include?(p.village) }
-
-		binding.pry
 
 		send_snob = snobs.first
 		minimal_population = calculate_minimal_population(target,[send_snob]) - 100

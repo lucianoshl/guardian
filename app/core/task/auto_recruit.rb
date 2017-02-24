@@ -481,7 +481,7 @@ class Task::AutoRecruit < Task::Abstract
       if (!village.model.nil?)
           recruit(village) if (village.disable_auto_recruit != true)
           dates << build(village)
-          coins(village)
+          # coins(village)
       end
     end
 

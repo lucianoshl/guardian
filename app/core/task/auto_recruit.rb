@@ -2,9 +2,11 @@ module Coiner
 
   def coins(village)
     snob_screen = Screen::Snob.new(village: village.vid)
-    if (snob_screen.enabled && snob_screen.possible_coins > 0 && (snob_screen.possible_snobs < 10 || snob_screen.storage_alert))
+    # if (snob_screen.enabled && snob_screen.possible_coins > 0 && (snob_screen.possible_snobs < 10 || snob_screen.storage_alert))
+    if (snob_screen.enabled && snob_screen.possible_coins > 4 )
 
-        coins = snob_screen.storage_alert ? (snob_screen.possible_coins/2).floor.to_i : snob_screen.possible_coins
+        # coins = snob_screen.storage_alert ? (snob_screen.possible_coins/2).floor.to_i : snob_screen.possible_coins
+        coins = snob_screen.possible_coins - 4
 
         snob_screen.do_coin(coins)
     end
@@ -481,7 +483,7 @@ class Task::AutoRecruit < Task::Abstract
       if (!village.model.nil?)
           recruit(village) if (village.disable_auto_recruit != true)
           dates << build(village)
-          # coins(village)
+          coins(village)
       end
     end
 

@@ -22,6 +22,12 @@
 			      <td colspan="2"><a href="/game.php?village=<%= @vid %>&screen=market&mode=send&target=<%= @village.vid %>">
 			        <span class="action-icon-container"><span class="icon header ressources"></span></span> Enviar recursos</a></td>
 			    </tr>
+			    <% if Village.my_cache.map(&:vid).include?(@vid) %>
+			    <tr>
+			      <td colspan="2"><a href="/game.php?village=<%= @village.vid %>&screen=overview">
+			        <span class="action-icon-container"><span class="icon header overview_village"></span></span> Visualização geral da aldeia</a></td>
+			    </tr>
+			    <% end %>
 			    <tr>
 			      <td colspan="2">
 			      	<a href="http://br.twstats.com/<%= @world %>/index.php?page=village&id=<%= @village.vid %>">

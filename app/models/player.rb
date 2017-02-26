@@ -14,4 +14,10 @@ class Player
 
   scope :blacklist, -> { where(in_blacklist: true)}
 
+
+  def self.unsaved args
+  	screen = Screen::InfoPlayer.new(id: args[:pid])
+  	binding.pry
+  end
+
 end

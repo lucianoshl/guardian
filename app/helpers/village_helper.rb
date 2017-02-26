@@ -1,4 +1,7 @@
 module VillageHelper
+
+  include ActionView::Helpers::UrlHelper
+
   def render_village_small(village,options = {})
     local = village.x/100.floor * 10 + village.y/100.floor
     label = "#{village.significant_name}"
@@ -14,7 +17,7 @@ module VillageHelper
         <img src="https://dsbr.innogamescdn.com/8.48/29600/graphic/buildings/#{buildings}.png" /> #{qte}
       }
     end).join.html_safe
-  end
+  end 
 
   def render_coord(village)
     %{

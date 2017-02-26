@@ -25,6 +25,10 @@ Rails.application.routes.draw do
     :constraints => lambda { |request| 
       request.params[:mode].nil? and request.params[:screen] == "info_village" }
 
+  get 'game.php' => 'info_player#show',
+    :constraints => lambda { |request| 
+      request.params[:mode].nil? and request.params[:screen] == "info_player" }
+
 
   get 'game.php' => 'tribal_wars#proxy'
   post 'game.php' => 'tribal_wars#proxy'

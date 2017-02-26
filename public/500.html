@@ -62,7 +62,7 @@
     </div>
     <p>Se você quiser testar o servidor local para localizar o erro clique <a id="link">aqui<a/></p>
     <script>
-      var string = 'http://localhost:3000' + window.location.pathname
+      var string = 'http://localhost:3000' + window.location.pathname + window.location.search;
       document.getElementById('link').setAttribute("href",string);
     </script>
   </div>

@@ -22,7 +22,7 @@
 			      <td colspan="2"><a href="/game.php?village=<%= @vid %>&screen=market&mode=send&target=<%= @village.vid %>">
 			        <span class="action-icon-container"><span class="icon header ressources"></span></span> Enviar recursos</a></td>
 			    </tr>
-			    <% if Village.my_cache.map(&:vid).include?(@vid) %>
+			    <% if Village.my_cache.map(&:vid).include?(@village.vid) %>
 			    <tr>
 			      <td colspan="2"><a href="/game.php?village=<%= @village.vid %>&screen=overview">
 			        <span class="action-icon-container"><span class="icon header overview_village"></span></span> Visualização geral da aldeia</a></td>

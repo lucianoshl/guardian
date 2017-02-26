@@ -215,4 +215,10 @@ class Village
     end
   end
 
+  def self.unsaved_village (args)
+    screen = Screen::InfoVillage.new(id: args[:vid])
+    screen.village.save
+    return screen.village
+  end
+
 end

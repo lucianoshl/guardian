@@ -14,7 +14,7 @@ class OverviewVillagesController < InjectedController
     @train = {}
     @snob = {}
     @units = {}
-    Parallel.map(@villages, in_threads: 3) do |village|
+    Parallel.map(@villages, in_threads: 1) do |village|
       @train[village.vid] = Screen::Train.new(village: village.vid)
       @snob[village.vid] = Screen::Snob.new(village: village.vid)
       @units[village.vid] = @train[village.vid].total_units
@@ -39,7 +39,7 @@ class OverviewVillagesController < InjectedController
   def place
     @villages = Village.my.sort { |a, b| a.significant_name <=> b.significant_name }
 
-    @places = (Parallel.map(@villages, in_threads: 2) do |village|
+    @places = (Parallel.map(@villages, in_threads: 1) do |village|
       [village.vid, Screen::Place.new(village: village.vid)]
     end).to_h
 

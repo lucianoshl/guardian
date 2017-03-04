@@ -39,7 +39,7 @@ class OverviewVillagesController < InjectedController
   def place
     @villages = Village.my.sort { |a, b| a.significant_name <=> b.significant_name }
 
-    @places = (Parallel.map(@villages, in_threads: 4) do |village|
+    @places = (Parallel.map(@villages, in_threads: 2) do |village|
       [village.vid, Screen::Place.new(village: village.vid)]
     end).to_h
 

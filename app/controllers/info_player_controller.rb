@@ -38,6 +38,7 @@ class InfoPlayerController < InjectedController
   	table.search('thead th').last.add_next_sibling('<th>Distância</th>')
 
   	table.search('tbody > tr').map do |tr|
+			next if (tr.text.include?('Exibir'))
   		current = tr.text.scan(/\d{3}\|\d{3}/).first.to_coordinate
   		vid = tr.search('a').first.attr('href').scan(/id=(\d+)/).first.first.to_i
   		closest = Village.my_cache.to_a.sort{|a,b| a.distance(current) <=> b.distance(current)}.first

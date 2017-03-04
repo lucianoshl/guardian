@@ -39,10 +39,10 @@ end
 
 group :production do
   gem 'rails_12factor'
-  gem 'unicorn'
+  platforms :ruby do
+    gem 'unicorn'
+  end
   gem 'daemons'
-  # gem 'mongo_store', git: 'https://github.com/SFEley/mongo_store.git'
-  # gem 'mongoid_store', path: '/home/void/workspace/mongoid_store' 
   gem 'mongoid_store', git: 'https://github.com/lucianoshl/mongoid_store.git' 
   gem 'rails_real_favicon'
   gem 'heroku-deflater'  
@@ -85,3 +85,6 @@ gem 'rails_admin_charts'
 
 gem 'ruby-progressbar'
 gem 'rails_admin_toggleable'
+
+# https://github.com/middleman/middleman/issues/1097
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]

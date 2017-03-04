@@ -40,7 +40,7 @@ RSpec.describe Task::AutoRecruit, type: :model do
   	
   end
 
-  it "playground" do
+  it "playground2" do
     targets = %{
     [0011] - TRETA (435|487) K44  --- 
     [0071] - TRETA (439|481) K44  --- 

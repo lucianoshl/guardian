@@ -32,7 +32,7 @@ module Guardian
     Mongoid.logger.level = Logger::INFO
 
     if (['development','test'].include?(Rails.env)) 
-        Mongoid.logger.level = Logger::DEBUG
+        # Mongoid.logger.level = Logger::DEBUG
         Thread.new do 
             FileWatcher.new(Dir.glob("#{Rails.root}/**/*.rb")).watch do |f| 
                 load(f)
@@ -41,7 +41,7 @@ module Guardian
     end
 
 
-    config.log_level = :debug
+    # config.log_level = 0
 
     ENV['RAILS_ADMIN_THEME'] = 'material_theme'
 

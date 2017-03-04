@@ -25,7 +25,7 @@ require 'rspec/rails'
 RSpec.configure do |config|
 
   Rails.logger = Logger.new(STDOUT)
-  Rails.logger.level = :debug
+  Rails.logger.level = 0
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and

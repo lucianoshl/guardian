@@ -11,7 +11,7 @@
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
   <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
 
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag 'application.html.erb', media: 'all', 'data-turbolinks-track' => true %>
 
 </head>
 
@@ -22,7 +22,7 @@
     <nav class="navbar navbar-default navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-          <a href="/" class="navbar-brand"><b>Guard</b>ian (<%= Rails.logger.level %>)  </a>
+          <a href="/vendor/assets/stylesheets" class="navbar-brand"><b>Guard</b>ian (<%= Rails.logger.level %>)  </a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
           </button>
@@ -225,6 +225,6 @@
   </footer>
 </div>
 
-<%= javascript_include_tag 'application', 'data-turbolinks-track' => true, 'data-turbolinks-eval' => false %>
+<%= javascript_include_tag 'application.html.erb', 'data-turbolinks-track' => true, 'data-turbolinks-eval' => false %>
 </body>
 </html>

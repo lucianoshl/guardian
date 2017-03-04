@@ -12,7 +12,7 @@
 
   <title><%= @user.name %> | Guardian </title>
 
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag 'application.html.erb', media: 'all', 'data-turbolinks-track' => true %>
 
     </head>
  <!-- https://blackrockdigital.github.io/startbootstrap-simple-sidebar/ -->
@@ -102,7 +102,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true, 'data-turbolinks-eval' => false %>
+    <%= javascript_include_tag 'application.html.erb', 'data-turbolinks-track' => true, 'data-turbolinks-eval' => false %>
 
     <script>
     $("#offcanvas").click(function(e) {

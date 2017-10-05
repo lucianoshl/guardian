@@ -19,5 +19,5 @@ validate_end ['TW_USER']
 validate_end ['TW_PASS']
 
 if User.first.nil?
-	User.new(world: ['TW_WORLD'],name: ['TW_USER'],password: ['TW_PASS']).save
+	User.new(world: ENV['TW_WORLD'],name: ENV['TW_USER'],password: ENV['TW_PASS']).save
 end

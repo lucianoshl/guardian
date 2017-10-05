@@ -18,6 +18,6 @@ validate_end ['TW_WORLD']
 validate_end ['TW_USER']
 validate_end ['TW_PASS']
 
-if User.first.nil
+if User.first.nil?
 	User.new(world: ['TW_WORLD'],name: ['TW_USER'],password: ['TW_PASS']).save
 end

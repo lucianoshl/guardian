@@ -15,8 +15,8 @@ class Player
   scope :blacklist, -> { where(in_blacklist: true)}
 
 
-  def self.unsaved args
-  	screen = Screen::InfoPlayer.new(id: args[:pid])
+  def self.unsaved pid
+  	screen = Screen::InfoPlayer.new(id: pid)
   	binding.pry
   end
 

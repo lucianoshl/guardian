@@ -5,7 +5,7 @@ class Task::PlayerMonitor < Task::Abstract
   sleep? false 
 
   def save_my_villages
-    player_screen = Screen::InfoPlayer.new(id: User.first.player.pid)
+    player_screen = Screen::InfoPlayer.new(id: User.first.pid)
 
     my_villages = player_screen.villages.pmap do |id| 
       sleep(0.2)

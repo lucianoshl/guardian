@@ -20,4 +20,8 @@ validate_end ['TW_PASS']
 
 if User.first.nil?
 	User.new(world: ENV['TW_WORLD'],name: ENV['TW_USER'],password: ENV['TW_PASS']).save
+	user = User.first
+	user.pid = Screen::Guest.new(name:ENV['TW_USER']).result_list.first[:pid]
+	user.save
+	Task::PlayerMonitor.new.run
 end

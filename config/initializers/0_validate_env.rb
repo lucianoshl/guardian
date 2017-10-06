@@ -23,5 +23,8 @@ if User.first.nil?
 	user = User.first
 	user.pid = Screen::Guest.new(name:ENV['TW_USER']).result_list.first[:pid]
 	user.save
+	Screen::UnitData.new.units.map(&:save)
 	Task::PlayerMonitor.new.run
+	user.player = Player.where(name:ENV['TW_USER']).first
+	user.save
 end

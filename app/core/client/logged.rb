@@ -31,16 +31,16 @@ class Client::Logged
 		page = @inner_client.post(uri,parameters,headers)
 		if (!@inner_client.is_logged?(page))
 			cookies = @inner_client.do_login
-			Cookie.store_cookies(cookies)
+			MobileCookie.store_cookies(cookies)
 			page = @inner_client.post(uri,parameters,headers)
 			raise Exception.new("Erro na logica de re-login") if (!@inner_client.is_logged?(page))
 		end
 		return page
 	end
-
+ 
 	def check_cookies
 		if (@inner_client.client.cookies.empty?)
-			@inner_client.client.add_cookies(Cookie.latest)
+			@inner_client.client.add_cookies(MobileCookie.latest)
 		end
 	end
 

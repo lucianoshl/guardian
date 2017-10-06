@@ -6,6 +6,7 @@ class Parser::WorldConfig < Parser::Abstract
     speed_position = nil
     attack_position = nil
 
+    binding.pry
     screen.units = @page.search('img[src*=spear]').first.parents(3).search('> tr').each_with_index.map do |line,index|
       if (index == 0)
         images = line.search('img')

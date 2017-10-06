@@ -84,5 +84,7 @@ gem 'rails_admin_charts'
 gem 'ruby-progressbar'
 gem 'rails_admin_toggleable'
 
+gem 'json', '1.8.6'
+
 # https://github.com/middleman/middleman/issues/1097
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]

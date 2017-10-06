@@ -34,7 +34,10 @@ class TribalWarsController < ApplicationController
   def proxy
     Rails.logger.info("proxy start".white.on_red)
     if (request.fullpath == '/game.php')
-      redirect_to "/game.php?village=#{Village.my_cache.first.vid}&screen=overview_villages"
+
+      screen = Village.my_cache.size > 1 ? "overview_villages" : "overview"
+
+      redirect_to "/game.php?village=#{Village.my_cache.first.vid}&screen=#{screen}"
       return
     end
     target_url = request.fullpath

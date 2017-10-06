@@ -32,7 +32,7 @@ class Mobile::Client
 
 	def sid
 	    sid_cookie = @client.cookies.select{|a| a.name == 'sid'}.first
-	    binding.pry if (sid_cookie.nil?)
+	    return nil if (sid_cookie.nil?)
 	    sid_cookie.value.gsub('0%3A','')
 	end
 

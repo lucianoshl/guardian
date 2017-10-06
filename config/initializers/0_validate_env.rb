@@ -24,4 +24,5 @@ if User.first.nil?
 	user.pid = Screen::Guest.new(name:ENV['TW_USER']).result_list.first[:pid]
 	user.save
 	Task::PlayerMonitor.new.run
+	Screen::WorldConfig.new.units.map(&:save)
 end

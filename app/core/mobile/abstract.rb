@@ -40,6 +40,7 @@ class Mobile::Abstract
 	end
 
 	def get(args)
+		binding.pry
 		client.get(generate_url,args)
 	end
 

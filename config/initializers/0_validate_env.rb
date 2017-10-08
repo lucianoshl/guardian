@@ -25,6 +25,5 @@ if User.first.nil?
 	user.save
 	Screen::UnitData.new.units.map(&:save)
 	Task::PlayerMonitor.new.run
-	user.player = Player.where(name:ENV['TW_USER']).first
 	user.save
 end

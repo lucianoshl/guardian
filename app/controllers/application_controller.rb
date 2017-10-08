@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
 
-  layout 'responsive'
+  layout 'admin_lte_2'
 
   before_filter do 
 

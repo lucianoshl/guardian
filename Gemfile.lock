@@ -134,6 +134,10 @@ GEM
     kaminari (0.17.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    kaminari-core (1.0.1)
+    kaminari-mongoid (1.0.1)
+      kaminari-core (~> 1.0)
+      mongoid
     kgio (2.11.0)
     lazy_high_charts (1.5.6)
       hash-deep-merge
@@ -379,7 +383,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
-  json (= 1.8.6)
+  kaminari-mongoid
   mechanize
   mongoid
   mongoid-enum

@@ -49,6 +49,10 @@ class Mobile::ReportView < Mobile::Base
 		# report.occurrence = page.search('.report_table > tr > td').text.parse_datetime
 		report.occurrence = page.search('span[data-id]').first.parents(3).search('tr')[1].search('td')[1].text.strip.parse_datetime
 
+		if (report.occurrence > Time.zone.now)
+			raise Exception.new("Erro ao parsear report")
+		end
+
 		report.origin_troops = parse_report_troops(page.search("#attack_info_att_units tr")[1])
 		report.origin_troops_losses = parse_report_troops(page.search("#attack_info_att_units tr")[2])
 

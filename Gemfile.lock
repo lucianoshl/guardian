@@ -383,6 +383,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
+  json (= 1.8.6)
   kaminari-mongoid
   mechanize
   mongoid

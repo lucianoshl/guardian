@@ -14,7 +14,7 @@ class Task::UpdateDailyInformation < Task::Abstract
   def rename_villages
     Rails.logger.info("Renaming all villages: start")
     Village.my.map do |village|
-      name = User.current.player.name
+      name = Config.village.v_name(User.current.player.name)
       Screen::Main.new(village: village.vid).rename(name) if (village.name != name)
     end
     Rails.logger.info("Renaming all villages: end")

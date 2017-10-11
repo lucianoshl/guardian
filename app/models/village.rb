@@ -143,7 +143,7 @@ class Village
   end
   
   def self.clean_all_states
-    Village.all.map(&:clean_state)
+    Village.all.update_all(state:nil , next_event:nil)
   end
 
   def increase_limited_by_partner

@@ -1,7 +1,5 @@
 class ApplicationController < ActionController::Base
 
-  layout 'admin_lte_2'
-
   before_filter do 
 
     @report_enum =  {
@@ -12,8 +10,8 @@ class ApplicationController < ActionController::Base
       lost: 'https://brs1.tribalwars.com.br/graphic/dots/red.png',
     } 
 
-    @user = User.current
-    @avatar_url = @user.avatar_url.nil? ? "crow_45x45.png" : @user.avatar_url
+    # @user = User.current
+    # @avatar_url = @user.avatar_url.nil? ? "crow_45x45.png" : @user.avatar_url
 
   end
 

@@ -46,16 +46,15 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    adminlte2-rails (0.0.6)
-      bootstrap-sass (~> 3.3.4.1)
     arel (6.0.4)
     autoprefixer-rails (6.5.3)
       execjs
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bootstrap-sass (3.3.4.1)
-      autoprefixer-rails (>= 5.0.0.1)
-      sass (>= 3.2.19)
+    bootstrap (4.0.0.beta)
+      autoprefixer-rails (>= 6.0.3)
+      popper_js (~> 1.11.1)
+      sass (>= 3.4.19)
     bson (4.2.0)
     builder (3.2.3)
     byebug (9.0.6)
@@ -103,6 +102,8 @@ GEM
       thor (~> 0.19.1)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
+    google-webfonts-rails (0.0.4)
+      activesupport (> 3.2.0, < 5.0)
     haml (5.0.3)
       temple (>= 0.8.0)
       tilt
@@ -199,6 +200,7 @@ GEM
     ntlm-http (0.1.1)
     origin (2.2.2)
     parallel (1.10.0)
+    popper_js (1.11.1)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -386,7 +388,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_attr
-  adminlte2-rails
+  bootstrap (~> 4.0.0.beta)
   byebug
   chartjs-ror
   color-generator
@@ -396,6 +398,7 @@ DEPENDENCIES
   delayed_job_mongoid
   filewatcher
   foreman
+  google-webfonts-rails
   health_check
   heroku-api
   heroku-deflater

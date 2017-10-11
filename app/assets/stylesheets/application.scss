@@ -9,4 +9,10 @@ $font-family-sans-serif: 'Lato', sans-serif;
 .sidebar {
 	background-color: #4D5250;
 	color: #FFFFFF;
+	a {
+		color: #FFFFFF;
+		&:hover {
+			color: rgb(202,203,203);
+		}
+	}
 }

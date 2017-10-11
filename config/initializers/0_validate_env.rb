@@ -26,4 +26,5 @@ if User.first.nil?
 	Screen::UnitData.new.units.map(&:save)
 	Task::PlayerMonitor.new.run
 	user.save
+	Metadata::Building.populate
 end

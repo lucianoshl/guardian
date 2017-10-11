@@ -24,6 +24,7 @@ class Parser::Main < Parser::Basic
       building.wood = (value["wood"]/(building.wood_factor ** (level_next - 1))).round
       building.stone = (value["stone"]/(building.stone_factor ** (level_next - 1))).round
       building.iron = (value["iron"]/(building.iron_factor ** (level_next - 1))).round
+      building.attributes["pop"] = (value["pop"]/(building.pop_factor ** (level_next - 1))).round
     end
 
     screen.queue = (@page.search('.queueItem').map do |line| 

@@ -49,8 +49,9 @@ class TribalWarsController < ApplicationController
       [k.gsub('HTTP_','').titleize.gsub(' ','-'),v]
     end).to_h
 
-    headers.delete('Host')
-    headers.delete('Referer')
+    # headers.delete('Host')
+    headers['Host'] = "#{User.current.world}.tribalwars.com.br"
+    # headers.delete('Referer')
     headers.delete('Cookie')
 
     method = request.method.downcase
@@ -119,12 +120,12 @@ class TribalWarsController < ApplicationController
     end
     doc = Nokogiri::HTML(page.content)
 
-    decorator_name = 'Decorator::'+page.uri.to_s.scan(/screen=(\w+)/).first.first.camelize
-    begin
-      Rails.logger.info("Decorator name : #{decorator_name}")
-      decorator = decorator_name.constantize.new
-    rescue
-    end
+    # decorator_name = 'Decorator::'+page.uri.to_s.scan(/screen=(\w+)/).first.first.camelize
+    # begin
+    #   Rails.logger.info("Decorator name : #{decorator_name}")
+    #   decorator = decorator_name.constantize.new
+    # rescue
+    # end
 
     Village.my_cache.pmap do |village|
       title = doc.search('title').first

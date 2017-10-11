@@ -44,4 +44,9 @@ class Client::Logged
 		end
 	end
 
+
+	def inner_client 
+		@inner_client 
+	end
+
 end

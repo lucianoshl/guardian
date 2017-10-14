@@ -475,7 +475,7 @@ class Task::AutoRecruit < Task::Abstract
   include Builder
   include Transporter
 
-  performs_to 1.hour
+  performs_to Config.auto_recrut.queue_time(1).hour
 
   def run
     dates = []

@@ -88,7 +88,6 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     event_emitter (0.2.5)
-    excon (0.54.0)
     execjs (2.7.0)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
@@ -110,9 +109,6 @@ GEM
     hash-deep-merge (0.1.1)
     health_check (2.4.0)
       rails (>= 4.0)
-    heroku-api (0.4.2)
-      excon (~> 0.45)
-      multi_json (~> 1.8)
     heroku-deflater (0.6.2)
       rack (>= 1.4.5)
     http-cookie (1.0.3)
@@ -400,7 +396,6 @@ DEPENDENCIES
   foreman
   google-webfonts-rails
   health_check
-  heroku-api
   heroku-deflater
   jbuilder (~> 2.0)
   jquery-rails

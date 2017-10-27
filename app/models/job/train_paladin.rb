@@ -2,12 +2,12 @@ class Job::TrainPaladin < Job::Abstract
 
 	def execute
 		logger = Rails.logger
-		statue = Screen::Statue.new
+		statue_screen = Screen::Statue.new
 
 		times = []
 
 		logger.info('Paladin train: start')
-		statue.paladin_information do |village_id,statue|
+		statue_screen.paladin_information.map do |village_id,statue|
 			logger.info("Village=#{village_id} in_training=#{statue.in_training}")
 			if (statue.in_training)
 				times << statue.training_finish_time
@@ -15,15 +15,16 @@ class Job::TrainPaladin < Job::Abstract
 				next
 			end
 
-			if statue.resources.include?(statue.train_cost * 10)
-				statue.start_train(village_id)
+			main_screen = Screen::Main.new(village: village_id )
+			if main_screen.resources.include?(statue.cost * 10)
+				statue_screen.start_train(village_id)
 			else
 				logger.info("times=#{times}")
 				times << Time.zone.now + 3.hours
 			end
 
 		end
-		logger.info('Paladin train: end. times=#{times}')
+		logger.info("Paladin train: end. times=#{times}")
 
 		binding.pry
 

@@ -5,7 +5,9 @@ class Screen::Statue < Screen::Basic
   url screen: 'statue'
 
   def start_train(village_id)
-    # https://br84.tribalwars.com.br/game.php?village=38152&screen=statue&ajaxaction=regimen&h=41acb9ed&client_time=1508973846
+
+  	url = "https://#{User.current.world}.tribalwars.com.br/game.php?village=#{village_id}&screen=statue&ajaxaction=regimen&h=#{@csrf_token}&client_time=#{client_time}"
+  	parse(client.get(url))
     # POST
 	# knight:33383
 	# regimen:36

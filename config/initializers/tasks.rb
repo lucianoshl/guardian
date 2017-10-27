@@ -7,10 +7,10 @@ Task.constants.map do |const|
 end
 
 
-# Dir["#{Rails.root}/app/models/job/*.rb"].map{|f| ActiveSupport::Dependencies.load_file f }
+Dir["#{Rails.root}/app/models/job/*.rb"].map{|f| ActiveSupport::Dependencies.load_file f }
 
-# Job.constants.map do |const|
-#   task = Job.const_get(const)
-#   task.init_schedules if (task.respond_to?('init_schedules'))
-# end
-#  
+Job.constants.map do |const|
+  task = Job.const_get(const)
+  task.init_schedules if (task.respond_to?('init_schedules'))
+end
+ 

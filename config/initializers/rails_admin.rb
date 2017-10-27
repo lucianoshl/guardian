@@ -10,6 +10,7 @@ RailsAdmin.config do |config|
     Partner,
     Job::Reserve,
     Job::SendAttack,
+    Job::TrainPaladin,
     Model::Village,
     Model::Troop,
     ApplicationError

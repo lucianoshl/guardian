@@ -6,6 +6,10 @@ class Screen::Statue < Screen::Basic
 
   def start_train(village_id)
     # https://br84.tribalwars.com.br/game.php?village=38152&screen=statue&ajaxaction=regimen&h=41acb9ed&client_time=1508973846
+    # POST
+	# knight:33383
+	# regimen:36
+	# cheap:0
     binding.pry
   end
 

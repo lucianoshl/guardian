@@ -7,7 +7,8 @@ class Job::TrainPaladin < Job::Abstract
 		times = []
 
 		logger.info('Paladin train: start')
-		statue_screen.paladin_information.map do |village_id,statue|
+		statue_screen.paladin_information.map do |knight_id,statue|
+			village_id = statue.village_id
 			logger.info("Village=#{village_id} in_training=#{statue.in_training}")
 			if (statue.in_training)
 				times << statue.training_finish_time
@@ -17,7 +18,7 @@ class Job::TrainPaladin < Job::Abstract
 
 			main_screen = Screen::Main.new(village: village_id )
 			if main_screen.resources.include?(statue.cost * 10)
-				statue_screen.start_train(village_id)
+				statue_screen.start_train(village_id,knight_id)
 			else
 				logger.info("times=#{times}")
 				times << Time.zone.now + 3.hours
@@ -26,9 +27,7 @@ class Job::TrainPaladin < Job::Abstract
 		end
 		logger.info("Paladin train: end. times=#{times}")
 
-		binding.pry
-
-
+		return times.sort.first
 	end
 
 end

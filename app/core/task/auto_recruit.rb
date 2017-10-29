@@ -160,14 +160,23 @@ module Recruiter
     current_units = train_screen.complete_units.clone
     release_times = train_screen.release_time.clone
 
+    
     loop do 
       release_times = release_times.select{|k,v| v <= Time.zone.now + self.class._performs_to}
       percent_completed = calculate_percent_completed_units(units_to_train,current_units.to_h,village)
       target_units = percent_completed.to_h.select {|unit,percent| percent != 1}.keys
+      
+      need_research = units_to_train.my_fields.select{|unit| units_to_train[unit] > 0 }.select{|unit| train_screen.train_info[unit].nil? }
+      need_research.map do |need_research_unit|
+        puts "Need research #{need_research_unit}".red.on_white
+        units_to_train[need_research_unit] = 0
+      end
+
       target_buildings = target_units.map{|unit| Troop.get_building(unit)}.uniq
 
       enter = false
       target_buildings.map do |building|
+
         elements = release_times.select{|k,v| target_buildings.include?(k.to_sym)}.to_a.sort{|a,b| a[1] <=> b[1]}
         if (elements.empty?)
           next
@@ -282,7 +291,10 @@ module Transporter
     markets.values.map {|v| all_resources += v.resources + v.trader.incomming }
 
     storage_levels = all_markets.map{|a| [a.village.vid,a.building_levels['storage'].to_i] }.to_h
-    lower_villages = storage_levels.select {|village,level| level < 30}
+
+    max_storage = storage_levels.values.max
+
+    lower_villages = storage_levels.select {|village,level| level < max_storage}
 
     distribution = {}
     all_markets.map {|market| distribution[market.village.vid] = Resource.new }
@@ -317,8 +329,8 @@ module Transporter
       ['wood','stone','iron'].map do |resource|
         minimal_vid = get_minimal(lower_villages,resource,markets)
         normal_village = get_max(normal_villages,resource,markets)
-        puts "#{all_resources.wood} #{all_resources.stone} #{all_resources.iron}"
-        storage_in_limit = lower_villages[minimal_vid][resource]/markets[minimal_vid].storage_size.to_f >= 0.8
+        # puts "#{all_resources.wood} #{all_resources.stone} #{all_resources.iron}"
+        storage_in_limit = lower_villages[minimal_vid][resource]/markets[minimal_vid].storage_size.to_f >= 0.6
         if (normal_villages[normal_village][resource] >= unit && !storage_in_limit)
 
           lower_villages[minimal_vid][resource] += unit

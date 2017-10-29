@@ -26,7 +26,11 @@ class Task::Abstract
     end
 
     obj = Delayed::Job.all.select{|a| YAML.load(a.handler).object.class == self }
-    raise "Non unique task" if (obj.size > 1)
+    # raise "Non unique task #{self}" if (obj.size > 1)
+    if (obj.size > 1)
+      obj.shift
+      obj.map(&:delete)
+    end
     if (obj.empty?)
       self.new.delay.execute
     end

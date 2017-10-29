@@ -231,8 +231,8 @@ class Troop
 
   def from_building name
     locations = {
-      barracks: ['spear','sword','axe'],
-      stable: ['spy','light','heavy'],
+      barracks: ['spear','sword','axe','archer'],
+      stable: ['spy','light','heavy','marcher'],
       garage: ['ram','catapult']
     }
     result = self.to_h.clone
@@ -247,8 +247,8 @@ class Troop
   def self.get_building(unit)
     unit = unit.to_s
     locations = {
-      barracks: ['spear','sword','axe'],
-      stable: ['spy','light','heavy'],
+      barracks: ['spear','sword','axe','archer'],
+      stable: ['spy','light','heavy','marcher'],
       garage: ['ram','catapult'],
       snob: ['snob']
     }
@@ -260,8 +260,8 @@ class Troop
 
   def self.from_building?(building,name)
     locations = {
-      barracks: ['spear','sword','axe'],
-      stable: ['spy','light','heavy'],
+      barracks: ['spear','sword','axe','archer'],
+      stable: ['spy','light','heavy','marcher'],
       garage: ['ram','catapult']
     }
     return locations[building.to_sym].include?(name.to_s)

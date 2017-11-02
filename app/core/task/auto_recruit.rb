@@ -150,6 +150,9 @@ module Recruiter
     snob_to_train = units_to_train.snob
     percent_completed = calculate_percent_completed_units(units_to_train,train_screen.complete_units.clone.to_h,village)
 
+    Rails.logger.info("Units to train in #{village.name}: #{units_to_train.attributes}")
+    Rails.logger.info("Village #{village.name} has percent units completed: #{percent_completed}")
+
     trail_util = Time.zone.now + self.class._performs_to + 10.minutes
 
     to_train = Troop.new
@@ -160,17 +163,17 @@ module Recruiter
     current_units = train_screen.complete_units.clone
     release_times = train_screen.release_time.clone
 
+    need_research = units_to_train.my_fields.select{|unit| units_to_train[unit] > 0 }.select{|unit| train_screen.train_info[unit].nil? || train_screen.train_info[unit]['requirements_met'] == false }
+
+    need_research.map do |need_research_unit|
+      puts "Need research #{need_research_unit}".red.on_white
+      units_to_train[need_research_unit] = 0
+    end
     
     loop do 
       release_times = release_times.select{|k,v| v <= Time.zone.now + self.class._performs_to}
       percent_completed = calculate_percent_completed_units(units_to_train,current_units.to_h,village)
       target_units = percent_completed.to_h.select {|unit,percent| percent != 1}.keys
-      
-      need_research = units_to_train.my_fields.select{|unit| units_to_train[unit] > 0 }.select{|unit| train_screen.train_info[unit].nil? }
-      need_research.map do |need_research_unit|
-        puts "Need research #{need_research_unit}".red.on_white
-        units_to_train[need_research_unit] = 0
-      end
 
       target_buildings = target_units.map{|unit| Troop.get_building(unit)}.uniq
 
@@ -220,7 +223,10 @@ module Recruiter
     end
 
     if (!to_train.to_h.select{|k,v| v > 0}.empty?)
+      Rails.logger.info("Training #{to_train.to_h} in #{village.name}")
       train_screen.train(to_train)
+    else
+      Rails.logger.info("Nothing to train in #{village.name}")
     end
 
     return nil

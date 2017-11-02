@@ -492,12 +492,15 @@ class Task::AutoRecruit < Task::Abstract
   def run
     dates = []
     Village.my.map do |village|
-      Rails.logger.info("Running for village: #{village.name}")
+      Rails.logger.info("Running for village #{village.name}: start")
       if (!village.model.nil?)
           recruit(village) if (village.disable_auto_recruit != true)
           dates << build(village)
           coins(village)
+      else
+        Rails.logger.info("Village without config #{village.name}: skipping") 
       end
+      Rails.logger.info("Running for village #{village.name}: end")
     end
 
     distribute_resources

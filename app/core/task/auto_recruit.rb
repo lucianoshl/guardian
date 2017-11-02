@@ -492,6 +492,7 @@ class Task::AutoRecruit < Task::Abstract
   def run
     dates = []
     Village.my.map do |village|
+      Rails.logger.info("Running for village: #{village.name}")
       if (!village.model.nil?)
           recruit(village) if (village.disable_auto_recruit != true)
           dates << build(village)

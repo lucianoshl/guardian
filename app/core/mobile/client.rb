@@ -8,12 +8,10 @@ class Mobile::Client
 
 	def get uri,parameters = {}
 		uri = uri + "?" + parameters.to_query if (parameters.size > 0)
-		puts("#{uri}")
 		@client.get(uri)
 	end
 
 	def post uri,parameters
-		puts("#{uri} #{parameters}")
 		binding.pry if (parameters.empty?)
 		uri = hash(uri,parameters)
 		@client.post(uri,parameters.to_json)

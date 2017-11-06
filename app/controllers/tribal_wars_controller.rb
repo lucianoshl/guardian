@@ -1,6 +1,6 @@
 class TribalWarsController < ApplicationController
 
-  before_filter do 
+  before_action do 
     params.delete('controller') if params[:controller] == "tribal_wars"
     params.delete('action') if params[:action] == "get" || params[:action] == "post"
   end

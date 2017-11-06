@@ -1,6 +1,6 @@
 class ReportController < ApplicationController
 
-  before_filter do 
+  before_action do 
     @criteria = Report
   end
 

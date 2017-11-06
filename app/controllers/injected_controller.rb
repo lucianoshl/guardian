@@ -70,7 +70,7 @@ class InjectedController < ActionController::Base
     self.class.layout "tmp/#{file.path.split('/').last}"
   end
 
-  before_filter do 
+  before_action do 
     @world = User.current.world
     @mode = request.params[:mode] || 'default'
     @screen = request.params[:screen] || 'default'
@@ -84,7 +84,7 @@ class InjectedController < ActionController::Base
     generate_template(@doc)
   end
 
-  after_filter do
+  after_action do
     FileUtils.rm( @template_file )
   end
 

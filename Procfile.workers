@@ -1,2 +1,2 @@
-worker_1: env QUEUE=normal_priority rake jobs:work
-worker_2: env QUEUE=high_priority rake jobs:work
+normal_queue: bundle exec bin/delayed_job --queue=normal_priority run
+high___queue: bundle exec bin/delayed_job --queue=high_priority run

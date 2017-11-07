@@ -1,3 +1,1 @@
-normal_queue: bundle exec bin/delayed_job --queue=normal_priority run
-high___queue: bundle exec bin/delayed_job --queue=high_priority run
 web_app: bundle exec unicorn -p $PORT -E $RACK_ENV -c ./config/unicorn.rb

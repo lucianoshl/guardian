@@ -8,8 +8,8 @@ class Player
   field :in_blacklist, type: Boolean
 
   has_many :villages
-  belongs_to :ally
-  belongs_to :user
+  belongs_to :ally, optional: true
+  belongs_to :user, optional: true
 
 
   scope :blacklist, -> { where(in_blacklist: true)}

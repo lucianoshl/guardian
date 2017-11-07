@@ -4,7 +4,7 @@ class MobileCookie
 
   field :content_yaml, type: String
   field :created_at, type: Date
-  belongs_to :user
+  belongs_to :user, optional: true
 
   def content= object
     self.content_yaml = YAML.dump(object)

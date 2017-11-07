@@ -22,7 +22,7 @@ class Village
   field :use_in_pillage, type: Boolean, default: true
   field :disable_auto_recruit, type: Boolean, default: false
 
-  belongs_to :model, class_name: Model::Village.to_s
+  belongs_to :model, class_name: Model::Village.to_s, optional: true
 
   has_many :reports , inverse_of: 'target' 
 
@@ -32,7 +32,7 @@ class Village
 
   accepts_nested_attributes_for :reserved_troops
 
-  belongs_to :player
+  belongs_to :player, optional: true
 
   scope :my, -> { where(player: User.current.player).asc(:label) }
   scope :targets, -> { not_in(player: [User.current.player]) }

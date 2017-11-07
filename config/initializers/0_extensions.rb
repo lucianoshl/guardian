@@ -43,7 +43,7 @@ end
 
 class Delayed::Job
 
-  belongs_to :job, class_name: "Job::Abstract" 
+  belongs_to :job, class_name: "Job::Abstract", optional: true
 
   after_save do
     if (!self.job.nil?)

@@ -12,4 +12,7 @@
 !/log/.keep
 /tmp
 vendor/bundle/
-app/views/layouts/tmp
+app/views/layouts/tmp/public/packs
+/public/packs-test
+/node_modules
+public/packs/

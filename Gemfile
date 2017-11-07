@@ -2,15 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '5.1.4'
 gem 'mongoid', '6.2.1'
-
-gem 'sass-rails', '~> 5.0'
-gem 'uglifier', '>= 1.3.0'
-gem 'therubyracer', platforms: :ruby
-
-gem 'turbolinks', git: 'https://github.com/turbolinks/turbolinks-classic.git'
-gem 'jbuilder', '~> 2.0'
-gem 'sdoc', '~> 0.4.0', group: :doc
-
 gem 'rspec-rails'
 
 group :development do
@@ -39,21 +30,13 @@ gem 'health_check'
 gem 'rails_admin'
 gem 'mechanize'
 gem 'delayed_job_mongoid'
-# gem 'adminlte2-rails'
 gem 'active_attr'
 gem 'mongoid-enum', github: 'clustertv/mongoid-enum'
 gem 'parallel'
-gem 'chartjs-ror'
 gem 'color-generator'
 gem 'colorize'
-gem 'watir-webdriver'
-gem 'selenium-webdriver'
 gem 'nprogress-rails'
-gem 'dalli'
-gem 'socket.io-client-simple'
-#gem 'heroku-api' 
 gem 'filewatcher'
-gem 'rails-i18n', '~> 4.0.0'
 gem 'washbullet'
 
 gem 'rails_admin_material_theme', '~> 0.2.0'
@@ -69,6 +52,3 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 
 gem 'jquery-rails'
 gem 'listen'
-gem 'jquery-turbolinks'
-gem 'bootstrap', '~> 4.0.0.beta'
-# gem 'google-webfonts-rails'

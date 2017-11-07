@@ -1,2 +1,2 @@
-normal_queue: env QUEUE=normal_priority rake jobs:work
-high___queue: env QUEUE=high_priority rake jobs:work
+normal_queue: rake jobs:work QUEUE=normal_priority
+high___queue: rake jobs:work QUEUE=high_priority 

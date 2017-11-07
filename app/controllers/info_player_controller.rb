@@ -1,6 +1,6 @@
 class InfoPlayerController < InjectedController
 
-  include VillageHelper
+  # include VillageHelper
 
   def show
   	# @player = Player.where(pid: params["id"].to_i).first

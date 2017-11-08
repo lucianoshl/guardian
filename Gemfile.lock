@@ -92,6 +92,9 @@ GEM
       thor (>= 0.13.6)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    graphiql-rails (1.4.7)
+      rails
+    graphql (1.7.5)
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
@@ -336,6 +339,8 @@ DEPENDENCIES
   delayed_job_mongoid
   filewatcher
   foreman
+  graphiql-rails
+  graphql
   health_check
   heroku-deflater
   jquery-rails

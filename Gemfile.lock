@@ -309,6 +309,8 @@ GEM
     trollop (2.1.2)
     tzinfo (1.2.4)
       thread_safe (~> 0.1)
+    uglifier (3.2.0)
+      execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.4)
@@ -367,6 +369,7 @@ DEPENDENCIES
   ruby-progressbar
   spring
   tzinfo-data
+  uglifier
   unicorn
   washbullet
   webpacker (~> 3.0)

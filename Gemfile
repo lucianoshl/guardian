@@ -17,6 +17,7 @@ group :production do
   gem 'rails_real_favicon'
   gem 'heroku-deflater'  
   gem 'foreman'
+  gem 'uglifier'
 end
 
 group :development, :test do

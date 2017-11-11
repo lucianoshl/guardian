@@ -495,9 +495,12 @@ class Task::AutoRecruit < Task::Abstract
 
   performs_to Config.auto_recrut.queue_time(1).hour
 
+  
   def run
     dates = []
-    Village.my.map do |village|
+    villages_with_model = Village.my.select{|v| !v.model.nil? }
+
+    villages_with_model.map do |village|
       Rails.logger.info("Running for village #{village.name}: start")
       if (!village.model.nil?)
           recruit(village) if (village.disable_auto_recruit != true)

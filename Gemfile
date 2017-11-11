@@ -4,6 +4,7 @@ gem 'rails', '5.1.4'
 gem 'mongoid', '6.2.1'
 gem 'webpacker', '~> 3.0'
 gem 'graphql'
+gem 'execjs'
 gem 'rspec-rails'
 
 group :development do

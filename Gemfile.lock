@@ -339,6 +339,7 @@ DEPENDENCIES
   colorize
   daemons
   delayed_job_mongoid
+  execjs
   filewatcher
   foreman
   graphiql-rails
@@ -375,4 +376,4 @@ DEPENDENCIES
   webpacker (~> 3.0)
 
 BUNDLED WITH
-   1.15.4
+   1.16.0

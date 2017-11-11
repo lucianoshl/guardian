@@ -15,6 +15,6 @@ class TaskController < ApplicationController
   def run_now
   	job = Delayed::Job.find(params["id"])
     job.run_now(true)
-  	redirect_to action: "index"
+  	redirect_to "/"
   end
 end

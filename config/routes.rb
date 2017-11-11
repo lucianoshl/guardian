@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   post "/graphql", to: "graphql#execute"
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
+  get 'task/run_now/:id' => 'task#run_now'
+
   root to: -> (env) do
     erb_renderer = ActionView::Base.new(ActionController::Base.view_paths, {})
     [ 

@@ -57,7 +57,9 @@ module Builder
 
     target = sorted.first
 
-    return if target.nil? || !main_screen.resources.include?(target.cost)
+    last_complete_time = main_screen.queue.last.completed_in if (main_screen.queue.size > 1)
+
+    return last_complete_time if target.nil? || !main_screen.resources.include?(target.cost)
 
     build_time = main_screen.build(target.name)
 

@@ -1,7 +1,7 @@
 class Model::Buildings
   include Mongoid::Document
 
-  ::Metadata::Building.all.map(&:name).map do |building_name|
+  ::Metadata::Building.names.map do |building_name|
     field building_name.to_sym, type: Integer, default: 0
   end
 

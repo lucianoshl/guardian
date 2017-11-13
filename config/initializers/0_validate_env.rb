@@ -12,19 +12,23 @@ def validate_end(variables)
 	end
 end
 
+$g = OpenStruct.new
+$g.world = 'br86'
 
-validate_end ['MONGO_URL']
-validate_end ['TW_WORLD']
-validate_end ['TW_USER']
-validate_end ['TW_PASS']
 
-if User.first.nil?
-	User.new(world: ENV['TW_WORLD'],name: ENV['TW_USER'],password: ENV['TW_PASS']).save
-	user = User.first
-	user.pid = Screen::Guest.new(name:ENV['TW_USER']).result_list.first[:pid]
-	user.save
-	Screen::UnitData.new.units.map(&:save)
-	Task::PlayerMonitor.new.run
-	user.save
-	Metadata::Building.populate
-end
+
+# # validate_end ['MONGO_URL']
+# validate_end ['TW_WORLD']
+# validate_end ['TW_USER']
+# validate_end ['TW_PASS']
+
+# if User.first.nil?
+# 	User.new(world: ENV['TW_WORLD'],name: ENV['TW_USER'],password: ENV['TW_PASS']).save
+# 	user = User.first
+# 	user.pid = Screen::Guest.new(name:ENV['TW_USER']).result_list.first[:pid]
+# 	user.save
+# 	Screen::UnitData.new.units.map(&:save)
+# 	Task::PlayerMonitor.new.run
+# 	user.save
+# 	Metadata::Building.populate
+# end

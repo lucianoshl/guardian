@@ -12,8 +12,6 @@ class Model::Village
 
   has_many :villages, class_name: Village.to_s , inverse_of: :model
 
-
-
   def complete_building_model
     max_values = Model::Buildings.new
 

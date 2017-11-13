@@ -65,4 +65,10 @@ class Metadata::Building
     (attributes["pop"] * pop_factor ** (level - 1)).round
   end
 
+  def self.names
+    # FIX
+    return ['main']
+    # ::Metadata::Building.all.map(&:name)
+  end
+
 end

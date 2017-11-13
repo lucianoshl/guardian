@@ -2,7 +2,7 @@ class Mobile::Base < Mobile::Abstract
 
 	attr_accessor :sid
 
-	base "https://#{User.current.world}.tribalwars.com.br"
+	base "https://#{$g.world}.tribalwars.com.br"
 
 	end_point 'm/g'
 

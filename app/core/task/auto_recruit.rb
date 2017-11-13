@@ -155,7 +155,8 @@ module Recruiter
     Rails.logger.info("Units to train in #{village.name}: #{units_to_train.attributes}")
     Rails.logger.info("Village #{village.name} has percent units completed: #{percent_completed}")
 
-    trail_util = Time.zone.now + self.class._performs_to + 10.minutes
+    # trail_util = Time.zone.now + self.class._performs_to + 10.minutes
+    trail_util = Time.zone.now + Config.auto_recrut.queue_time(1).hours
 
     to_train = Troop.new
 
@@ -173,7 +174,7 @@ module Recruiter
     end
     
     loop do 
-      release_times = release_times.select{|k,v| v <= Time.zone.now + self.class._performs_to}
+      release_times = release_times.select{|k,v| v <= trail_util}
       percent_completed = calculate_percent_completed_units(units_to_train,current_units.to_h,village)
       target_units = percent_completed.to_h.select {|unit,percent| percent != 1}.keys
 
@@ -495,7 +496,7 @@ class Task::AutoRecruit < Task::Abstract
   include Builder
   include Transporter
 
-  performs_to Config.auto_recrut.queue_time(1).hour
+  performs_to 1.hour
 
   
   def run

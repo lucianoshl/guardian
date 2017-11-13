@@ -9,9 +9,9 @@ RSpec.describe Task::AutoRecruit, type: :task do
   # Village.stub(:my) { stub_villages }
 
 
-  # it "auto_build" do 
-  #   Task::AutoRecruit.new.run
-  # end
+  it "auto_build" do 
+    Task::AutoRecruit.new.run
+  end
 
   # it "distribute_resources" do 
   #   Task::AutoRecruit.new.distribute_resources

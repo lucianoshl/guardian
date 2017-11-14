@@ -41,7 +41,7 @@ module Guardian
     end
 
 
-    # config.log_level = 0
+    Mongoid.logger.level = Logger::INFO
 
     ENV['RAILS_ADMIN_THEME'] = 'material_theme'
   end

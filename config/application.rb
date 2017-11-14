@@ -33,7 +33,7 @@ module Guardian
     config.time_zone = Time.zone = 'Brasilia'
 
 
-    Mongoid.logger.level = Logger::INFO
+    Mongoid.logger.level = Logger::DEBUG
 
     if (['development','test'].include?(Rails.env)) 
         # Mongoid.logger.level = Logger::DEBUG

@@ -5,6 +5,7 @@ if (not_migrated_system && !running_in_rake)
     Rails.logger.error(%{
         Please, run 'bundle exec rake guardian:migrate RAILS_ENV=#{Rails.env}
         Saved   hash is #{Guardian.migration_hash}
-        Current hash is #{Guardian.current_migration}})
+        Current hash is #{Guardian.current_migration}
+        Current hash is #{Guardian.current_migration.content}})
     exit
 end

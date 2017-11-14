@@ -32,11 +32,7 @@ module Guardian
     config.i18n.default_locale = 'pt-BR'
     config.time_zone = Time.zone = 'Brasilia'
 
-
-    Mongoid.logger.level = Logger::DEBUG
-
     if (['development','test'].include?(Rails.env)) 
-        # Mongoid.logger.level = Logger::DEBUG
         Thread.new do 
             FileWatcher.new(Dir.glob("#{Rails.root}/**/*.rb")).watch do |f| 
                 load(f)
@@ -48,11 +44,5 @@ module Guardian
     # config.log_level = 0
 
     ENV['RAILS_ADMIN_THEME'] = 'material_theme'
-
-    # Rails.logger.level = :debug
-
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
   end
 end

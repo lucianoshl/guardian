@@ -17,6 +17,8 @@ module Guardian
     Guardian.current_migration = 'none'
     Guardian.mongo_url = ENV['MONGO_URL']
     if !Guardian.mongo_url.blank?
-        Guardian.current_migration = Rails.cache.fetch('current_migration') || 'nothing_in_cache'
+        Guardian.current_migration = Rails.cache.fetch('current_migration') do 
+            Property::KeyValue.current_migration('none')
+        end
     end
 end

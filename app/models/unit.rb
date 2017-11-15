@@ -23,8 +23,7 @@ class Unit
 			Unit.all.map(&:name).map(&:to_sym)
 		end
 	end
-
-
+	
 	def square_per_minutes
 		speed
 	end

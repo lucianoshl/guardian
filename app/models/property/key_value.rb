@@ -2,7 +2,7 @@ class Property::KeyValue < Property::Simple
     field :key, type: String
     def self.get key,default=""
         model = where(key: key).first
-        model.nil? ? default : content
+        model.nil? ? default : model.content
     end
 
     def self.set(key,value)
@@ -15,8 +15,8 @@ class Property::KeyValue < Property::Simple
 
     def self.method_missing(m, *args, &block)
 
-        Rails.logger.info("method_missing=#{m}")
-        Rails.logger.info("args=#{args}")
+        # Rails.logger.info("method_missing=#{m}")
+        # Rails.logger.info("args=#{args}")
 
         if (args.size == 1)
             return get(m.to_s,args.first) 

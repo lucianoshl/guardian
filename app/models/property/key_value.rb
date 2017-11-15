@@ -13,7 +13,11 @@ class Property::KeyValue < Property::Simple
         model.save
     end
 
-    def self.method_missing(m, *args, &block) 
+    def self.method_missing(m, *args, &block)
+
+        Rails.logger.info("method_missing=#{m}")
+        Rails.logger.info("args=#{args}")
+
         if (args.size == 1)
             return get(m.to_s,args.first) 
         end

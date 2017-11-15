@@ -5,7 +5,7 @@ class User
   field :password, type: String
   field :email, type: String
   field :avatar_url, type: String, default: 'crow_45x45.png'
-  field :pid, type: Integer
+  # field :pid, type: Integer
   field :main, type: Boolean
 
   has_many :cookies, class_name: Cookie.to_s

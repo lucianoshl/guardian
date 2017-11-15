@@ -17,10 +17,12 @@ namespace :guardian do
         })
         main_user.save
       end
-      main_user.pid = Screen::Guest.new(name:ENV['TW_USER']).result_list.first[:pid]
+      user_pid = Screen::Guest.new(name:ENV['TW_USER']).result_list.first[:pid]
       main_user.save
       Screen::UnitData.new.units.map(&:save)
       Task::PlayerMonitor.new.run
+      main_user.player = Player.where(pid: user_pid).first
+      raise Exception.new('Invalid main player state') if main_user.player.nil?
       main_user.save
       Metadata::Building.populate
 
@@ -31,7 +33,7 @@ namespace :guardian do
         Rails.logger.info("Running init_schedules for #{task}")
         task.init_schedules if (task.respond_to?('init_schedules'))
       end
-      
+
       Dir["#{Rails.root}/app/models/job/*.rb"].map{|f| ActiveSupport::Dependencies.load_file f }
 
       Job.constants.map do |const|

@@ -19,11 +19,9 @@ class Unit
 	end
 
 	def self.names
-		# FIX
-		['spear']
-		# Rails.cache.fetch("unit_names") do
-		# 	Unit.all.map(&:name).map(&:to_sym)
-		# end
+		Rails.cache.fetch("unit_names") do
+			Unit.all.map(&:name).map(&:to_sym)
+		end
 	end
 
 

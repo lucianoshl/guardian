@@ -66,9 +66,7 @@ class Metadata::Building
   end
 
   def self.names
-    # FIX
-    return ['main']
-    # ::Metadata::Building.all.map(&:name)
+    ::Metadata::Building.all.map(&:name)
   end
 
 end

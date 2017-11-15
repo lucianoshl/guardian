@@ -23,6 +23,21 @@ namespace :guardian do
       Task::PlayerMonitor.new.run
       main_user.save
       Metadata::Building.populate
+
+      Dir["#{Rails.root}/app/core/task/*.rb"].map{|f| ActiveSupport::Dependencies.load_file f }
+
+      Task.constants.map do |const|
+        task = Task.const_get(const)
+        Rails.logger.info("Running init_schedules for #{task}")
+        task.init_schedules if (task.respond_to?('init_schedules'))
+      end
+      
+      Dir["#{Rails.root}/app/models/job/*.rb"].map{|f| ActiveSupport::Dependencies.load_file f }
+
+      Job.constants.map do |const|
+        task = Job.const_get(const)
+        task.init_schedules if (task.respond_to?('init_schedules'))
+      end
       current_migration.content = Guardian.migration_hash
       current_migration.save
     end

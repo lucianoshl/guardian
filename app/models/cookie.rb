@@ -41,6 +41,6 @@ class Cookie
   end
 
   def self.is_logged? page
-    !page.uri.to_s.include?("sid_wrong") && page.search('input[type="password"]').empty?
+    !page.uri.to_s.include?("sid_wrong") && page.search('input[type="password"]').empty? && !page.body.include?('Por favor, acesse novamente')
   end
 end

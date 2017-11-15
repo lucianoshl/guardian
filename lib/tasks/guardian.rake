@@ -7,13 +7,21 @@ namespace :guardian do
       Rails.logger.info('Migration hash not changed')
     else
       Rails.logger.info('Migration hash change... running migrations')
-      User.new(world: ENV['TW_WORLD'],name: ENV['TW_USER'],password: ENV['TW_PASS']).save
-      user = User.first
-      user.pid = Screen::Guest.new(name:ENV['TW_USER']).result_list.first[:pid]
-      user.save
+      main_user = User.where(main:true).first
+      if (main_user.nil?)
+        main_user = User.new({
+          world: ENV['TW_WORLD'],
+          name: ENV['TW_USER'],
+          password: ENV['TW_PASS'],
+          main: true
+        })
+        main_user.save
+      end
+      main_user.pid = Screen::Guest.new(name:ENV['TW_USER']).result_list.first[:pid]
+      main_user.save
       Screen::UnitData.new.units.map(&:save)
       Task::PlayerMonitor.new.run
-      user.save
+      main_user.save
       Metadata::Building.populate
       current_migration.content = Guardian.migration_hash
       current_migration.save

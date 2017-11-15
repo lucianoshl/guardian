@@ -28,7 +28,7 @@ class Screen::Logged < Screen::Anonymous
       client.login
       page = _request(method,url)
     end
-
+    
     if (!Cookie.is_logged?(page))
       raise Exception.new("Error on login")
     end

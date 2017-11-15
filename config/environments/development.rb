@@ -1,5 +1,5 @@
 Rails.application.configure do
-  # config.logger = Logger.new(STDOUT)
+  config.logger = Logger.new(STDOUT)
   config.cache_store = :file_store, "#{Rails.root}/tmp/cache/guardian"
 
   # Pry.config.print = Pry::SIMPLE_PRINT  

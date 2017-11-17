@@ -4,6 +4,7 @@ RSpec.describe Troop do
   it "Compare Troop and troop model types" do 
 
     Unit.names.map do |field_name|
+      field_name = field_name.to_s
       expect(Troop.fields[field_name] == Model::Troop.fields[field_name]).to be false
     end
 

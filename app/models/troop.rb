@@ -7,7 +7,7 @@ class Troop
   embedded_in :village
 
   Unit.names.map do |unit_name|
-    field unit_name.to_sym, type: Integer, default: 0
+    field unit_name.to_sym, type: Integer, default: 0, overwrite: true
   end
 
   def total

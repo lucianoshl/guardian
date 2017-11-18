@@ -11,6 +11,7 @@ class Task::PillageAround < Task::Abstract
   end
 
   def run
+    Rails.logger.info('Start pillage arround')
     Screen::Place.reset
 
     Mobile::ReportList.load_all

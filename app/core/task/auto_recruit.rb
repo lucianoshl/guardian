@@ -113,7 +113,8 @@ module Builder
     current = Model::Buildings.new(main_screen.buildings.map{|k,v| [k,v.level]}.to_h)
     config = nil
 
-    priorities = model.priorities.clone.push(model.buildings)
+    priorities = model.priorities.clone
+    priorities.push(model.buildings) if (!model.buildings.nil?)
 
     priorities.map do |config_item|
       config = config_item

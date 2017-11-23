@@ -5,8 +5,9 @@ Types::QueryType = GraphQL::ObjectType.define do
 
   field :village, types[Types::VillageType] do
     description "An example field added by the generator"
-    # argument :id, !types.String
-    # argument :name, !types.String
+
+    argument :id, types.String
+    argument :name, types.String
     resolve ->(obj, args, ctx) {
       Village.where(args.to_h)
     }

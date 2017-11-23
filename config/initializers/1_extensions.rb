@@ -202,3 +202,11 @@ end
 
 class InexistentVillage < Exception
 end
+
+def field_mapping(types,mongo_type)
+  field_mapping = {}
+  field_mapping[BSON::ObjectId] = !types.ID
+  field_mapping[Integer] = !types.Int
+  field_mapping[String] = !types.String
+  field_mapping[mongo_type]
+end

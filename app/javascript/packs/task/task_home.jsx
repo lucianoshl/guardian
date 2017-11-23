@@ -22,6 +22,6 @@ class TaskHome extends React.Component {
 
 export default graphql(gql`
 {tasks {
-    attempts handler id last_error locked_by priority queue
+    id handler run_at created_at last_error locked_by 
   }}
 `)(TaskHome);

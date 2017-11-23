@@ -203,10 +203,19 @@ end
 class InexistentVillage < Exception
 end
 
+TimeType = GraphQL::ScalarType.define do
+  name "Time"
+  description "Time since epoch in seconds"
+
+  coerce_input ->(value, ctx) {  Time.at(Float(value)) }
+  coerce_result ->(value, ctx) { value.to_f + value.utc_offset }
+end
+
 def field_mapping(types,mongo_type)
   field_mapping = {}
   field_mapping[BSON::ObjectId] = !types.ID
   field_mapping[Integer] = types.Int
   field_mapping[String] = types.String
+  field_mapping[Time] = TimeType
   field_mapping[mongo_type]
 end

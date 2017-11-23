@@ -12,6 +12,8 @@ import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 const client = new ApolloClient({
   link: new HttpLink(),
   cache: new InMemoryCache()
@@ -19,11 +21,13 @@ const client = new ApolloClient({
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <ApolloProvider client={client}>
-      <Router>
-        <Application />
-      </Router>
-    </ApolloProvider>,
+    <MuiThemeProvider>
+      <ApolloProvider client={client}>
+        <Router>
+          <Application />
+        </Router>
+      </ApolloProvider>
+    </MuiThemeProvider>,
     document.body.appendChild(document.createElement('div')),
   )
 })

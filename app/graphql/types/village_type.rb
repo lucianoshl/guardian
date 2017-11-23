@@ -9,7 +9,7 @@ models.map do |model|
         model.fields.map do |field_name,metadata|
             type = field_mapping(types,metadata.options[:type])
             field_name = 'id' if (type == !types.ID)
-            Rails.logger.error("Field #{field_name} not found in mapping") if type.nil?
+            Rails.logger.error("Field #{field_name} with type=#{metadata.options[:type]} not found in mapping") if type.nil?
             if !type.nil?
                 field field_name, type 
             end

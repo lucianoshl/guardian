@@ -4,6 +4,8 @@ import gql from 'graphql-tag';
 import Spinner from '../commons/spinner';
 import Task from './task';
 
+import { ListGroup, ListGroupItem } from 'reactstrap';
+
 class TaskHome extends React.Component {
 
     render(){
@@ -11,11 +13,13 @@ class TaskHome extends React.Component {
             return <Spinner/>
         }
 
-        return <div>
+        return <ListGroup>
             {this.props.data.tasks.map(function(task){
-                return <Task key={task.id} {...task} />
+                return <ListGroupItem key={task.id}>
+                    <Task {...task} />
+                </ListGroupItem>
             })}
-        </div>
+        </ListGroup>
     }
 
 }

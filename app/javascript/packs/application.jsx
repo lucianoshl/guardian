@@ -4,33 +4,30 @@ import TaskHome from './task/task_home';
 import TargetHome from './target/target_home';
 import { Link, Route } from 'react-router-dom'
 
-import AppBar from 'material-ui/AppBar';
-
-import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
-
 const Application = props =>
-  <div className="app">
-    <AppBar
-      title="Title"
-      iconClassNameRight="muidocs-icon-navigation-expand-more"
-    />
-    {/* <Drawer open={true} swipeAreaWidth={100}>
-      <MenuItem>Menu Item</MenuItem>
-      <MenuItem>Menu Item 2</MenuItem>
-    </Drawer> */}
-    <div className="sidebar">
-    
-      <ul>
-        <li><Link to="/">Tasks</Link></li>
-        <li><Link to="/villages">Villages</Link></li>
-        <li><Link to="/targets">Targets</Link></li>
-      </ul>
-    </div>
-    <div className="main-container">
-      <Route exact path="/" component={TaskHome}/>
-      <Route exact path="/villages" component={VillageHome}/>
-      <Route exact path="/targets" component={TargetHome}/>
+  <div className="app" className="container-fluid">
+    <div className="row">
+      <nav className="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+        <ul className="nav nav-pills flex-column">
+          {/* <li className="nav-item">
+            <a className="nav-link active" href="#">Overview <span className="sr-only">(current)</span></a>
+          </li> */}
+          <li className="nav-item">
+            <Link to="/" className="nav-link">Tasks</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/villages" className="nav-link">Villages</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/targets" className="nav-link" >Targets</Link>
+          </li>
+        </ul>
+      </nav>
+      <div className="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+        <Route exact path="/" component={TaskHome}/>
+        <Route exact path="/villages" component={VillageHome}/>
+        <Route exact path="/targets" component={TargetHome}/>
+      </div>
     </div>
   </div>
 

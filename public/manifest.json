@@ -1,0 +1,16 @@
+{
+  "packs/application.js": "/./packs/application-7f922e343153d78a3bb2.js",
+  "packs/commons/date.js": "/./packs/commons/date-208480be6583494f2fef.js",
+  "packs/commons/spinner.js": "/./packs/commons/spinner-957762d9042656629d33.js",
+  "packs/main.css": "/./packs/main-af02554a31f28d92ad21fa26b9f2c0b4.css",
+  "packs/main.js": "/./packs/main-b7bb00fc9becd1f53347.js",
+  "packs/target/target_home.js": "/./packs/target/target_home-63b0e086da1b8c5696ac.js",
+  "packs/task/task.js": "/./packs/task/task-7775308c874103628603.js",
+  "packs/task/task_home.js": "/./packs/task/task_home-b5904cf2b9af46e4535b.js",
+  "packs/village/village.js": "/./packs/village/village-7b9b55b2afc9f34d09e7.js",
+  "packs/village/village_home.js": "/./packs/village/village_home-dfac34c15c8627d0f15b.js",
+  "styles/dashboard.css": "/./styles/dashboard-b8f0a7854a3c54487b143e0bc357160c.css",
+  "styles/dashboard.js": "/./styles/dashboard-c2f517b33530cd241076.js",
+  "styles/theme.css": "/./styles/theme-b8f0a7854a3c54487b143e0bc357160c.css",
+  "styles/theme.js": "/./styles/theme-2812e54e6352089db722.js"
+}

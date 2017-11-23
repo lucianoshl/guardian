@@ -1,11 +1,27 @@
 import React from 'react';
-import Date from '../commons/date'
+import { FormattedDate } from 'react-intl'
+
 const Task = props =>
     <div>
         <p>{props.handler.match(/Task::(.+?) /)[1]}</p>
-        <p>Próxima execução: <Date seconds={props.run_at}/></p>
-        <p>Ultima execução: <Date seconds={props.created_at}/></p>
-        <hr/>
+        <p>
+            Próxima execução: <FormattedDate
+                    value={props.run_at}
+                    hour="numeric"
+                    minute="numeric"
+                    second="numeric"
+                    day="2-digit"
+                    month="2-digit" />
+        </p>
+        <p>
+            Ultima execução: <FormattedDate
+                    value={props.created_at}
+                    hour="numeric"
+                    minute="numeric"
+                    second="numeric"
+                    day="2-digit"
+                    month="2-digit" />
+        </p>
     </div>
 
 export default Task;

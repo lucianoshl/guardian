@@ -1,9 +1,11 @@
-models = [Village,Player]
+models = [Village,Player,Delayed::Job]
 
 models.map do |model|
 
+    model_name = model.to_s.gsub('::','')
+
     x = GraphQL::ObjectType.define do
-        name model.to_s
+        name model_name
         model.fields.map do |field_name,metadata|
             type = field_mapping(types,metadata.options[:type])
             field_name = 'id' if (type == !types.ID)
@@ -13,6 +15,7 @@ models.map do |model|
             end
         end
     end
-
-    Types.const_set("#{model.to_s}Type", x)
+    type_name = "#{model_name}Type"
+    Rails.logger.info("Registering type: #{type_name}")
+    Types.const_set(type_name, x)
 end

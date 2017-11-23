@@ -8,13 +8,13 @@ Rails.application.routes.draw do
 
   get 'task/run_now/:id' => 'task#run_now'
 
-  root to: -> (env) do
+  get "*all", to: -> (env) do
     erb_renderer = ActionView::Base.new(ActionController::Base.view_paths, {})
     [ 
         200,
         {"Content-Type" => "text/html"},
         [erb_renderer.render(file: 'public/index.html.erb')]
     ]
-  end
+  end, :constraints => { :all => /.*/ }
 
 end

@@ -15,10 +15,10 @@ const Application = props =>
       title="Title"
       iconClassNameRight="muidocs-icon-navigation-expand-more"
     />
-    <Drawer open={true} swipeAreaWidth={100}>
+    {/* <Drawer open={true} swipeAreaWidth={100}>
       <MenuItem>Menu Item</MenuItem>
       <MenuItem>Menu Item 2</MenuItem>
-    </Drawer>
+    </Drawer> */}
     <div className="sidebar">
     
       <ul>

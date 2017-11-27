@@ -2,10 +2,11 @@ import React from 'react';
 import VillageHome from './village/village_home';
 import TaskHome from './task/task_home';
 import TargetHome from './target/target_home';
-import { Link, Route } from 'react-router-dom'
+import { Link, Route } from 'react-router-dom';
+import { Container } from 'reactstrap';
 
 const Application = props =>
-  <div className="app" className="container-fluid">
+  <Container fluid={true}>
     <div className="row">
       <nav className="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
         <ul className="nav nav-pills flex-column">
@@ -29,6 +30,6 @@ const Application = props =>
         <Route exact path="/targets" component={TargetHome}/>
       </div>
     </div>
-  </div>
+  </Container>
 
 export default Application;

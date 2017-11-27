@@ -4,6 +4,8 @@ import gql from 'graphql-tag';
 import Spinner from '../commons/spinner';
 import Village from '../village/village';
 
+import { ListGroup, ListGroupItem } from 'reactstrap';
+
 class TargetHome extends React.Component {
 
     render(){
@@ -11,12 +13,14 @@ class TargetHome extends React.Component {
         if (this.props.data.loading) {
             return <Spinner/>
         }
-
-        return <div>
+  
+        return <ListGroup>
             {this.props.data.villages.map(function(village){
-                return <Village key={village.id} {...village} />
+                return <ListGroupItem key={village.id}>
+                    <Village {...village} />
+                </ListGroupItem>
             })}
-        </div>
+        </ListGroup>
     }
 
 }

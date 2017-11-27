@@ -208,7 +208,7 @@ TimeType = GraphQL::ScalarType.define do
   description "Time since epoch in seconds"
 
   coerce_input ->(value, ctx) {  Time.at(Float(value)) }
-  coerce_result ->(value, ctx) { (value.to_f + value.utc_offset + 10800000 ) * 1000 }
+  coerce_result ->(value, ctx) { value.to_f * 1000 }
 end
 
 def field_mapping(types,mongo_type)

@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import Spinner from '../commons/spinner';
 import Task from './task';
 
-import { ListGroup, ListGroupItem } from 'reactstrap';
+import { ListGroup, ListGroupItem, Tooltip } from 'reactstrap';
 
 class TaskHome extends React.Component {
 

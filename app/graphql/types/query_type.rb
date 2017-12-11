@@ -7,7 +7,8 @@ Types::QueryType = GraphQL::ObjectType.define do
     argument :id, types.String
     argument :name, types.String
     resolve ->(obj, args, ctx) {
-      Village.where(args.to_h)
+      
+      Village.where(args.to_h).limit(10)
     }
   end
 

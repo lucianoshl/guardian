@@ -11,6 +11,9 @@ module Guardian
         end
     end
     
+    raise Exception.new('Missing MONGO_URL enviroment') if ENV['MONGO_URL'].blank?
+
+
     Guardian.migration_file = Dir["#{Rails.root}/**/guardian.rake"].first
     migration_file_contents = File.read(Guardian.migration_file)
     Guardian.migration_hash = Digest::MD5.hexdigest(migration_file_contents)

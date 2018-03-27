@@ -5,7 +5,7 @@ class Screen::Main < Screen::Basic
   url screen: 'main'  
 
   def build(name)
-  	base = "https://#{User.current.world}.tribalwars.com.br"
+  	base = "https://#{ENV['TW_WORLD']}.tribalwars.com.br"
 
   	raw_build_link = buildings_meta_json[name]['build_link']
 

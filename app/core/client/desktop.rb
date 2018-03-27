@@ -37,7 +37,7 @@ class Client::Desktop
 	      remember: 1
 	      });
 
-	    game_screen = client.get("https://www.tribalwars.com.br/page/play/#{User.current.world}")
+	    game_screen = client.get("https://www.tribalwars.com.br/page/play/#{ENV['TW_WORLD']}")
 
 	    client.cookies
 	end

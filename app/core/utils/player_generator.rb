@@ -105,7 +105,7 @@ class Utils::PlayerGenerator
 
     user.save
 
-    game_screen = @client.post("#{base}/index.php?action=login&server_#{User.current.world}",{
+    game_screen = @client.post("#{base}/index.php?action=login&server_#{ENV['TW_WORLD']}",{
         user: user.name,
         password: select_world_page.body.scan(/password.*?value=\\\"(.*?)\\/).first.first,
         }) do |game_screen|
@@ -117,7 +117,7 @@ class Utils::PlayerGenerator
   def register_mail(user)
     user = User.new(name: user)
     user.password = user.name.parameterize + "-12345"
-    user.world = User.current.world
+    user.world = ENV['TW_WORLD']
     do_login(user)
 
     binding.pry
@@ -141,7 +141,7 @@ class Utils::PlayerGenerator
 
       do_login(user)
 
-      # form = @client.get("https://#{User.current.world}.tribalwars.com.br/game.php?village=18066&screen=settings&mode=account").form
+      # form = @client.get("https://#{ENV['TW_WORLD']}.tribalwars.com.br/game.php?village=18066&screen=settings&mode=account").form
 
       # form['email'] = "robertohlnero+#{user.name.gsub(' ','-')}@gmail.com"
       # form['password'] = user.password
@@ -149,16 +149,16 @@ class Utils::PlayerGenerator
 
       build = ["wood","stone","iron","wood","stone","main","main","barracks","barracks","wood","stone","storage","storage","iron","barracks","statue"]
 
-      page = @client.get("https://#{User.current.world}.tribalwars.com.br/game.php?village=18066&screen=main")
+      page = @client.get("https://#{ENV['TW_WORLD']}.tribalwars.com.br/game.php?village=18066&screen=main")
 
       while(!build.empty?)
         target = build.shift
 
         url = page.search('a[href*="id=main"]').first.attr('href').gsub('&cheap','')
-        page = @client.get("https://#{User.current.world}.tribalwars.com.br/#{url}")
+        page = @client.get("https://#{ENV['TW_WORLD']}.tribalwars.com.br/#{url}")
 
         url = page.search('a[href*="BuildTimeReduction"]').first.attr('href')
-        page = @client.get("https://#{User.current.world}.tribalwars.com.br/#{url}")
+        page = @client.get("https://#{ENV['TW_WORLD']}.tribalwars.com.br/#{url}")
         binding.pry
       end
 

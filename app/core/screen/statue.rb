@@ -6,7 +6,7 @@ class Screen::Statue < Screen::Basic
 
   def start_train(village_id,knight_id)
   	
-  	url = "https://#{User.current.world}.tribalwars.com.br/game.php?village=#{village_id}&screen=statue&ajaxaction=regimen&h=#{@csrf_token}&client_time=#{client_time}"
+  	url = "https://#{ENV['TW_WORLD']}.tribalwars.com.br/game.php?village=#{village_id}&screen=statue&ajaxaction=regimen&h=#{@csrf_token}&client_time=#{client_time}"
   	parameters = {
   		knight: knight_id,
   		regimen: 36,

@@ -4,7 +4,7 @@ class Screen::Basic < Screen::Logged
   :building_levels
 
   def logout
-    _request(:get,"https://#{User.current.world}.tribalwars.com.br#{logout_url}")
+    _request(:get,"https://#{ENV['TW_WORLD']}.tribalwars.com.br#{logout_url}")
   end
 
   def client_time

@@ -9,7 +9,7 @@ class Mobile::ReportList < Mobile::Base
 
 	def self.erase report_id
 		client = Mobile::Client.new
-		result = client.post("https://#{User.current.world}.tribalwars.com.br/m/g/reports_delete",[client.sid,report_id])
+		result = client.post("https://#{ENV['TW_WORLD']}.tribalwars.com.br/m/g/reports_delete",[client.sid,report_id])
 	end
 
 	def self.load_all

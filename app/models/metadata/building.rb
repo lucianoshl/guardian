@@ -19,7 +19,7 @@ class Metadata::Building
 
   def self.populate
     if (count.zero?)
-      page = Mechanize.new.get("http://br.twstats.com/#{User.current.world}/index.php?page=buildings")
+      page = Mechanize.new.get("http://br.twstats.com/#{ENV['TW_WORLD']}/index.php?page=buildings")
       buildings = page.search('.r1,.r2').map do |row|
         building = self.new
 

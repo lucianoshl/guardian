@@ -71,7 +71,7 @@ class InjectedController < ActionController::Base
   end
 
   before_action do 
-    @world = User.current.world
+    @world = ENV['TW_WORLD']
     @mode = request.params[:mode] || 'default'
     @screen = request.params[:screen] || 'default'
     @vid = request.url.scan(/village=(\d+)/).first.first.to_i

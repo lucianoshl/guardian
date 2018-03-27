@@ -32,7 +32,7 @@ class MobileCookie
     worlds = Mobile::Worlds.new(login.token)
     world_login_screen = Mobile::WorldLogin.new(login.token,2,'android')
     client = Mobile::Client.new
-    client.get("https://#{User.current.world}.tribalwars.com.br/login.php?mobile&sid=#{world_login_screen.sid}&2")
+    client.get("https://#{ENV['TW_WORLD']}.tribalwars.com.br/login.php?mobile&sid=#{world_login_screen.sid}&2")
 
     MobileCookie.where(user: User.current).delete
     MobileCookie.store_cookies(client.cookies)

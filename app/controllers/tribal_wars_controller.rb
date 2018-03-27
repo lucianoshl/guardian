@@ -7,7 +7,7 @@ class TribalWarsController < ApplicationController
 
   def page
     require 'open-uri'
-    base = "https://#{User.current.world}.tribalwars.com.br"
+    base = "https://#{ENV['TW_WORLD']}.tribalwars.com.br"
     uri = base + request.fullpath
 
     path,content_type = Rails.cache.fetch("#{uri}_tmp_file") do
@@ -42,7 +42,7 @@ class TribalWarsController < ApplicationController
     end
     target_url = request.fullpath
 
-    base = "https://#{User.current.world}.tribalwars.com.br"
+    base = "https://#{ENV['TW_WORLD']}.tribalwars.com.br"
 
     headers = request.headers.to_h.select {|k,v| k.include?('HTTP_')}
     headers = (headers.map do |k,v|
@@ -50,7 +50,7 @@ class TribalWarsController < ApplicationController
     end).to_h
 
     # headers.delete('Host')
-    headers['Host'] = "#{User.current.world}.tribalwars.com.br"
+    headers['Host'] = "#{ENV['TW_WORLD']}.tribalwars.com.br"
     # headers.delete('Referer')
     headers.delete('Cookie')
 
@@ -149,7 +149,7 @@ class TribalWarsController < ApplicationController
     Decorator::Global.new.html(doc,request)
 
     raw = doc.to_html
-    world = User.current.world
+    world = ENV['TW_WORLD']
 
     raw = raw.gsub(/\"\/js\//) do |str|
       "\"https://#{world}.tribalwars.com.br/js/"
